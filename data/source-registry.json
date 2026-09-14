@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "policy": {
     "paid_sources_require_explicit_approval": true,
     "publication_requires_dataset_specific_review": true,
@@ -67,6 +67,26 @@
       "access_conditions": "free download; WRI requests registration for adapting or sharing the data",
       "attribution": "Source: WRI Aqueduct, accessed on [date], with a link to aqueduct.wri.org where possible.",
       "review_notes": "Rights appear compatible. Public bundling remains blocked until the actual data package is retrieved, the WRI registration/sharing request is satisfied, the exact fields are selected and the attribution is implemented. Aqueduct is a prioritisation/screening source, not evidence of site outage probability or supplier failure."
+    },
+    {
+      "id": "gleif-lei-relationships",
+      "publisher": "Global Legal Entity Identifier Foundation (GLEIF)",
+      "dataset": "GLEIF Concatenated Files — LEI-CDF and Relationship Record CDF",
+      "status": "approved_for_publication",
+      "publication_status": "approved_for_publication",
+      "cost_status": "free",
+      "source_url": "https://www.gleif.org/en/lei-data/gleif-concatenated-file/download-the-concatenated-file",
+      "terms_url": "https://www.gleif.org/en/meta/lei-data-terms-of-use",
+      "dataset_version": "LEI-CDF v3.1 and RR-CDF v2.1; snapshot date must be pinned at ingestion",
+      "reviewed_at": "2026-09-14",
+      "retrieved_at": null,
+      "intended_use": "legal-entity identification and direct/ultimate accounting-consolidating parent relationships for entity-resolution and ownership context",
+      "licence": "CC0 1.0 Universal for LEIs and LEI reference data made available through the GLEIF Access Service",
+      "commercial_reuse": "permitted",
+      "redistribution": "permitted; publish only the fields required by the demonstrator and retain source/snapshot provenance",
+      "access_conditions": "free Access Service; use only GLEIF-provided access methods and do not circumvent technical restrictions",
+      "attribution": "CC0 does not require attribution, but the project will identify GLEIF as the source and record the snapshot date for provenance.",
+      "review_notes": "Approved for a derived subset from the official LEI-CDF v3.1 and RR-CDF v2.1 Concatenated Files. Do not use the GLEIF trademark or logo. Do not imply that the atlas or derived outputs are provided, supported, authorised or otherwise associated with GLEIF. Relationship records cover direct and ultimate accounting-consolidating parents where the relevant parent has an LEI; missing relationships must not be interpreted as evidence that no parent exists."
     },
     {
       "id": "natural-earth-admin0-110m",
