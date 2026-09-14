@@ -79,7 +79,7 @@ export function renderPlants(group, plants, { onSelect } = {}) {
 
     point.setAttribute('cx', x.toFixed(2));
     point.setAttribute('cy', y.toFixed(2));
-    point.setAttribute('r', approximate ? '2.6' : '2.3');
+    point.setAttribute('r', approximate ? '3.2' : '2.8');
     point.setAttribute('class', `plant-point${approximate ? ' is-approximate' : ''}`);
     point.setAttribute('tabindex', '0');
     point.setAttribute('role', 'button');
@@ -92,11 +92,17 @@ export function renderPlants(group, plants, { onSelect } = {}) {
     point.append(title);
 
     if (typeof onSelect === 'function') {
-      point.addEventListener('click', () => onSelect(plant));
+      const selectPoint = () => {
+        group.querySelector('.plant-point.is-selected')?.classList.remove('is-selected');
+        point.classList.add('is-selected');
+        onSelect(plant);
+      };
+
+      point.addEventListener('click', selectPoint);
       point.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
-          onSelect(plant);
+          selectPoint();
         }
       });
     }
