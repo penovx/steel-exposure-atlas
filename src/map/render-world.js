@@ -47,11 +47,6 @@ export function renderCountries(group, featureCollection) {
     path.setAttribute('class', 'country');
     path.dataset.iso3 = feature.properties?.ISO_A3 ?? '';
     path.dataset.name = feature.properties?.NAME_EN ?? feature.properties?.ADMIN ?? '';
-    if (path.dataset.name) {
-      const title = document.createElementNS(SVG_NS, 'title');
-      title.textContent = path.dataset.name;
-      path.append(title);
-    }
     fragment.append(path);
   }
 
@@ -59,7 +54,7 @@ export function renderCountries(group, featureCollection) {
   return group.childElementCount;
 }
 
-export function renderPlants(group, plants, { onSelect } = {}) {
+export function renderPlants(group, plants, { onSelect, onHover, onLeave } = {}) {
   if (!Array.isArray(plants)) {
     throw new Error('Plant data must contain a plants array.');
   }
@@ -85,11 +80,10 @@ export function renderPlants(group, plants, { onSelect } = {}) {
     point.setAttribute('role', 'button');
     point.setAttribute('aria-label', plant.plant_name || plant.plant_id || 'Steel plant');
     point.dataset.plantId = plant.plant_id ?? '';
-
-    const title = document.createElementNS(SVG_NS, 'title');
-    const location = [plant.municipality, plant.country_area].filter(Boolean).join(', ');
-    title.textContent = [plant.plant_name, location, plant.owner_name].filter(Boolean).join(' · ');
-    point.append(title);
+    point.dataset.region = plant.region ?? '';
+    point.dataset.country = plant.country_area ?? '';
+    point.dataset.ownerId = plant.owner_gem_entity_id ?? '';
+    point.dataset.parentLabel = plant.parent_display ?? '';
 
     if (typeof onSelect === 'function') {
       const selectPoint = () => {
@@ -105,6 +99,15 @@ export function renderPlants(group, plants, { onSelect } = {}) {
           selectPoint();
         }
       });
+    }
+
+    if (typeof onHover === 'function') {
+      point.addEventListener('pointerenter', (event) => onHover(plant, event));
+      point.addEventListener('pointermove', (event) => onHover(plant, event));
+    }
+    if (typeof onLeave === 'function') {
+      point.addEventListener('pointerleave', onLeave);
+      point.addEventListener('blur', onLeave);
     }
 
     fragment.append(point);
