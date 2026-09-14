@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Interactive exploration of public data on steel production, trade and water stress." />
+    <meta name="theme-color" content="#0b1018" />
+    <title>Steel Exposure Atlas</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">OPEN-DATA DEMONSTRATOR</p>
+          <h1>Steel Exposure Atlas</h1>
+        </div>
+        <button class="ghost-button" id="about-button" type="button" aria-controls="about-panel" aria-expanded="false">About this study</button>
+      </header>
+
+      <main class="atlas-layout">
+        <section class="map-stage" aria-label="Interactive world map">
+          <div class="map-copy">
+            <p class="kicker">PUBLIC DATA, CONNECTED</p>
+            <h2>See the structure before judging the risk.</h2>
+            <p>The atlas will connect production sites, trade patterns, water-stress indicators and legal-entity relationships without turning them into a single black-box score.</p>
+          </div>
+
+          <svg id="world-map" class="world-map" viewBox="0 0 1200 650" role="img" aria-label="World basemap">
+            <defs>
+              <radialGradient id="ocean-glow" cx="52%" cy="42%" r="70%">
+                <stop offset="0%" stop-color="#17263b" />
+                <stop offset="100%" stop-color="#09111d" />
+              </radialGradient>
+            </defs>
+            <rect width="1200" height="650" fill="url(#ocean-glow)" />
+            <g id="graticule-layer" aria-hidden="true"></g>
+            <g id="country-layer"></g>
+          </svg>
+
+          <div class="map-status" id="map-status" role="status">Loading approved basemap…</div>
+          <div class="map-credit">Natural Earth 1:110m · v5.1.1</div>
+        </section>
+
+        <aside class="control-panel" aria-label="Atlas controls">
+          <section>
+            <p class="panel-label">EXPLORE</p>
+            <div class="mode-list" id="mode-list">
+              <button class="mode-button is-active" type="button" data-mode="context"><span>World context</span><small>available</small></button>
+              <button class="mode-button" type="button" disabled><span>Production</span><small>data package review</small></button>
+              <button class="mode-button" type="button" disabled><span>Trade</span><small>extract review</small></button>
+              <button class="mode-button" type="button" disabled><span>Water</span><small>registration step</small></button>
+              <button class="mode-button" type="button" disabled><span>Ownership</span><small>source cleared</small></button>
+            </div>
+          </section>
+
+          <section class="readiness-section">
+            <div class="section-heading">
+              <p class="panel-label">SOURCE READINESS</p>
+              <span class="scope-badge">v0 foundation</span>
+            </div>
+            <div class="readiness-list">
+              <div class="readiness-row"><span class="status-dot ready"></span><span>Basemap</span><strong>Ready</strong></div>
+              <div class="readiness-row"><span class="status-dot review"></span><span>Steel plants</span><strong>Review</strong></div>
+              <div class="readiness-row"><span class="status-dot review"></span><span>EU trade</span><strong>Review</strong></div>
+              <div class="readiness-row"><span class="status-dot review"></span><span>Water stress</span><strong>Review</strong></div>
+              <div class="readiness-row"><span class="status-dot ready"></span><span>Entity relations</span><strong>Ready</strong></div>
+            </div>
+          </section>
+
+          <section class="interpretation-note">
+            <p class="panel-label">READING RULE</p>
+            <p>Exposure is not a disruption probability. Country trade is not a buyer-supplier relationship. Missing ownership data is not proof that no parent exists.</p>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <dialog id="about-panel" class="about-panel">
+      <button class="dialog-close" id="about-close" type="button" aria-label="Close">×</button>
+      <p class="eyebrow">ABOUT</p>
+      <h2>A small study in public-data combination.</h2>
+      <p>This project explores what can be made visible by connecting openly available industrial, trade, environmental and legal-entity data. It is a demonstrator, not a supplier-risk product, due-diligence service or operational decision system.</p>
+      <p>Every published layer is reviewed for reuse rights, cost, provenance and interpretation before it is shipped with the site.</p>
+    </dialog>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
