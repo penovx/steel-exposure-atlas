@@ -3,7 +3,7 @@
 
 The utility is intended for source-package review before a workbook is admitted to
 an ingestion pipeline. It reports the file fingerprint, workbook sheet metadata,
-worksheet dimensions and a small preview of non-empty rows.
+worksheet dimensions and a bounded preview of non-empty rows.
 """
 
 from __future__ import annotations
@@ -102,7 +102,7 @@ def _sheet_preview(
 
     rows: list[list[dict[str, Any]]] = []
     row_count = 0
-    non_empty_seen = 0
+    non_empty_row_count = 0
     sheet_data = root.find(f"{{{MAIN_NS}}}sheetData")
     if sheet_data is not None:
         for row in sheet_data.findall(f"{{{MAIN_NS}}}row"):
@@ -112,19 +112,25 @@ def _sheet_preview(
                 value = _cell_value(cell, shared_strings)
                 if value is not None and value != "":
                     cells.append({"ref": cell.attrib.get("r"), "value": value})
-            if cells and non_empty_seen < preview_rows:
-                rows.append(cells)
-                non_empty_seen += 1
+            if cells:
+                non_empty_row_count += 1
+                if len(rows) < preview_rows:
+                    rows.append(cells)
 
     return {
         "member": member,
         "dimension": dimension_ref,
         "xml_row_count": row_count,
+        "non_empty_row_count": non_empty_row_count,
         "preview_rows": rows,
     }
 
 
-def inspect_workbook(path: Path, preview_rows: int = 8) -> dict[str, Any]:
+def inspect_workbook(
+    path: Path,
+    preview_rows: int = 8,
+    sheet_name: str | None = None,
+) -> dict[str, Any]:
     if path.suffix.lower() != ".xlsx":
         raise ValueError("Expected an .xlsx file.")
     if not path.is_file():
@@ -141,13 +147,19 @@ def inspect_workbook(path: Path, preview_rows: int = 8) -> dict[str, Any]:
         workbook = _read_xml(archive, "xl/workbook.xml")
         sheets_node = workbook.find(f"{{{MAIN_NS}}}sheets")
         sheets: list[dict[str, Any]] = []
+        available_names: list[str] = []
 
         if sheets_node is not None:
-            for sheet in sheets_node.findall(f"{{{MAIN_NS}}}sheet"):
+            sheet_nodes = list(sheets_node.findall(f"{{{MAIN_NS}}}sheet"))
+            available_names = [sheet.attrib.get("name", "") for sheet in sheet_nodes]
+            for sheet in sheet_nodes:
+                name = sheet.attrib.get("name")
+                if sheet_name is not None and name != sheet_name:
+                    continue
                 rel_id = sheet.attrib.get(f"{{{DOC_REL_NS}}}id")
                 member = targets.get(rel_id or "")
                 item: dict[str, Any] = {
-                    "name": sheet.attrib.get("name"),
+                    "name": name,
                     "sheet_id": sheet.attrib.get("sheetId"),
                     "state": sheet.attrib.get("state", "visible"),
                     "relationship_id": rel_id,
@@ -159,11 +171,17 @@ def inspect_workbook(path: Path, preview_rows: int = 8) -> dict[str, Any]:
                     item["error"] = "Worksheet member not found in archive."
                 sheets.append(item)
 
+    if sheet_name is not None and not sheets:
+        raise ValueError(
+            f"Worksheet {sheet_name!r} not found. Available sheets: {available_names}"
+        )
+
     return {
         "file_name": path.name,
         "size_bytes": path.stat().st_size,
         "sha256": sha256_file(path),
         "sheet_count": len(sheets),
+        "selected_sheet": sheet_name,
         "sheets": sheets,
     }
 
@@ -173,6 +191,8 @@ def _print_text(report: dict[str, Any]) -> None:
     print(f"SIZE_BYTES: {report['size_bytes']}")
     print(f"SHA256: {report['sha256']}")
     print(f"SHEETS: {report['sheet_count']}")
+    if report.get("selected_sheet"):
+        print(f"SELECTED_SHEET: {report['selected_sheet']}")
     print()
 
     for sheet in report["sheets"]:
@@ -180,6 +200,7 @@ def _print_text(report: dict[str, Any]) -> None:
         print(f"STATE: {sheet.get('state')}")
         print(f"DIMENSION: {sheet.get('dimension')}")
         print(f"XML_ROWS: {sheet.get('xml_row_count')}")
+        print(f"NON_EMPTY_ROWS: {sheet.get('non_empty_row_count')}")
         if sheet.get("error"):
             print(f"ERROR: {sheet['error']}")
         for row in sheet.get("preview_rows", []):
@@ -192,6 +213,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Read-only XLSX source-package inspector.")
     parser.add_argument("path", type=Path, help="Path to the XLSX workbook to inspect.")
     parser.add_argument("--rows", type=int, default=8, help="Non-empty rows to preview per sheet.")
+    parser.add_argument("--sheet", help="Inspect only the worksheet with this exact name.")
     parser.add_argument(
         "--expected-sha256",
         help="Fail if the workbook SHA-256 does not match this value.",
@@ -199,10 +221,10 @@ def main() -> None:
     parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON.")
     args = parser.parse_args()
 
-    if args.rows < 0 or args.rows > 50:
-        parser.error("--rows must be between 0 and 50")
+    if args.rows < 0 or args.rows > 200:
+        parser.error("--rows must be between 0 and 200")
 
-    report = inspect_workbook(args.path, args.rows)
+    report = inspect_workbook(args.path, args.rows, args.sheet)
     if args.expected_sha256:
         expected = args.expected_sha256.upper()
         if report["sha256"] != expected:
