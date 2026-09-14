@@ -17,6 +17,7 @@ All public-facing application text, documentation and labels must be in English.
 - Record source URL, dataset/version, retrieval date, terms/licence, attribution requirements, transformation and redistribution decision in `data/source-registry.json`.
 - Keep raw third-party downloads outside Git unless redistribution has been explicitly approved.
 - Do not remove source attribution from derived outputs where attribution is required.
+- Follow `docs/standards-and-assurance.md` for provenance, data-quality, security, privacy and accessibility controls.
 
 ## Claims
 
@@ -24,6 +25,15 @@ All public-facing application text, documentation and labels must be in English.
 - Do not convert screening indicators into unsupported claims about supplier reliability, disruption probability, compliance or company performance.
 - Do not infer buyer-supplier relationships from country-level trade data or site proximity.
 - Surface data dates and material limitations where they affect interpretation.
+- Do not claim ISO/IEC certification, formal conformity, audit or third-party endorsement unless independently established and explicitly authorised.
+
+## Provenance and quality
+
+- Preserve the chain from source/version through retrieval and transformation to published output.
+- Record cryptographic hashes of original downloaded packages where practical before processing.
+- Keep original, working and derived data physically or logically separate.
+- Use unambiguous machine-readable dates and documented geographic identifiers.
+- Treat joins, fuzzy matches, spatial assignments and aggregations as derived operations that require validation and visible uncertainty where material.
 
 ## Engineering rules
 
@@ -35,6 +45,18 @@ All public-facing application text, documentation and labels must be in English.
 - Add tests for transformations and calculations before relying on them in the UI.
 - Keep pull requests focused and explain data or licence implications in the PR description.
 - Do not enable deployment until the release checklist is satisfied.
+
+## Privacy and security
+
+- Default to data minimisation: no user accounts, uploads, analytics, advertising pixels or runtime AI processing unless a feature clearly requires them and receives a new review.
+- Do not introduce external fonts, embeds, map tiles or other runtime services without reviewing licence, privacy and operational implications.
+- Use source-integrity checks such as pinned versions, hashes or upstream identities where practical.
+
+## Accessibility
+
+WCAG 2.2 Level AA is the project target for the public interface. This is not a formal certification claim.
+
+Interactive controls should be keyboard operable, have visible focus and meaningful accessible names, avoid colour-only meaning and provide a textual or tabular equivalent for material map-only information where practical.
 
 ## Visual assets
 
