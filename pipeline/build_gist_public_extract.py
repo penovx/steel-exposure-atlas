@@ -345,6 +345,19 @@ def _plant_object(
     }
 
 
+
+def _production_contains_year_key(
+    plants: list[dict[str, Any]],
+    year: str,
+) -> bool:
+    return any(
+        year in series
+        for plant in plants
+        for series in (plant.get("production") or {}).values()
+        if isinstance(series, dict)
+    )
+
+
 def build_extract(
     plant_records: list[dict[str, Any]],
     capacity_records: list[dict[str, Any]],
@@ -415,7 +428,7 @@ def build_extract(
         for record in sorted(plant_records, key=lambda row: str(row["GEM plant ID"]))
     ]
 
-    if any("2025" in json.dumps(plant.get("production"), sort_keys=True) for plant in plants):
+    if _production_contains_year_key(plants, "2025"):
         raise ValueError("2025 production leaked into the v1.0 public extract.")
 
     exact_coordinates = sum(1 for plant in plants if plant["coordinate_accuracy"] == "exact")
