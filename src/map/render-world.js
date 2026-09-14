@@ -59,6 +59,55 @@ export function renderCountries(group, featureCollection) {
   return group.childElementCount;
 }
 
+export function renderPlants(group, plants, { onSelect } = {}) {
+  if (!Array.isArray(plants)) {
+    throw new Error('Plant data must contain a plants array.');
+  }
+
+  const fragment = document.createDocumentFragment();
+
+  for (const plant of plants) {
+    const latitude = Number(plant?.latitude);
+    const longitude = Number(plant?.longitude);
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+      throw new Error(`Plant ${plant?.plant_id ?? '(unknown)'} has invalid coordinates.`);
+    }
+
+    const [x, y] = project([longitude, latitude]);
+    const point = document.createElementNS(SVG_NS, 'circle');
+    const approximate = plant.coordinate_accuracy === 'approximate';
+
+    point.setAttribute('cx', x.toFixed(2));
+    point.setAttribute('cy', y.toFixed(2));
+    point.setAttribute('r', approximate ? '2.6' : '2.3');
+    point.setAttribute('class', `plant-point${approximate ? ' is-approximate' : ''}`);
+    point.setAttribute('tabindex', '0');
+    point.setAttribute('role', 'button');
+    point.setAttribute('aria-label', plant.plant_name || plant.plant_id || 'Steel plant');
+    point.dataset.plantId = plant.plant_id ?? '';
+
+    const title = document.createElementNS(SVG_NS, 'title');
+    const location = [plant.municipality, plant.country_area].filter(Boolean).join(', ');
+    title.textContent = [plant.plant_name, location, plant.owner_name].filter(Boolean).join(' · ');
+    point.append(title);
+
+    if (typeof onSelect === 'function') {
+      point.addEventListener('click', () => onSelect(plant));
+      point.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onSelect(plant);
+        }
+      });
+    }
+
+    fragment.append(point);
+  }
+
+  group.replaceChildren(fragment);
+  return group.childElementCount;
+}
+
 function geometryToPath(geometry) {
   if (geometry.type === 'Polygon') return polygonToPath(geometry.coordinates);
   if (geometry.type === 'MultiPolygon') return geometry.coordinates.map(polygonToPath).join(' ');
@@ -75,7 +124,7 @@ function polygonToPath(rings) {
   }).join(' ');
 }
 
-function project([longitude, latitude]) {
+export function project([longitude, latitude]) {
   const x = ((Number(longitude) + 180) / 360) * WIDTH;
   const usableHeight = MAP_BOTTOM - MAP_TOP;
   const y = MAP_TOP + ((90 - Number(latitude)) / 180) * usableHeight;
