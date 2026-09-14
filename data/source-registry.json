@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "policy": {
+    "paid_sources_require_explicit_approval": true,
+    "publication_requires_dataset_specific_review": true,
+    "public_data_directory": "public/data/"
+  },
+  "sources": [
+    {
+      "id": "global-energy-monitor-steel",
+      "publisher": "Global Energy Monitor",
+      "dataset": "Global Iron and Steel Tracker",
+      "status": "candidate",
+      "publication_status": "not_approved",
+      "cost_status": "to_verify",
+      "source_url": "https://globalenergymonitor.org/projects/global-iron-steel-tracker/",
+      "terms_url": null,
+      "dataset_version": null,
+      "retrieved_at": null,
+      "intended_use": "steel plant locations, ownership, capacity and production technology",
+      "review_notes": "Dataset-specific download terms and redistribution conditions must be checked before use."
+    },
+    {
+      "id": "eurostat-comext",
+      "publisher": "Eurostat",
+      "dataset": "Comext international trade in goods",
+      "status": "candidate",
+      "publication_status": "not_approved",
+      "cost_status": "to_verify",
+      "source_url": "https://ec.europa.eu/eurostat/web/international-trade-in-goods/data/database",
+      "terms_url": null,
+      "dataset_version": null,
+      "retrieved_at": null,
+      "intended_use": "aggregated EU steel trade by product, partner and period",
+      "review_notes": "Check dataset-specific reuse exceptions and attribution before selecting any extract."
+    },
+    {
+      "id": "wri-aqueduct",
+      "publisher": "World Resources Institute",
+      "dataset": "Aqueduct Global Maps",
+      "status": "candidate",
+      "publication_status": "not_approved",
+      "cost_status": "to_verify",
+      "source_url": "https://www.wri.org/aqueduct",
+      "terms_url": null,
+      "dataset_version": null,
+      "retrieved_at": null,
+      "intended_use": "baseline water-stress screening around steel production sites",
+      "review_notes": "Confirm exact dataset release, licence, attribution and any sharing/registration requirement before publication."
+    },
+    {
+      "id": "natural-earth",
+      "publisher": "Natural Earth",
+      "dataset": "Natural Earth vector map data",
+      "status": "candidate",
+      "publication_status": "not_approved",
+      "cost_status": "to_verify",
+      "source_url": "https://www.naturalearthdata.com/",
+      "terms_url": null,
+      "dataset_version": null,
+      "retrieved_at": null,
+      "intended_use": "self-hosted geographic basemap boundaries where needed",
+      "review_notes": "Confirm exact files and terms before bundling."
+    }
+  ]
+}
