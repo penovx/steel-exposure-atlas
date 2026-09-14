@@ -1,0 +1,45 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node / frontend
+node_modules/
+dist/
+.vite/
+coverage/
+
+# Local data and downloads
+# Publication-ready, reviewed files belong under public/data/ only.
+data/raw/
+data/interim/
+data/downloads/
+data/private/
+*.parquet
+*.geoparquet
+*.duckdb
+*.sqlite
+
+# Keep repository-managed metadata
+!data/source-registry.json
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Logs and temporary files
+*.log
+.tmp/
+tmp/
