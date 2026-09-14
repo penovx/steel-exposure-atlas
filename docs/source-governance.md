@@ -2,6 +2,8 @@
 
 Every external dataset must pass the same review before it can become part of a published build.
 
+The public atlas is reviewed as **commercial-capable use** because it may be shared as a professional portfolio project. If a licence is safe only for clearly non-commercial use, that is not sufficient for publication here.
+
 ## States
 
 1. `candidate` — potentially useful; no publication decision made.
@@ -33,6 +35,14 @@ For each candidate source, record:
 
 A file may enter `public/data/` only when its source record is `approved_for_publication` and the required attribution can be satisfied by the application and repository documentation.
 
+Unresolved licence scope, third-party rights, registration obligations, paid access, usage-based billing or unclear redistribution rights block publication by default. A general statement that a publisher supports open data is not enough when the selected dataset has more specific terms.
+
+Attribution shown in the application must be generated from or checked against the approved source record. Do not improvise shortened credits that drop required licence, modification or source information.
+
+## Cost rule
+
+No paid dataset, subscription, metered API, trial that can convert to a paid service, or usage-based map service may be introduced without explicit owner approval. Prefer downloadable, self-hosted inputs where this is compatible with the source terms and practical for the site.
+
 ## Interpretation rule
 
 The project must not state more than the source supports. In particular:
@@ -40,6 +50,7 @@ The project must not state more than the source supports. In particular:
 - country trade statistics do not identify a buyer-supplier relationship or physical route;
 - site proximity does not establish sourcing or dependency;
 - screening indicators such as water stress do not establish an outage probability;
-- ownership records do not by themselves establish operational control at the date of every observation.
+- ownership records do not by themselves establish operational control at the date of every observation;
+- an identified production site is not automatically a commercially or technically qualified sourcing alternative.
 
 When uncertainty materially changes interpretation, show it in the UI or methodology rather than hiding it in implementation notes.
