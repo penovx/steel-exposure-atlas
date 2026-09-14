@@ -5,7 +5,12 @@ import unittest
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
 
-from pipeline.inspect_xlsx import inspect_workbook, sha256_file
+from pipeline.inspect_xlsx import (
+    inspect_workbook,
+    read_sheet_records,
+    read_sheet_rows,
+    sha256_file,
+)
 
 
 CONTENT_TYPES = """<?xml version='1.0' encoding='UTF-8'?>
@@ -43,7 +48,7 @@ SHEET_DATA = """<?xml version='1.0' encoding='UTF-8'?>
   <dimension ref='A1:B3'/>
   <sheetData>
     <row r='1'><c r='A1' t='s'><v>0</v></c><c r='B1' t='inlineStr'><is><t>Capacity</t></is></c></row>
-    <row r='2'><c r='A2' t='s'><v>1</v></c><c r='B2'><v>123.5</v></c></row>
+    <row r='2'><c r='A2' t='s' s='4'><v>1</v></c><c r='B2' s='2'><v>123.5</v></c></row>
     <row r='3'></row>
   </sheetData>
 </worksheet>
@@ -104,6 +109,30 @@ class InspectXlsxTests(unittest.TestCase):
             make_workbook(path)
             with self.assertRaisesRegex(ValueError, 'Available sheets'):
                 inspect_workbook(path, sheet_name='Missing')
+
+    def test_read_sheet_rows_preserves_values_and_styles(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'sample.xlsx'
+            make_workbook(path)
+            rows = read_sheet_rows(path, 'Data')
+
+        self.assertEqual(rows[0]['values']['A'], 'Name')
+        self.assertEqual(rows[1]['values']['A'], 'Plant A')
+        self.assertEqual(rows[1]['values']['B'], 123.5)
+        self.assertEqual(rows[1]['styles']['A'], 4)
+        self.assertEqual(rows[1]['styles']['B'], 2)
+
+    def test_read_sheet_records_uses_headers_and_source_row(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'sample.xlsx'
+            make_workbook(path)
+            records = read_sheet_records(path, 'Data')
+
+        self.assertEqual(len(records), 1)
+        self.assertEqual(records[0]['__row__'], 2)
+        self.assertEqual(records[0]['Name'], 'Plant A')
+        self.assertEqual(records[0]['Capacity'], 123.5)
+        self.assertEqual(records[0]['__styles__']['Capacity'], 2)
 
     def test_sha256_is_stable_for_same_file(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
