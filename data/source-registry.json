@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "policy": {
     "paid_sources_require_explicit_approval": true,
     "publication_requires_dataset_specific_review": true,
@@ -12,21 +12,53 @@
       "id": "global-energy-monitor-steel",
       "publisher": "Global Energy Monitor",
       "dataset": "Global Iron and Steel Tracker",
-      "status": "reviewed",
-      "publication_status": "not_approved",
+      "status": "approved_for_publication",
+      "publication_status": "approved_for_publication",
       "cost_status": "free",
       "source_url": "https://globalenergymonitor.org/projects/global-iron-steel-tracker/",
       "terms_url": "https://globalenergymonitor.org/creative-commons-license",
       "dataset_version": "June 2026 (V1) limited quarterly update",
       "reviewed_at": "2026-09-14",
-      "retrieved_at": null,
-      "intended_use": "steel plant locations, ownership, capacity and production technology",
-      "licence": "CC BY 4.0 is the publisher's stated default for GEM tracker data unless otherwise noted",
-      "commercial_reuse": "permitted where CC BY 4.0 applies",
-      "redistribution": "potentially permitted where CC BY 4.0 applies; exact downloaded package and attribution elements must be checked before bundling",
-      "access_conditions": "publisher download workflow may require form submission; no paid access identified",
-      "attribution": "Use the attribution elements supplied with the downloaded data package. Publisher currently recommends: Global Iron and Steel Tracker, Global Energy Monitor, June 2026 (V1) release.",
-      "review_notes": "Useful and likely compatible with the project, but public redistribution remains blocked until the exact download package is obtained and checked for package-level attribution or third-party exceptions. Do not treat linked GEM.wiki content, images or underlying third-party references as automatically covered by the tracker data licence."
+      "retrieved_at": "2026-09-14",
+      "intended_use": "derived public subset for steel plant locations, ownership context, capacity, operating status, production technology and selected production history",
+      "licence": "CC BY 4.0",
+      "commercial_reuse": "permitted under CC BY 4.0 with attribution",
+      "redistribution": "approved for a derived subset from the reviewed June 2026 (V1) workbook; the original workbook and full source package remain outside the repository",
+      "access_conditions": "free download through the publisher workflow; no paid access identified",
+      "attribution": "Global Energy Monitor, Global Iron and Steel Tracker, June 2026 (V1) release. Distributed under a Creative Commons Attribution 4.0 International License. Changes and derived calculations by the Steel Exposure Atlas project must be identified as such.",
+      "source_artifacts": [
+        {
+          "file": "gem-download.zip",
+          "sha256": "81F3D43B44949F5783E87FAB1651671EAEC18E96A9FD0D8FA707D6508AB0F5BB",
+          "repository_policy": "do_not_commit"
+        },
+        {
+          "file": "Plant-level_data_Global_Iron_and_Steel_Tracker_June_2026_V1.xlsx",
+          "sha256": "A5768B59CD7E6CEC217692AE45EDA80EA70AAB1666AEF74332CC1B41DD5338EB",
+          "repository_policy": "do_not_commit"
+        },
+        {
+          "file": "Steel_unit_data_Global_Iron_and_Steel_Tracker_June_2026_V1.xlsx",
+          "sha256": "D5355ACD307930C0104D21DC9C6E6D62451856E044CE1AA3C576D9CB14B4D425",
+          "repository_policy": "do_not_commit"
+        },
+        {
+          "file": "Iron_unit_data_Global_Iron_and_Steel_Tracker_June_2026_V1.xlsx",
+          "sha256": "A770DDDB8DDC6475ECCB32D9B54981F5F81A53253B097ADB8715C193E9F73F6A",
+          "repository_policy": "do_not_commit"
+        },
+        {
+          "file": "Global-Energy-Ownership-Tracker-August-2026-V2.xlsx",
+          "sha256": "C17C148B23CE054621C295274CD66B659E61D68DBC1EAD5A76CD22455D954FFF",
+          "repository_policy": "separate_review_required"
+        },
+        {
+          "file": "Production-Consumption-of-Met-Coal-Iron-Ore-by-Steel-Industry-December-2025-Standard-Copy-V1.xlsx",
+          "sha256": "399B9CE88985B3BCC6642AD32950E345387C9C5E78C7597D9D63155FDE613F2F",
+          "repository_policy": "separate_review_required"
+        }
+      ],
+      "review_notes": "The exact downloaded plant-level workbook was fingerprinted and inspected read-only. Its About sheet states that the June 2026 (V1) GIST release is distributed under CC BY 4.0 and provides the recommended citation. Approval is limited to a documented derived subset. Linked GEM.wiki text, images and underlying third-party references are not treated as covered merely because they are linked from GIST. The ownership tracker and coal/ore workbook bundled in the same download require separate source reviews before use."
     },
     {
       "id": "eurostat-comext",
