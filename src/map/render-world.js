@@ -71,10 +71,11 @@ export function renderPlants(group, plants, { onSelect, onHover, onLeave } = {})
     const [x, y] = project([longitude, latitude]);
     const point = document.createElementNS(SVG_NS, 'circle');
     const approximate = plant.coordinate_accuracy === 'approximate';
+    const baseRadius = approximate ? 3.2 : 2.8;
 
     point.setAttribute('cx', x.toFixed(2));
     point.setAttribute('cy', y.toFixed(2));
-    point.setAttribute('r', approximate ? '3.2' : '2.8');
+    point.setAttribute('r', String(baseRadius));
     point.setAttribute('class', `plant-point${approximate ? ' is-approximate' : ''}`);
     point.setAttribute('tabindex', '0');
     point.setAttribute('role', 'button');
@@ -84,6 +85,7 @@ export function renderPlants(group, plants, { onSelect, onHover, onLeave } = {})
     point.dataset.country = plant.country_area ?? '';
     point.dataset.ownerId = plant.owner_gem_entity_id ?? '';
     point.dataset.parentLabel = plant.parent_display ?? '';
+    point.dataset.baseRadius = String(baseRadius);
 
     if (typeof onSelect === 'function') {
       const selectPoint = () => {
