@@ -4,6 +4,10 @@ Every external dataset must pass the same review before it can become part of a 
 
 The public atlas is reviewed as **commercial-capable use** because it may be shared as a professional portfolio project. If a licence is safe only for clearly non-commercial use, that is not sufficient for publication here.
 
+## Scope
+
+This document governs **data sources**. Software libraries and build tools are reviewed separately. A software licence does not grant rights to the data accessed through that software, and an open dataset does not justify introducing an unnecessary dependency.
+
 ## States
 
 1. `candidate` — potentially useful; no publication decision made.
@@ -51,6 +55,7 @@ The project must not state more than the source supports. In particular:
 - site proximity does not establish sourcing or dependency;
 - screening indicators such as water stress do not establish an outage probability;
 - ownership records do not by themselves establish operational control at the date of every observation;
+- absence of a relationship record does not establish absence of a parent or ownership relationship;
 - an identified production site is not automatically a commercially or technically qualified sourcing alternative.
 
 When uncertainty materially changes interpretation, show it in the UI or methodology rather than hiding it in implementation notes.
