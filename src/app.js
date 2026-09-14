@@ -94,7 +94,11 @@ function setMode(mode) {
   }
 
   const productionActive = mode === 'production';
-  plantLayer.hidden = !productionActive;
+  if (productionActive) {
+    plantLayer.removeAttribute('hidden');
+  } else {
+    plantLayer.setAttribute('hidden', '');
+  }
 
   if (productionActive) {
     mapKicker.textContent = 'STEEL PRODUCTION SITES';
