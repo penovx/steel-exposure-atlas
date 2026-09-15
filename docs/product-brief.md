@@ -44,6 +44,8 @@ The visual model must not turn associations into stronger claims:
 - environmental indicators describe reported facility context, not an ESG score or disruption probability;
 - country-level trade statistics do not identify a physical buyer-supplier route.
 
+Sanctions are shown as categorical evidence states only: `Direct list match`, `Review required` or `No direct list match in this snapshot`. The product does not define a sanctions percentage, probability or risk score. A confirmed identity resolution may be shown separately from the sanctions state so that identity confidence is not confused with sanctions severity.
+
 ## Visual direction
 
 - premium editorial/intelligence presentation, not a generic dashboard;
