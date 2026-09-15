@@ -32,8 +32,8 @@ class ConnectionVisualContractTests(unittest.TestCase):
         self.assertIn("{x:b.left-stage.left+b.width/2,y:b.top-stage.top-15}", core)
 
         self.assertIn("left:calc(100%+4px)", css)
-        self.assertIn(".method-node::before{width:7px;height:7px;left:-5px;top:13px", css)
-        self.assertIn(".product-port{width:7px;height:7px;left:50%;top:-15px", css)
+        self.assertIn(".method-node::before{width:9px;height:9px;left:-5px;top:13px", css)
+        self.assertIn(".product-port{width:9px;height:9px;left:50%;top:-15px", css)
         self.assertIn("transform:translate(-50%,-50%)", css)
 
     def test_disconnected_product_does_not_show_zero_as_a_data_value(self) -> None:
