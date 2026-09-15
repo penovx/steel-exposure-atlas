@@ -2,6 +2,7 @@ const GIST_URL = new URL('../public/data/gist-plants.v1.json', import.meta.url);
 const BASEMAP_URL = new URL('../public/data/ne_110m_admin_0_countries.v5.1.1.geojson', import.meta.url);
 const EXPECTED_SCHEMA = 'steel-exposure-atlas/gist-plant-v1.0';
 const EXPECTED_PLANTS = 1293;
+const EXPECTED_GIST_SHA256 = '6D9C2CBAC1DBC25068AF5DD69736FF7E44D6074E220BDB5880054487F28A3EC3';
 const REGIONS = ['World','Europe','North America','Central & South America','Asia Pacific','Africa','Middle East','Eurasia'];
 const REGION_BOUNDS = {
   World: [-180,-60,180,85],
@@ -96,17 +97,27 @@ async function fetchJson(url,label){
   if(!response.ok)throw new Error(`${label} is unavailable (${response.status}).`);
   return response.json();
 }
+async function fetchPinnedGist(){
+  const response=await fetch(GIST_URL,{credentials:'same-origin',cache:'no-store'});
+  if(!response.ok)throw new Error(`Reviewed GIST extract is unavailable (${response.status}).`);
+  const bytes=await response.arrayBuffer();
+  const digest=await crypto.subtle.digest('SHA-256',bytes);
+  const hash=[...new Uint8Array(digest)].map(v=>v.toString(16).padStart(2,'0')).join('').toUpperCase();
+  if(hash!==EXPECTED_GIST_SHA256)throw new Error('Reviewed GIST extract failed the pinned SHA-256 check.');
+  return {raw:JSON.parse(new TextDecoder().decode(bytes)),hash};
+}
+
 async function boot(){
   const status=document.querySelector('#startup-status');
   try{
-    const [raw,basemap]=await Promise.all([fetchJson(GIST_URL,'Reviewed GIST extract'),fetchJson(BASEMAP_URL,'Reviewed Natural Earth basemap')]);
+    const [{raw,hash},basemap]=await Promise.all([fetchPinnedGist(),fetchJson(BASEMAP_URL,'Reviewed Natural Earth basemap')]);
     if(raw?.meta?.schema!==EXPECTED_SCHEMA)throw new Error(`Unexpected GIST schema: ${raw?.meta?.schema ?? 'missing'}`);
     if(!Array.isArray(raw.plants)||raw.plants.length!==EXPECTED_PLANTS)throw new Error('Unexpected plant count in reviewed GIST extract.');
     if(basemap?.type!=='FeatureCollection'||!Array.isArray(basemap.features))throw new Error('Natural Earth basemap is not a GeoJSON FeatureCollection.');
     const plants=raw.plants.map(transformPlant);
     const ids=new Set(plants.map(p=>p.id)); if(ids.size!==EXPECTED_PLANTS)throw new Error('Duplicate plant IDs in runtime extract.');
     const maps={}; for(const region of REGIONS){const scoped=region==='World'?plants:plants.filter(p=>p.region===region); maps[region]=buildMap(region,scoped,basemap);}
-    window.__ATLAS_DATA__={schema:'steel-exposure-atlas/relational-entry-v2',source:raw.meta,plants,maps};
+    window.__ATLAS_DATA__={schema:'steel-exposure-atlas/relational-entry-v2',source:raw.meta,json_sha256:hash,plants,maps};
     if(status)status.hidden=true;
     await import('./connections-core.js');
   }catch(error){
