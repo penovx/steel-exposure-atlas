@@ -66,8 +66,8 @@ class UiIntegrationContractTests(unittest.TestCase):
     def test_product_counts_are_described_not_bare_numbers(self) -> None:
         bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(encoding="utf-8")
         self.assertIn("decorateProductLabels", bridge)
-        self.assertIn("${value} connected", bridge)
-        self.assertIn("${value} sites", bridge)
+        self.assertIn("${value} connected sites", bridge)
+        self.assertIn("${value} listed sites", bridge)
 
     def test_steelmaking_values_expose_mtpa_unit(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
