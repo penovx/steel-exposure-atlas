@@ -65,9 +65,14 @@ class UiIntegrationContractTests(unittest.TestCase):
 
     def test_product_counts_are_described_not_bare_numbers(self) -> None:
         bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(encoding="utf-8")
+        polish = (ROOT / "src" / "connections-visual-polish.css").read_text(
+            encoding="utf-8"
+        ).replace(" ", "")
         self.assertIn("decorateProductLabels", bridge)
-        self.assertIn("${value} connected sites", bridge)
-        self.assertIn("${value} listed sites", bridge)
+        self.assertIn("has-relational-focus", bridge)
+        self.assertIn("aria-label", bridge)
+        self.assertIn(".product-node>span::after{content:'listedsites'}", polish)
+        self.assertIn(".connections-stage.has-relational-focus.product-node>span::after{content:'connectedsites'}", polish)
 
     def test_steelmaking_values_expose_mtpa_unit(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
