@@ -1,6 +1,4 @@
 .brand svg path{fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round}.brand svg circle{fill:var(--paper);stroke:var(--ink)}
 .company-node::after{width:7px;height:7px;left:calc(100% + 4px);right:auto;top:50%;transform:translate(-50%,-50%)}
-.method-node::before{width:7px;height:7px;left:-5px;top:13px;transform:translate(-50%,-50%)}
-.product-port{width:7px;height:7px;left:50%;top:-15px;transform:translate(-50%,-50%)}
-.product-node::after{top:-12px;height:12px}
-.product-node.dim>span{visibility:hidden}
+.method-rail,.method-nodes,.method-node{overflow:visible}.method-node::before{width:9px;height:9px;left:-5px;top:13px;transform:translate(-50%,-50%);z-index:7;pointer-events:none;box-shadow:0 0 0 2px var(--night)}
+.products-area{z-index:auto!important}.product-heading{position:relative;z-index:4;background:var(--night)}.product-nodes{padding-top:20px;padding-bottom:10px}.product-node{z-index:4;background:var(--night);overflow:visible}.product-port{width:9px;height:9px;left:50%;top:-15px;transform:translate(-50%,-50%);z-index:7;pointer-events:none;box-shadow:0 0 0 2px var(--night)}.product-node::after{display:none}.product-node.dim>span{visibility:hidden}
