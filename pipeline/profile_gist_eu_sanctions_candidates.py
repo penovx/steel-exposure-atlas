@@ -5,7 +5,10 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from pipeline.sanctions_match import normalize_name, relaxed_legal_form_name
+try:
+    from pipeline.sanctions_match import normalize_name, relaxed_legal_form_name
+except ModuleNotFoundError:
+    from sanctions_match import normalize_name, relaxed_legal_form_name  # type: ignore[no-redef]
 
 DEFAULT_GIST = Path("public/data/gist-plants.v1.json")
 DEFAULT_SANCTIONS = Path(
