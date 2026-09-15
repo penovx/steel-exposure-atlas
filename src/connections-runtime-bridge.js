@@ -2,6 +2,8 @@
 // It keeps the stable interaction core unchanged while supplying UI semantics that
 // are easier to read in the connected view.
 
+const EDGE_MASK_NS = 'http://www.w3.org/2000/svg';
+
 function reviewState() {
   try {
     return globalThis.__atlasReview?.snapshot?.().state ?? null;
@@ -54,7 +56,7 @@ function decorateProductLabels() {
       count.dataset.countValue = count.textContent.trim();
     }
     const value = count.dataset.countValue;
-    count.textContent = focused ? `${value} connected` : `${value} sites`;
+    count.textContent = focused ? `${value} connected sites` : `${value} listed sites`;
   }
 }
 
@@ -62,9 +64,134 @@ function installProductLabelObserver() {
   const productNodes = document.querySelector('#product-nodes');
   if (!productNodes || productNodes.dataset.labelObserver === 'true') return;
   productNodes.dataset.labelObserver = 'true';
-  const observer = new MutationObserver(decorateProductLabels);
+  const observer = new MutationObserver(() => {
+    decorateProductLabels();
+    queueEdgeReadabilityMask();
+  });
   observer.observe(productNodes, {childList: true});
   decorateProductLabels();
+}
+
+let edgeMaskQueued = 0;
+
+function svgNode(name, attrs = {}) {
+  const node = document.createElementNS(EDGE_MASK_NS, name);
+  for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value));
+  return node;
+}
+
+function ensureEdgeReadabilityMask() {
+  const svg = document.querySelector('#connection-lines');
+  const edges = document.querySelector('#edge-layer');
+  if (!svg || !edges) return null;
+
+  let defs = svg.querySelector(':scope > defs[data-edge-readability]');
+  if (!defs) {
+    defs = svgNode('defs', {'data-edge-readability': 'true'});
+    const mask = svgNode('mask', {
+      id: 'edge-readability-mask',
+      maskUnits: 'userSpaceOnUse',
+      x: '0',
+      y: '0',
+    });
+    mask.style.maskType = 'luminance';
+    mask.append(svgNode('rect', {
+      'data-mask-base': 'true',
+      x: '0',
+      y: '0',
+      fill: '#ffffff',
+    }));
+    mask.append(svgNode('g', {'data-mask-fade-zones': 'true'}));
+    defs.append(mask);
+    svg.prepend(defs);
+  }
+
+  edges.setAttribute('mask', 'url(#edge-readability-mask)');
+  return defs.querySelector('#edge-readability-mask');
+}
+
+function updateEdgeReadabilityMask() {
+  const stage = document.querySelector('#connections-stage');
+  const mask = ensureEdgeReadabilityMask();
+  if (!stage || !mask) return;
+
+  const stageRect = stage.getBoundingClientRect();
+  if (!stageRect.width || !stageRect.height) return;
+
+  mask.setAttribute('width', String(stageRect.width));
+  mask.setAttribute('height', String(stageRect.height));
+
+  const base = mask.querySelector('[data-mask-base]');
+  base?.setAttribute('width', String(stageRect.width));
+  base?.setAttribute('height', String(stageRect.height));
+
+  const fadeZones = mask.querySelector('[data-mask-fade-zones]');
+  if (!fadeZones) return;
+  fadeZones.replaceChildren();
+
+  const protectedSelectors = [
+    '.country-label',
+    '.plant-name',
+    '.cluster-text',
+    '.map-toolset',
+    '.map-key',
+    '.rail-heading',
+    '.rail-subtitle',
+    '.company-name',
+    '.company-count',
+    '.company-sub',
+    '.method-name',
+    '.method-value',
+    '.method-sub',
+    '.method-note',
+    '.product-heading',
+    '.product-node',
+  ].join(',');
+
+  for (const element of document.querySelectorAll(protectedSelectors)) {
+    const rect = element.getBoundingClientRect();
+    if (!rect.width || !rect.height) continue;
+
+    const left = Math.max(0, rect.left - stageRect.left - 4);
+    const top = Math.max(0, rect.top - stageRect.top - 3);
+    const right = Math.min(stageRect.width, rect.right - stageRect.left + 4);
+    const bottom = Math.min(stageRect.height, rect.bottom - stageRect.top + 3);
+    if (right <= 0 || bottom <= 0 || left >= stageRect.width || top >= stageRect.height) continue;
+
+    // Dark grey in a luminance mask does not remove the relationship line entirely;
+    // it reduces it to roughly 18% of its normal opacity while it crosses readable UI.
+    fadeZones.append(svgNode('rect', {
+      x: left.toFixed(2),
+      y: top.toFixed(2),
+      width: Math.max(0, right - left).toFixed(2),
+      height: Math.max(0, bottom - top).toFixed(2),
+      rx: '3',
+      fill: '#2f2f2f',
+    }));
+  }
+}
+
+function queueEdgeReadabilityMask() {
+  if (edgeMaskQueued) return;
+  edgeMaskQueued = requestAnimationFrame(() => {
+    edgeMaskQueued = 0;
+    updateEdgeReadabilityMask();
+  });
+}
+
+function installEdgeReadabilityObserver() {
+  const stage = document.querySelector('#connections-stage');
+  if (!stage || stage.dataset.edgeMaskObserver === 'true') return;
+  stage.dataset.edgeMaskObserver = 'true';
+
+  const mutationObserver = new MutationObserver(queueEdgeReadabilityMask);
+  mutationObserver.observe(stage, {childList: true, subtree: true, attributes: true});
+
+  const resizeObserver = new ResizeObserver(queueEdgeReadabilityMask);
+  resizeObserver.observe(stage);
+
+  window.addEventListener('resize', queueEdgeReadabilityMask, {passive: true});
+  queueEdgeReadabilityMask();
 }
 
 function applyWorldEntry() {
@@ -87,6 +214,8 @@ function applyWorldEntry() {
 
   installProductLabelObserver();
   decorateProductLabels();
+  installEdgeReadabilityObserver();
+  queueEdgeReadabilityMask();
 }
 
 applyWorldEntry();
