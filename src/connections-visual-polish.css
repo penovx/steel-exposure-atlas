@@ -1,0 +1,6 @@
+.brand svg path{fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round}.brand svg circle{fill:var(--paper);stroke:var(--ink)}
+.company-node::after{width:7px;height:7px;left:calc(100% + 4px);right:auto;top:50%;transform:translate(-50%,-50%)}
+.method-node::before{width:7px;height:7px;left:-5px;top:13px;transform:translate(-50%,-50%)}
+.product-port{width:7px;height:7px;left:50%;top:-15px;transform:translate(-50%,-50%)}
+.product-node::after{top:-12px;height:12px}
+.product-node.dim>span{visibility:hidden}
