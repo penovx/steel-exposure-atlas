@@ -14,7 +14,10 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn('id="method-nodes"', index)
         self.assertIn('id="product-nodes"', index)
         self.assertIn('./src/connections.css', index)
+        self.assertIn('./src/connections-sanctions.css', index)
         self.assertIn('./src/connections-runtime-bridge.js', index)
+        self.assertIn('./src/connections-sanctions-loader.js', index)
+        self.assertIn('./src/connections-sanctions-bridge.js', index)
         self.assertIn('./src/connections-bootstrap.js', index)
         self.assertNotIn('type="application/json"', index)
 
@@ -62,6 +65,20 @@ class UiIntegrationContractTests(unittest.TestCase):
         core = (ROOT / "src" / "connections-core.js").read_text(encoding="utf-8")
         self.assertIn("* Mtpa = million tonnes per year.", index)
         self.assertIn("<small> Mtpa*</small>", core)
+
+    def test_eu_sanctions_context_is_categorical_and_snapshot_pinned(self) -> None:
+        loader = (ROOT / "src" / "connections-sanctions-loader.js").read_text(encoding="utf-8")
+        bridge = (ROOT / "src" / "connections-sanctions-bridge.js").read_text(encoding="utf-8")
+
+        self.assertIn("eu-sanctions-owner-status.v1.json", loader)
+        self.assertIn("049CB95CF55CD9A77DFB8D3FED21EB61A541E4C46F80D1F1B581F2E537E0F015", loader)
+        self.assertIn("Direct list match", bridge)
+        self.assertIn("Review required", bridge)
+        self.assertIn("No direct list match in this snapshot", bridge)
+        self.assertIn("Identity resolution: Confirmed", bridge)
+        self.assertIn("not sanctions clearance", bridge)
+        self.assertNotIn("85%", bridge)
+        self.assertNotIn("risk score", bridge.lower())
 
     def test_homepage_does_not_embed_the_full_dataset(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
