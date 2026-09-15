@@ -111,6 +111,20 @@ The machine-readable registry is `config/reviewed-entity-links.v1.json`. Each ac
 
 A `same_legal_entity` decision may promote the corresponding company result to `direct_list_match` for that pinned sanctions snapshot. It must not change the automated matching rule for any other entity.
 
+## Display semantics
+
+The public UI represents sanctions context with categorical evidence states only:
+
+- `Direct list match`
+- `Review required`
+- `No direct list match in this snapshot`
+
+The atlas does **not** define or display a sanctions percentage, probability, severity score, confidence percentage or red/green risk score.
+
+Identity resolution is a separate concept. When a cross-source company identity has been explicitly reviewed, the UI may state `Identity resolution: Confirmed`. That confirmation describes the entity link only; it is not a percentage and does not measure sanctions severity, compliance or risk.
+
+For `no_direct_list_match_in_snapshot`, the UI must state or provide immediate nearby context that the result is not sanctions clearance.
+
 ## Output record
 
 Each company receives one result for the pinned EU sanctions source snapshot:
