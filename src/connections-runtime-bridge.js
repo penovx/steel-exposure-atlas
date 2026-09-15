@@ -10,6 +10,10 @@ function reviewState() {
   }
 }
 
+// The old prototype explorer remains reachable by its direct route for internal
+// reference, but it is not part of the public-facing homepage navigation.
+document.querySelector('a[href="./prototype/evidence.html"]')?.remove();
+
 // connections-core.js reads this global binding when deciding which product edges
 // to draw. No selection keeps the overview sparse. A product selection draws only
 // those selected products. Place/company/method/site selections draw every product
