@@ -1,116 +1,85 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Interactive exploration of public data on steel production, trade and water stress." />
-    <meta name="theme-color" content="#0b1018" />
-    <title>Steel Exposure Atlas</title>
-    <link rel="stylesheet" href="./src/styles.css" />
-  </head>
-  <body>
-    <div class="app-shell">
-      <header class="topbar">
-        <h1>Steel Exposure Atlas</h1>
-        <button class="ghost-button" id="about-button" type="button" aria-controls="about-panel" aria-expanded="false">About this study</button>
-      </header>
-
-      <main class="atlas-layout">
-        <section class="map-stage" id="map-stage" aria-label="Interactive world map">
-          <div class="map-copy">
-            <p class="kicker" id="map-kicker">PUBLIC DATA, CONNECTED</p>
-            <h2 id="map-heading">See the structure before judging the risk.</h2>
-            <p id="map-description">The atlas will connect production sites, trade patterns, water-stress indicators and legal-entity relationships without turning them into a single black-box score.</p>
-          </div>
-
-          <svg id="world-map" class="world-map" viewBox="0 0 1200 650" role="img" aria-label="Interactive world map with steel production sites">
-            <defs>
-              <radialGradient id="ocean-glow" cx="52%" cy="42%" r="70%">
-                <stop offset="0%" stop-color="#17263b" />
-                <stop offset="100%" stop-color="#09111d" />
-              </radialGradient>
-            </defs>
-            <rect width="1200" height="650" fill="url(#ocean-glow)" />
-            <g id="graticule-layer" aria-hidden="true"></g>
-            <g id="country-layer"></g>
-            <g id="plant-layer" class="plant-layer" hidden></g>
-          </svg>
-
-          <div class="map-tools" id="map-tools" aria-label="Map navigation">
-            <button id="zoom-in" type="button" aria-label="Zoom in" title="Zoom in">+</button>
-            <button id="zoom-out" type="button" aria-label="Zoom out" title="Zoom out">−</button>
-            <button id="zoom-reset" class="map-tool-wide" type="button" title="Reset to world view">World</button>
-            <span id="zoom-level" aria-live="polite">1.0×</span>
-          </div>
-
-          <div class="map-hint" id="map-hint">Scroll to zoom · drag to pan · select a plant</div>
-          <div class="map-tooltip" id="map-tooltip" role="status" hidden></div>
-          <div class="map-summary" id="map-summary" hidden></div>
-          <div class="map-status" id="map-status" role="status">Loading approved basemap…</div>
-          <div class="map-credit" id="map-credit">Natural Earth 1:110m · v5.1.1</div>
-        </section>
-
-        <aside class="control-panel" aria-label="Atlas controls">
-          <section>
-            <p class="panel-label">EXPLORE</p>
-            <div class="mode-list" id="mode-list">
-              <button class="mode-button is-active" type="button" data-mode="context"><span>World context</span><small>available</small></button>
-              <button class="mode-button" id="production-mode" type="button" data-mode="production" disabled><span>Production</span><small>local extract required</small></button>
-              <button class="mode-button" type="button" disabled><span>Trade</span><small>extract review</small></button>
-              <button class="mode-button" type="button" disabled><span>Water</span><small>registration step</small></button>
-              <button class="mode-button" type="button" disabled><span>Ownership</span><small>source cleared</small></button>
-            </div>
-          </section>
-
-          <section class="focus-panel" id="focus-panel" hidden>
-            <div class="section-heading">
-              <p class="panel-label">FOCUS</p>
-              <button class="text-button" id="clear-focus" type="button">Clear</button>
-            </div>
-            <label class="select-field">
-              <span>Region</span>
-              <select id="region-select" aria-label="Focus production sites by region">
-                <option value="">All regions</option>
-              </select>
-            </label>
-            <label class="select-field">
-              <span>Country / area</span>
-              <select id="country-select" aria-label="Focus production sites by country or area">
-                <option value="">All countries / areas</option>
-              </select>
-            </label>
-            <div class="focus-stats" id="focus-stats"></div>
-          </section>
-
-          <section class="plant-inspector" id="plant-inspector" aria-live="polite">
-            <p class="panel-label">PLANT DETAIL</p>
-            <p class="plant-placeholder">Load the reviewed GIST extract, switch to Production and select a plant.</p>
-          </section>
-
-          <section class="interpretation-note">
-            <p class="panel-label">READING RULE</p>
-            <p>Exposure is not a disruption probability. Country trade is not a buyer-supplier relationship. Matching parent text is a source-label match, not a resolved corporate hierarchy.</p>
-          </section>
-        </aside>
-      </main>
-    </div>
-
-    <dialog id="about-panel" class="about-panel">
-      <button class="dialog-close" id="about-close" type="button" aria-label="Close">×</button>
-      <p class="eyebrow">ABOUT</p>
-      <h2>A small study in public-data combination.</h2>
-      <p>This project explores what can be made visible by connecting openly available industrial, trade, environmental and legal-entity data. It is a demonstrator, not a supplier-risk product, due-diligence service or operational decision system.</p>
-      <p>Every published layer is reviewed for reuse rights, cost, provenance and interpretation before it is shipped with the site.</p>
-      <div class="source-readiness-inline">
-        <span>Basemap <strong>ready</strong></span>
-        <span>Steel plants <strong>validated</strong></span>
-        <span>Trade <strong>review</strong></span>
-        <span>Water <strong>review</strong></span>
-        <span>Entity relations <strong>source cleared</strong></span>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'">
+  <meta name="description" content="Explore reviewed public data on steel capacity, technology and production sites.">
+  <meta name="theme-color" content="#0b1018">
+  <title>Steel Exposure Atlas</title>
+  <link rel="stylesheet" href="./prototype/evidence.css">
+  <link rel="stylesheet" href="./prototype/site-explorer.css">
+  <script type="module" src="./prototype/evidence.mjs"></script>
+</head>
+<body>
+  <a class="skip" href="#evidence-main">Skip to investigation</a>
+  <header class="site-header">
+    <a class="brand" href="./">Steel Exposure Atlas</a>
+    <nav class="view-navigation" aria-label="Atlas navigation">
+      <a class="is-current" href="./" aria-current="page">Capacity investigation</a>
+    </nav>
+    <div class="header-meta"><span class="fact-badge">Reviewed public data</span><a href="#provenance">Sources &amp; boundaries ↗</a></div>
+  </header>
+  <main id="evidence-main">
+    <p id="load-status" class="load-status" role="status">Checking the reviewed local GIST extract…</p>
+    <section id="workspace" hidden>
+      <div class="scope-bar">
+        <div class="scope-title"><p class="eyebrow">Operating crude steel · June 2026</p><h1 id="overview-question">Sites and technologies shaping steel capacity</h1></div>
+        <div class="scope-controls">
+          <button id="back" class="icon-button" disabled aria-label="Back to previous view" title="Back to previous view">←</button>
+          <label>GEM region<select id="region"></select></label>
+          <label>Country / area<select id="country"></select></label>
+          <button id="toggle-ranking" class="quiet-button" aria-pressed="false">Site list</button>
+          <button id="reset-investigation" class="quiet-button">Reset investigation</button>
+        </div>
       </div>
-      <p class="source-attribution"><strong>Steel plant source:</strong> Global Energy Monitor, Global Iron and Steel Tracker, June 2026 (V1) release, distributed under CC BY 4.0. The atlas uses a transformed subset and identifies its own derived calculations separately. Global Energy Monitor does not endorse this project.</p>
-    </dialog>
-
-    <script type="module" src="./src/app.js"></script>
-  </body>
+      <div class="evidence-layout">
+        <section class="map-column" aria-label="Geographic evidence">
+          <div class="map-shell">
+            <div class="map-toolbar">
+              <label class="layer-control"><input type="checkbox" id="plants-layer" checked><span>Tracked sites</span></label>
+              <span id="map-level"></span><button id="show-comparison" class="layer-control" hidden>Compare 2 sites</button>
+              <label class="quick-search"><span class="sr-only">Find a site</span><input type="search" id="quick-search" placeholder="Find a site…"></label>
+              <div class="zoom-controls"><button id="zoom-out" aria-label="Zoom out">−</button><button id="zoom-in" aria-label="Zoom in">+</button><button id="reset-camera">Fit scope</button></div>
+            </div>
+            <svg id="evidence-map" viewBox="0 150 1200 490" role="group" tabindex="0" aria-label="Tracked plant map. Use plus and minus to zoom, arrow keys to pan, or open the site list."><title>Tracked plants in the analytical scope</title><g id="countries"></g><g id="site-leaders" aria-hidden="true"></g><g id="map-points"></g></svg>
+            <p class="map-preview" id="map-preview" aria-live="polite">Select a site to inspect its source record.</p>
+          <div class="capacity-panel">
+            <div class="capacity-heading"><h2 id="capacity-heading"></h2><span>Crude steel · Mtpa = million tonnes per year</span></div>
+            <div id="capacity-bars"></div>
+            <p id="capacity-story" class="capacity-story"></p>
+            <div class="routes-heading"><strong>Operating steelmaking routes</strong><span>Breakdown of capacity · not additional capacity</span></div>
+            <div id="routes-overview"></div>
+            <details class="coverage-detail"><summary>Source coverage &amp; missing values</summary><div id="coverage-detail"></div></details>
+          </div>
+            <section id="site-explorer" hidden aria-label="Selected site exploration"></section>
+            <section id="map-comparison" hidden aria-label="Pinned site comparison"></section>
+          </div>
+          <div class="map-context"><strong id="active-map-context"></strong><div class="map-context-controls"><label>Map colour<select id="map-perspective"><option value="capacity">Capacity</option><option value="routes">Steelmaking routes</option></select></label><label>Highlight route<select id="route-filter"><option value="">All routes</option><option value="bof_steel_capacity_ttpa">Basic oxygen furnace</option><option value="eaf_steel_capacity_ttpa">Electric arc furnace</option><option value="if_steel_capacity_ttpa">Induction furnace</option><option value="other_steel_capacity_ttpa">Other steelmaking</option></select></label></div><p id="route-legend" hidden><span class="route-key bof">BOF</span><span class="route-key eaf">EAF</span><span class="route-key if">IF</span><span class="route-key other">Other</span><span class="route-key mixed">Multiple routes</span><span class="route-key unknown">Not established</span></p></div>
+          <div class="map-footer"><span>Circle area = known operating capacity · Mtpa</span><span>◇ Not quantified · × Reported zero · Dashed ring: approximate</span></div>
+        </section>
+        <aside class="records-panel" aria-label="Plant list and source detail">
+          <div class="records-top">
+            <div class="records-header"><div><p class="eyebrow">Ranked by operating capacity</p><h2 id="records-heading">Tracked sites</h2></div><button id="clear-selection" class="quiet-button" disabled>Clear selection</button></div>
+            <div class="scope-value"><strong id="scope-label"></strong></div>
+            <label class="search-label" for="plant-search">Find a plant within this scope</label>
+            <div class="search-wrap"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"></circle><path d="m13 13 4 4"></path></svg><input type="search" id="plant-search" placeholder="Name, municipality or GEM ID"></div>
+            <p class="list-note" id="list-note"></p>
+          </div>
+          <div class="records-content"><div id="plant-list" class="plant-list"></div></div>
+          <p class="boundary">Capacity is not production or available supply. These sites are not identified suppliers of a trade flow.</p>
+        </aside>
+      </div>
+    </section>
+    <footer id="provenance">
+      <p class="source-credit"><a href="https://globalenergymonitor.org/projects/global-iron-steel-tracker/" target="_blank" rel="noreferrer">Global Energy Monitor · Global Iron and Steel Tracker, June 2026 (V1)</a><span class="credit-divider">/</span><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a><span class="credit-divider">/</span><span>Transformed extract</span></p>
+      <details class="methodology"><summary>Methodology &amp; publication boundaries</summary><div class="methodology-content">
+        <p>Global Energy Monitor, Global Iron and Steel Tracker, June 2026 (V1) release. Distributed under a Creative Commons Attribution 4.0 International License. Transformed extract and derived calculations by Steel Exposure Atlas. Global Energy Monitor does not endorse this project or its derived interpretations. Retrieved 2026-09-14. <span id="integrity-note">Integrity check pending.</span></p>
+        <p>Basemap: Natural Earth 1:110m v5.1.1, public domain; de facto boundaries. GEM region categories are used unchanged. Source statuses can coexist at a site; operating and development capacity are separate. Approximate coordinates remain uncertain and have not been assigned to water basins.</p>
+        <p>Parent text is displayed unchanged and is not a corporate network. No production time series is inferred from this capacity snapshot. Capacity is not actual production, available supply or your company’s exposure. Trade and water observations are not loaded here.</p>
+        <p>The reviewed local extract is used for this pre-publication atlas build. The derived-data publication gate remains open until the release checklist is completed. No trade extract, Aqueduct package or matched ownership network is included.</p>
+      </div></details>
+    </footer>
+  </main>
+</body>
 </html>
