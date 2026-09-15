@@ -18,10 +18,13 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn('./src/connections-bootstrap.js', index)
         self.assertNotIn('type="application/json"', index)
 
-    def test_explorer_remains_available_as_secondary_route(self) -> None:
+    def test_explorer_remains_available_as_internal_secondary_route(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
+        bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(encoding="utf-8")
         self.assertIn('./prototype/evidence.html', index)
         self.assertTrue((ROOT / "prototype" / "evidence.html").exists())
+        self.assertIn('a[href="./prototype/evidence.html"]', bridge)
+        self.assertIn('?.remove()', bridge)
 
     def test_runtime_reads_reviewed_local_artifacts_and_checks_gist_hash(self) -> None:
         bootstrap = (ROOT / "src" / "connections-bootstrap.js").read_text(encoding="utf-8")
