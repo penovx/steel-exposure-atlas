@@ -25,7 +25,7 @@ The current homepage is one connected field rather than a sequence of separate d
 
 The next procurement-facing layers are intentionally separate from these base relationships:
 
-5. **Sanctions context** — direct entity-list matches by jurisdiction, with match evidence and snapshot date. A non-match is never presented as sanctions clearance because ownership/control rules can affect unlisted entities.
+5. **Sanctions context** — direct entity-list matches for **EU and U.S. OFAC** only, with jurisdiction, match evidence and snapshot date. A non-match is never presented as sanctions clearance because ownership/control rules can affect unlisted entities.
 6. **Tariff / trade-measure context** — product- and origin-dependent duties or measures only where an approved official data source and defensible commodity mapping exist.
 7. **Environmental operating context** — selected facility-level public indicators such as verified emissions where a defensible plant-to-facility match exists.
 
@@ -38,7 +38,7 @@ The visual model must not turn associations into stronger claims:
 - plant ↔ company means the source provides one usable immediate owner/operator identity;
 - plant ↔ product means the plant source description lists that product, not product-specific capacity, qualification or available supply;
 - plant ↔ steelmaking method requires positive operating route capacity;
-- a sanctions connection means a direct reviewed match to a listed entity or alias in a pinned sanctions-list snapshot;
+- a sanctions connection means a direct reviewed match to a listed entity or alias in a pinned **EU or U.S. OFAC** sanctions-list snapshot;
 - absence of a direct sanctions-list match does not mean the entity is compliant or unaffected by sanctions;
 - tariff context depends on product classification, origin, destination and validity date and must not be presented as a plant-specific landed cost without those inputs;
 - environmental indicators describe reported facility context, not an ESG score or disruption probability;
