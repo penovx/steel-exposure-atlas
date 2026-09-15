@@ -13,7 +13,7 @@ from pipeline.sanctions_match import (
 )
 
 
-SOURCE = "uk_sanctions_list"
+SOURCE = "eu_financial_sanctions"
 SNAPSHOT = "synthetic-2026-09-15"
 
 
