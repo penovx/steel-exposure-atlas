@@ -101,9 +101,53 @@
     readingDetail.append(section);
   }
 
+  function reconcileSourcesDialog(payload) {
+    const sourceContent = document.querySelector('#source-content');
+    if (!sourceContent || !sourceContent.children.length) return;
+
+    for (const paragraph of sourceContent.querySelectorAll('p')) {
+      if (!paragraph.textContent?.includes('This visual connects fields within GIST; it is not yet a multi-publisher finding.')) continue;
+      paragraph.textContent = 'No water-stress, trade, emissions or buyer-supplier layer is present. EU sanctions context is a separate reviewed company-level layer loaded from a pinned local derived artifact. The integration remains pre-publication until the repository release checklist is completed.';
+    }
+
+    if (sourceContent.querySelector('.sanctions-source-section')) return;
+    const section = document.createElement('section');
+    section.className = 'source-section sanctions-source-section';
+    addText(section, 'h3', '', 'EU sanctions context');
+    addText(
+      section,
+      'p',
+      '',
+      'The sanctions layer screens usable GIST owner identities against the pinned European Commission Consolidated Financial Sanctions File 1.1 enterprise snapshot. It uses categorical states only: Direct list match, Review required, or No direct list match in this snapshot. No sanctions percentage or risk score is defined.'
+    );
+    addText(
+      section,
+      'p',
+      '',
+      'A direct list match can be published only after the company identity is sufficiently resolved. A negative result is not sanctions clearance. Ownership, control, subsidiaries and related-party effects remain separate questions.'
+    );
+    const generationDates = payload.meta?.source_file_generation_dates;
+    const suffix = Array.isArray(generationDates) && generationDates.length
+      ? ` Source file date: ${generationDates.join(', ')}.`
+      : '';
+    addText(
+      section,
+      'p',
+      '',
+      `European Commission source snapshot SHA-256: ${payload.meta?.source_snapshot_sha256 ?? 'not available'}.${suffix}`
+    );
+    sourceContent.append(section);
+  }
+
   async function init() {
     const payload = await (globalThis.__ATLAS_SANCTIONS_PROMISE__ ?? Promise.resolve(null));
     if (!payload) return;
+
+    const sourceContent = document.querySelector('#source-content');
+    if (sourceContent) {
+      const sourceObserver = new MutationObserver(() => reconcileSourcesDialog(payload));
+      sourceObserver.observe(sourceContent, {childList: true});
+    }
 
     const waitForCore = () => {
       const review = currentReview();
@@ -116,6 +160,7 @@
       const observer = new MutationObserver(() => renderContext(payload));
       observer.observe(selectionPath, {childList: true, subtree: true});
       renderContext(payload);
+      reconcileSourcesDialog(payload);
     };
 
     waitForCore();
