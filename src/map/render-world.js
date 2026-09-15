@@ -47,12 +47,72 @@ export function renderCountries(group, featureCollection) {
     path.setAttribute('class', 'country');
     path.dataset.iso3 = feature.properties?.ISO_A3 ?? '';
     path.dataset.name = feature.properties?.NAME_EN ?? feature.properties?.ADMIN ?? '';
-    if (path.dataset.name) {
-      const title = document.createElementNS(SVG_NS, 'title');
-      title.textContent = path.dataset.name;
-      path.append(title);
-    }
     fragment.append(path);
+  }
+
+  group.replaceChildren(fragment);
+  return group.childElementCount;
+}
+
+export function renderPlants(group, plants, { onSelect, onHover, onLeave } = {}) {
+  if (!Array.isArray(plants)) {
+    throw new Error('Plant data must contain a plants array.');
+  }
+
+  const fragment = document.createDocumentFragment();
+
+  for (const plant of plants) {
+    const latitude = Number(plant?.latitude);
+    const longitude = Number(plant?.longitude);
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+      throw new Error(`Plant ${plant?.plant_id ?? '(unknown)'} has invalid coordinates.`);
+    }
+
+    const [x, y] = project([longitude, latitude]);
+    const point = document.createElementNS(SVG_NS, 'circle');
+    const approximate = plant.coordinate_accuracy === 'approximate';
+    const baseRadius = approximate ? 3.2 : 2.8;
+
+    point.setAttribute('cx', x.toFixed(2));
+    point.setAttribute('cy', y.toFixed(2));
+    point.setAttribute('r', String(baseRadius));
+    point.setAttribute('class', `plant-point${approximate ? ' is-approximate' : ''}`);
+    point.setAttribute('tabindex', '0');
+    point.setAttribute('role', 'button');
+    point.setAttribute('aria-label', plant.plant_name || plant.plant_id || 'Steel plant');
+    point.dataset.plantId = plant.plant_id ?? '';
+    point.dataset.region = plant.region ?? '';
+    point.dataset.country = plant.country_area ?? '';
+    point.dataset.ownerId = plant.owner_gem_entity_id ?? '';
+    point.dataset.parentLabel = plant.parent_display ?? '';
+    point.dataset.baseRadius = String(baseRadius);
+
+    if (typeof onSelect === 'function') {
+      const selectPoint = () => {
+        group.querySelector('.plant-point.is-selected')?.classList.remove('is-selected');
+        point.classList.add('is-selected');
+        onSelect(plant);
+      };
+
+      point.addEventListener('click', selectPoint);
+      point.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          selectPoint();
+        }
+      });
+    }
+
+    if (typeof onHover === 'function') {
+      point.addEventListener('pointerenter', (event) => onHover(plant, event));
+      point.addEventListener('pointermove', (event) => onHover(plant, event));
+    }
+    if (typeof onLeave === 'function') {
+      point.addEventListener('pointerleave', onLeave);
+      point.addEventListener('blur', onLeave);
+    }
+
+    fragment.append(point);
   }
 
   group.replaceChildren(fragment);
@@ -75,7 +135,7 @@ function polygonToPath(rings) {
   }).join(' ');
 }
 
-function project([longitude, latitude]) {
+export function project([longitude, latitude]) {
   const x = ((Number(longitude) + 180) / 360) * WIDTH;
   const usableHeight = MAP_BOTTOM - MAP_TOP;
   const y = MAP_TOP + ((90 - Number(latitude)) / 180) * usableHeight;
