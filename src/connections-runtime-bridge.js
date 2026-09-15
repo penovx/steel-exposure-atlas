@@ -1,7 +1,6 @@
-// Runtime bridge for relationship-line semantics and neutral world entry.
-// This file is intentionally tiny: the main atlas model stays in connections-core.js.
-// It supplies the product-link selector consumed by the stable core without changing
-// plant evidence, filtering, or capacity calculations.
+// Runtime bridge for the relational homepage.
+// It keeps the stable interaction core unchanged while supplying two UI semantics:
+// a neutral World entry scope and symmetric product edges for non-product selections.
 
 function reviewState() {
   try {
@@ -11,12 +10,11 @@ function reviewState() {
   }
 }
 
-// connections-core.js reads this binding when deciding which product edges to draw.
-// - No analytical selection: keep overview density low (one product edge per plant).
-// - Product selection: draw only selected products.
-// - Place/company/method/site selection without a product filter: draw all related
-//   products so every entry dimension responds symmetrically.
-globalThis.selectedProducts = {
+// connections-core.js reads this global binding when deciding which product edges
+// to draw. No selection keeps the overview sparse. A product selection draws only
+// those selected products. Place/company/method/site selections draw every product
+// listed by their connected plants so all entry dimensions respond symmetrically.
+var selectedProducts = {
   get size() {
     const state = reviewState();
     if (!state) return 0;
@@ -32,3 +30,24 @@ globalThis.selectedProducts = {
     return Boolean(state.site || state.filters?.country || state.filters?.owner || state.filters?.route);
   },
 };
+
+function applyWorldEntry() {
+  const review = globalThis.__atlasReview;
+  if (!review?.setRegion || !review?.snapshot) {
+    requestAnimationFrame(applyWorldEntry);
+    return;
+  }
+
+  if (review.snapshot().state.region !== 'World') review.setRegion('World');
+
+  const brand = document.querySelector('#brand-home');
+  if (brand) {
+    brand.onclick = (event) => {
+      event.preventDefault();
+      review.setRegion('World');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    };
+  }
+}
+
+applyWorldEntry();
