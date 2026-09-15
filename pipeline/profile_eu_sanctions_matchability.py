@@ -7,7 +7,18 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from pipeline.sanctions_match import normalize_identifier, normalize_name, relaxed_legal_form_name
+try:
+    from pipeline.sanctions_match import (
+        normalize_identifier,
+        normalize_name,
+        relaxed_legal_form_name,
+    )
+except ModuleNotFoundError:
+    from sanctions_match import (  # type: ignore[no-redef]
+        normalize_identifier,
+        normalize_name,
+        relaxed_legal_form_name,
+    )
 
 DEFAULT_INPUT = Path(
     "tmp/source-packages/eu-sanctions/raw/eu-financial-sanctions-1.1.csv"
