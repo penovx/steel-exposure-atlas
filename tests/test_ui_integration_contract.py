@@ -52,13 +52,22 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn('id="region-title">World<', index)
         self.assertIn("review.setRegion('World')", bridge)
 
-    def test_focused_non_product_selection_links_related_products(self) -> None:
+    def test_any_focused_selection_links_related_products(self) -> None:
         bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(encoding="utf-8")
         self.assertIn("var selectedProducts", bridge)
-        self.assertIn("products.length", bridge)
+        self.assertIn("hasRelationalFocus", bridge)
         self.assertIn("state.filters?.owner", bridge)
         self.assertIn("state.filters?.route", bridge)
-        self.assertIn("return Boolean(state.site", bridge)
+        self.assertIn("products.length", bridge)
+        self.assertIn("has()", bridge)
+        self.assertIn("return hasRelationalFocus(reviewState())", bridge)
+        self.assertIn('selecting "bar"', bridge)
+
+    def test_product_counts_are_described_not_bare_numbers(self) -> None:
+        bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(encoding="utf-8")
+        self.assertIn("decorateProductLabels", bridge)
+        self.assertIn("${value} connected", bridge)
+        self.assertIn("${value} sites", bridge)
 
     def test_steelmaking_values_expose_mtpa_unit(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
