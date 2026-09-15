@@ -4,7 +4,7 @@
 
 This contract defines how the atlas may connect a company identity to an official sanctions-list **entity** record without turning name similarity into a legal conclusion.
 
-The first implementation is source-agnostic. It can support the UK Sanctions List first and later additional reviewed sources, but a source may be used publicly only when its own publication gate is open.
+The first implementation is source-agnostic at the matching layer, but the current product scope is limited to the **EU consolidated financial sanctions list** and **U.S. OFAC sanctions files**. A source may be used publicly only when its own publication gate is open.
 
 ## Core rule
 
@@ -36,7 +36,7 @@ Only records whose source type is `entity` are eligible for this v1 contract.
 
 Each source record may contain:
 
-- `source` — source identifier, for example `uk_sanctions_list`.
+- `source` — source identifier, for example `eu_financial_sanctions` or `ofac_sdn`.
 - `snapshot_id` — pinned source snapshot or release identifier.
 - `entity_id` — stable source record identifier.
 - `primary_name` — official listed name.
@@ -83,7 +83,7 @@ Each company receives one result per sanctions source snapshot:
 ```json
 {
   "company_id": "...",
-  "source": "uk_sanctions_list",
+  "source": "eu_financial_sanctions",
   "snapshot_id": "...",
   "state": "direct_list_match | review_required | no_direct_list_match_in_snapshot",
   "matched_entity_ids": ["..."],
@@ -112,12 +112,13 @@ It does **not** establish that:
 - the company is compliant;
 - no owner, controller, parent, subsidiary or related party is sanctioned;
 - the company is unaffected by sectoral or ownership/control restrictions;
-- another jurisdiction has no relevant designation.
+- the other current jurisdiction has no relevant designation.
 
 ## Source and publication requirements
 
 Every published sanctions result must retain:
 
+- jurisdiction;
 - source publisher and dataset name;
 - pinned snapshot/retrieval date;
 - source file hash;
