@@ -4,7 +4,7 @@
 
 This contract defines how the atlas may connect a company identity to an official sanctions-list **entity** record without turning name similarity into a legal conclusion.
 
-The first implementation is source-agnostic at the matching layer, but the current product scope is limited to the **EU consolidated financial sanctions list** and **U.S. OFAC sanctions files**. A source may be used publicly only when its own publication gate is open.
+The matching layer remains source-agnostic, but the current product scope is limited to the **EU consolidated financial sanctions list**.
 
 ## Core rule
 
@@ -36,7 +36,7 @@ Only records whose source type is `entity` are eligible for this v1 contract.
 
 Each source record may contain:
 
-- `source` — source identifier, for example `eu_financial_sanctions` or `ofac_sdn`.
+- `source` — source identifier, currently `eu_financial_sanctions`.
 - `snapshot_id` — pinned source snapshot or release identifier.
 - `entity_id` — stable source record identifier.
 - `primary_name` — official listed name.
@@ -78,7 +78,7 @@ A similarity score may be stored as diagnostic evidence, but it is never a sanct
 
 ## Output record
 
-Each company receives one result per sanctions source snapshot:
+Each company receives one result for the pinned EU sanctions source snapshot:
 
 ```json
 {
@@ -104,15 +104,15 @@ Each company receives one result per sanctions source snapshot:
 
 `no_direct_list_match_in_snapshot` means only:
 
-> no direct deterministic match was found against the entity records present in this pinned source snapshot.
+> no direct deterministic match was found against the entity records present in this pinned EU source snapshot.
 
 It does **not** establish that:
 
 - the company is sanctions-clear;
 - the company is compliant;
 - no owner, controller, parent, subsidiary or related party is sanctioned;
-- the company is unaffected by sectoral or ownership/control restrictions;
-- the other current jurisdiction has no relevant designation.
+- the company is unaffected by ownership/control or other sanctions restrictions;
+- another jurisdiction has no relevant designation.
 
 ## Source and publication requirements
 
@@ -126,7 +126,9 @@ Every published sanctions result must retain:
 - required attribution;
 - matcher version.
 
-No sanctions source file enters `public/data/` until its source record is `approved_for_publication` for the exact intended output.
+The current approved publication path is a **derived entity-only subset** from the EU Consolidated Financial Sanctions File 1.1 under the conditions documented in `docs/source-reviews/2026-09-15-procurement-source-gate.md`.
+
+The raw source file is not automatically a public-site asset. Publication should use the minimum transformed fields required by the atlas.
 
 ## Human review
 
