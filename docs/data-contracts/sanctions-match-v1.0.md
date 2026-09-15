@@ -14,7 +14,7 @@ The UI and exported data must never use `sanctions clear`, `compliant`, `safe`, 
 
 Allowed top-level states:
 
-- `direct_list_match` — direct deterministic evidence links a sufficiently resolved company identity to one sanctions entity record.
+- `direct_list_match` — direct deterministic evidence or an explicit reviewed entity-resolution decision links a sufficiently resolved company identity to one sanctions entity record.
 - `review_required` — there is relevant but insufficient or ambiguous evidence; human review is required.
 - `no_direct_list_match_in_snapshot` — no direct deterministic match was found in the reviewed snapshot. This is not evidence that the company is unaffected by sanctions.
 
@@ -59,6 +59,12 @@ The strongest direct evidence is:
    - identifier-type compatibility must be established explicitly;
    - a source value known to be shared or ambiguous must not be promoted automatically.
 
+2. `reviewed_entity_resolution`
+   - a candidate was independently reviewed against additional source evidence;
+   - the review explicitly concludes that the two source identities represent the same legal entity;
+   - the decision is stored in the reviewed entity-link registry with provenance and review date;
+   - the resolution applies only to the stated source IDs and pinned sanctions snapshot.
+
 Exact source-name equality can be strong evidence when the company identity on the other side is itself a reviewed legal-entity identity. Conservative normalization may standardize Unicode form, case, punctuation and whitespace. It must not silently remove material legal-name tokens or translate names in a way that turns a fuzzy candidate into a fact.
 
 ### Review-only evidence
@@ -89,6 +95,22 @@ Therefore:
 
 This stricter source-specific rule prevents a shared or coincidentally equal company name from becoming a sanctions finding merely because two public datasets use the same text.
 
+## Reviewed entity-resolution decisions
+
+A reviewed entity-resolution decision is a governed human-in-the-loop artifact, not a matching shortcut.
+
+The machine-readable registry is `config/reviewed-entity-links.v1.json`. Each accepted link must retain:
+
+- a stable resolution ID;
+- both source namespaces and source entity IDs;
+- the pinned sanctions snapshot hash;
+- `same_legal_entity`, `not_same_entity` or `unresolved` decision;
+- review date and method;
+- evidence references;
+- an interpretation boundary.
+
+A `same_legal_entity` decision may promote the corresponding company result to `direct_list_match` for that pinned sanctions snapshot. It must not change the automated matching rule for any other entity.
+
 ## Output record
 
 Each company receives one result for the pinned EU sanctions source snapshot:
@@ -100,9 +122,10 @@ Each company receives one result for the pinned EU sanctions source snapshot:
   "snapshot_id": "...",
   "state": "direct_list_match | review_required | no_direct_list_match_in_snapshot",
   "matched_entity_ids": ["..."],
+  "resolution_id": null,
   "evidence": [
     {
-      "type": "identifier_exact | primary_name_exact | alias_exact | legal_form_candidate | similar_name_candidate | ambiguous_direct_match",
+      "type": "identifier_exact | reviewed_entity_resolution | primary_name_exact | alias_exact | legal_form_candidate | similar_name_candidate | ambiguous_direct_match",
       "company_value": "...",
       "source_value": "...",
       "similarity": null
@@ -111,7 +134,7 @@ Each company receives one result for the pinned EU sanctions source snapshot:
 }
 ```
 
-`matched_entity_ids` may be empty. More than one direct candidate must not be collapsed automatically.
+`matched_entity_ids` may be empty. More than one direct candidate must not be collapsed automatically. `resolution_id` is populated only when a reviewed entity-link decision supplies the direct identity evidence.
 
 ## Negative-result boundary
 
@@ -137,7 +160,8 @@ Every published sanctions result must retain:
 - source file hash;
 - publication/redistribution decision from source governance;
 - required attribution;
-- matcher version.
+- matcher version;
+- reviewed resolution ID when human entity resolution was required.
 
 The current approved publication path is a **derived entity-only subset** from the EU Consolidated Financial Sanctions File 1.1 under the conditions documented in `docs/source-reviews/2026-09-15-procurement-source-gate.md`.
 
@@ -146,5 +170,7 @@ The raw source file is not automatically a public-site asset. Publication should
 ## Human review
 
 The atlas may expose a `review_required` state and the evidence that caused it. It must not automatically promote that state to `direct_list_match`.
+
+Promotion is allowed only through a reviewed entity-resolution decision that is independently evidenced, source-scoped and recorded in the governed registry. The automated legal-form or fuzzy rule remains unchanged after such a decision.
 
 Any future ownership/control logic must be a separate evidence layer with its own rules and provenance.
