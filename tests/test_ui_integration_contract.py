@@ -39,6 +39,15 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn("productMode", core)
         self.assertIn("selectedProducts.size", core)
 
+    def test_homepage_starts_at_world_scope(self) -> None:
+        core = (ROOT / "src" / "connections-core.js").read_text(encoding="utf-8")
+        self.assertIn("const state={region:'World'", core)
+
+    def test_focused_non_product_selection_links_related_products(self) -> None:
+        core = (ROOT / "src" / "connections-core.js").read_text(encoding="utf-8")
+        self.assertIn("const selectedProducts=new Set(state.filters.products);", core)
+        self.assertIn("selectedProducts.size?tags.filter(g=>selectedProducts.has(g.id)):isFocused()?tags:tags.slice(0,1)", core)
+
     def test_steelmaking_values_expose_mtpa_unit(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
         core = (ROOT / "src" / "connections-core.js").read_text(encoding="utf-8")
