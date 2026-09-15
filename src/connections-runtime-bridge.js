@@ -43,21 +43,47 @@ var selectedProducts = {
   },
 };
 
+function numericCountText(value) {
+  const match = String(value ?? '').match(/[0-9][0-9,]*/);
+  return match ? match[0] : String(value ?? '').trim();
+}
+
+function alignProductBaseline() {
+  const area = document.querySelector('.products-area');
+  const port = document.querySelector('#product-nodes .product-port');
+  if (!area || !port) return;
+
+  const areaRect = area.getBoundingClientRect();
+  const portRect = port.getBoundingClientRect();
+  if (!areaRect.height || !portRect.height) return;
+
+  const y = portRect.top + portRect.height / 2 - areaRect.top;
+  area.style.setProperty('--product-baseline-y', `${y.toFixed(2)}px`);
+}
+
 function decorateProductLabels() {
   const state = reviewState();
   if (!state) return;
   const focused = hasRelationalFocus(state);
+  const stage = document.querySelector('#connections-stage');
+  stage?.classList.toggle('has-relational-focus', focused);
 
   for (const node of document.querySelectorAll('#product-nodes .product-node')) {
     const count = node.querySelector(':scope > span');
     if (!count) continue;
 
     if (!count.dataset.countValue) {
-      count.dataset.countValue = count.textContent.trim();
+      count.dataset.countValue = numericCountText(count.textContent);
     }
     const value = count.dataset.countValue;
-    count.textContent = focused ? `${value} connected sites` : `${value} listed sites`;
+    count.textContent = value;
+    count.setAttribute(
+      'aria-label',
+      focused ? `${value} connected sites` : `${value} listed sites`
+    );
   }
+
+  alignProductBaseline();
 }
 
 function installProductLabelObserver() {
@@ -111,6 +137,8 @@ function ensureEdgeReadabilityMask() {
 }
 
 function updateEdgeReadabilityMask() {
+  alignProductBaseline();
+
   const stage = document.querySelector('#connections-stage');
   const mask = ensureEdgeReadabilityMask();
   if (!stage || !mask) return;
@@ -214,6 +242,7 @@ function applyWorldEntry() {
 
   installProductLabelObserver();
   decorateProductLabels();
+  alignProductBaseline();
   installEdgeReadabilityObserver();
   queueEdgeReadabilityMask();
 }
