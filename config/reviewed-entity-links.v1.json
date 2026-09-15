@@ -1,0 +1,38 @@
+{
+  "schema": "steel-exposure-atlas/reviewed-entity-links-v1.0",
+  "links": [
+    {
+      "resolution_id": "REL-2026-09-16-001",
+      "left": {
+        "source": "gem",
+        "entity_id": "E100000131956",
+        "label": "Myanmar Economic Corp"
+      },
+      "right": {
+        "source": "eu_financial_sanctions",
+        "entity_id": "129454",
+        "eu_reference": "EU.6313.7",
+        "snapshot_sha256": "049CB95CF55CD9A77DFB8D3FED21EB61A541E4C46F80D1F1B581F2E537E0F015"
+      },
+      "decision": "same_legal_entity",
+      "resolution_method": "human_review_corroborated",
+      "reviewed_at": "2026-09-16",
+      "downstream_state": "direct_list_match",
+      "evidence": [
+        {
+          "type": "gem_entity_alias",
+          "url": "https://www.gem.wiki/E100000131956"
+        },
+        {
+          "type": "gem_asset_owner_identity",
+          "url": "https://www.gem.wiki/Myingyan_Myanmar_steel_plant"
+        },
+        {
+          "type": "eu_current_legal_act",
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32026R0926"
+        }
+      ],
+      "review_note": "Entity identity resolved across sources. This does not create a plant-level sanctions finding and does not infer ownership/control effects for related entities."
+    }
+  ]
+}
