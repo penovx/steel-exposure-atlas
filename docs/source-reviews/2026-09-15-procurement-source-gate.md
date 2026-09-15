@@ -4,44 +4,25 @@ This review applies the project source-governance rules to procurement-oriented 
 
 The public atlas is reviewed as commercial-capable professional use. Public accessibility alone is not enough; unclear redistribution rights block publication by default.
 
+## Current jurisdiction scope
+
+The sanctions package for the atlas is intentionally limited to:
+
+1. **European Union** — primary sanctions jurisdiction for the European procurement perspective.
+2. **United States / OFAC** — second sanctions jurisdiction for global procurement context.
+
+The UK Sanctions List is outside the current product scope and must not be ingested, matched or shown in the UI unless the product scope is explicitly changed later.
+
 ## Decision summary
 
 | Source | Decision | Cost | Intended use |
 | --- | --- | --- | --- |
-| UK Sanctions List | Approved for processing and publication of a derived **entity-only** subset | Free | Direct sanctions-list screening context for companies |
 | EU consolidated financial sanctions list | Approved for processing; publication blocked pending dataset-specific licence confirmation | Free | Primary EU sanctions-list screening context |
-| OFAC SDN and Consolidated Non-SDN files | Approved for processing; publication blocked pending explicit redistribution basis | Free | Optional US-jurisdiction screening context |
+| OFAC SDN and Consolidated Non-SDN files | Approved for processing; publication blocked pending explicit redistribution basis | Free | US-jurisdiction sanctions-list screening context |
 | EU TARIC | Reviewed; not approved yet | Free | Import-duty and trade-measure context |
 | Access2Markets | Rejected as primary redistributable data feed | Free | Reference only; not a publication source |
 | EEA EU ETS data from the Union Registry | Approved for processing and publication of a derived subset | Free | Facility-level verified-emissions context |
 | EEA Industrial Emissions reporting dataset | Approved for processing; publication pending dataset-specific rights check | Free | Facility-level environmental context |
-
-## UK Sanctions List
-
-Publisher: Foreign, Commonwealth & Development Office.
-
-The current UK Sanctions List is the official source for UK designations and is downloadable in CSV, XML and other formats. GOV.UK/Crown public-sector information is normally available under the Open Government Licence v3.0 unless otherwise stated. OGL v3.0 permits copying, redistribution, adaptation and commercial or non-commercial use with attribution.
-
-OGL excludes personal data from its licence grant. The atlas therefore will not ingest or republish individual-person records or personal identifiers for the first sanctions layer. The intended public subset is limited to records classified as **entities**, with only fields needed for entity identification and sanctions context.
-
-**Decision:** approved for processing and publication of a derived entity-only subset, subject to a pinned file snapshot, hash and attribution.
-
-Required attribution baseline:
-
-`Contains public sector information licensed under the Open Government Licence v3.0. Source: UK Sanctions List, Foreign, Commonwealth & Development Office.`
-
-Interpretation boundary:
-
-- a direct list match means the company name or reviewed alias matches a UK Sanctions List entity;
-- absence of a direct list match does not mean the company is sanctions-clear;
-- sanctions may also affect unlisted entities through ownership or control;
-- fuzzy name similarity alone is not a sanctions finding.
-
-Official references:
-
-- https://www.gov.uk/government/publications/the-uk-sanctions-list
-- https://www.gov.uk/guidance/format-guide-for-the-uk-sanctions-list
-- https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
 
 ## EU consolidated financial sanctions list
 
@@ -57,7 +38,7 @@ Interpretation boundary:
 
 - only direct listed-entity evidence may be shown as a direct sanctions-list match;
 - ownership/control effects are separate legal facts and must not be inferred from name matching alone;
-- EU guidance explicitly notes that unlisted entities can be affected through ownership or control, so the UI must never label a non-match as `clear` or `compliant`.
+- the UI must never label a non-match as `clear` or `compliant`.
 
 Official references:
 
@@ -75,6 +56,12 @@ OFAC publishes SDN and Consolidated Non-SDN data in XML, CSV and other formats. 
 That is sufficient for local technical evaluation, but this review did not find an explicit dataset-level redistribution licence comparable to CC BY or OGL.
 
 **Decision:** approved for local processing; public redistribution or bundling remains blocked until the reuse/redistribution basis is pinned explicitly.
+
+Interpretation boundary:
+
+- a direct OFAC list match is evidence about the pinned OFAC source snapshot, not a complete legal conclusion;
+- sectoral or ownership/control effects must not be inferred from name matching alone;
+- the UI must never label a non-match as `clear`, `compliant` or `safe`.
 
 Official references:
 
@@ -142,9 +129,9 @@ Official references:
 For a procurement-oriented atlas, source priority is now:
 
 1. EU sanctions — primary legal/compliance context once the publication licence gate is closed.
-2. UK sanctions — already suitable for a derived entity-only public subset and useful as a second jurisdiction.
+2. US OFAC sanctions — second legal/compliance jurisdiction once the redistribution gate is closed.
 3. TARIC — landed-cost/trade-measure context after an exact reusable extract is identified.
 4. EEA EU ETS — environmental operating context; useful but secondary to compliance and landed cost.
 5. Water stress — optional resilience context, no longer a priority for the next release.
 
-The sanctions UI must use language such as `Direct list match`, `No direct list match in this snapshot` and `Review required`. It must never show `sanctions clear`, `compliant` or an automatic red/green supplier verdict.
+The sanctions UI must identify jurisdiction explicitly and use language such as `Direct list match`, `No direct list match in this snapshot` and `Review required`. It must never show `sanctions clear`, `compliant` or an automatic red/green supplier verdict.
