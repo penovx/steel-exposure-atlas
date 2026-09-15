@@ -78,7 +78,7 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn("Identity resolution: Confirmed", bridge)
         self.assertIn("not sanctions clearance", bridge)
         self.assertNotIn("85%", bridge)
-        self.assertNotIn("risk score", bridge.lower())
+        self.assertIn("No sanctions percentage or risk score is defined", bridge)
 
     def test_homepage_does_not_embed_the_full_dataset(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
