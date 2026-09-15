@@ -27,8 +27,22 @@ class ConnectionPortsContractTests(unittest.TestCase):
 
         self.assertIn("#connection-lines{", base_css)
         self.assertIn("z-index:3", base_css)
-        self.assertIn(".products-area{z-index:auto!important}", polish)
+        self.assertIn(".products-area{z-index:auto!important;border-top:0", polish)
         self.assertIn(".product-node{z-index:4", polish)
+
+    def test_product_divider_is_measured_from_the_visible_port_center(self) -> None:
+        bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(
+            encoding="utf-8"
+        )
+        polish = (ROOT / "src" / "connections-visual-polish.css").read_text(
+            encoding="utf-8"
+        ).replace(" ", "")
+
+        self.assertIn("function alignProductBaseline()", bridge)
+        self.assertIn("portRect.top + portRect.height / 2 - areaRect.top", bridge)
+        self.assertIn("--product-baseline-y", bridge)
+        self.assertIn(".products-area::before{content:''", polish)
+        self.assertIn("top:var(--product-baseline-y,50%)", polish)
 
     def test_method_ports_remain_visible_at_the_route_endpoint(self) -> None:
         css = (ROOT / "src" / "connections-visual-polish.css").read_text(
