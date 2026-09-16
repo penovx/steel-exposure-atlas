@@ -89,7 +89,7 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn("* Mtpa = million tonnes per year.", index)
         self.assertIn("<small> Mtpa*</small>", core)
 
-    def test_eu_and_ofac_sanctions_contexts_are_separate_and_snapshot_pinned(self) -> None:
+    def test_eu_and_ofac_sanctions_contexts_are_separate_plain_language_and_pinned(self) -> None:
         loader = (ROOT / "src" / "connections-sanctions-loader.js").read_text(encoding="utf-8")
         bridge = (ROOT / "src" / "connections-sanctions-bridge.js").read_text(encoding="utf-8")
 
@@ -98,16 +98,15 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn("049CB95CF55CD9A77DFB8D3FED21EB61A541E4C46F80D1F1B581F2E537E0F015", loader)
         self.assertIn("3D594ED7CDB5E0FD13F126A3815255146D730F791DCF672665C67416D03A7C1F", loader)
         self.assertIn("C59772F3EDD625812AC43C4AEC57513D08CDD180135A3B6368DBC086AB81DF7D", loader)
-        self.assertIn("Direct list match", bridge)
-        self.assertIn("Review required", bridge)
-        self.assertIn("No direct list match in this snapshot", bridge)
-        self.assertIn("EU SANCTIONS CONTEXT", bridge)
-        self.assertIn("U.S. / OFAC SANCTIONS CONTEXT", bridge)
-        self.assertIn("Identity resolution: Confirmed", bridge)
+        self.assertIn("Listed by OFAC", bridge)
+        self.assertIn("Specially Designated Nationals and Blocked Persons (SDN) List", bridge)
+        self.assertIn("Listed since", bridge)
+        self.assertIn("Procurement implication", bridge)
+        self.assertIn("No direct EU or U.S. listing found", bridge)
         self.assertIn("not sanctions clearance", bridge)
-        self.assertIn("source list and program context are retained", bridge)
+        self.assertNotIn("Identity resolution: Confirmed", bridge)
+        self.assertNotIn("OFAC SDN", bridge)
         self.assertNotIn("85%", bridge)
-        self.assertIn("No sanctions percentage or risk score is defined", bridge)
 
     def test_homepage_does_not_embed_the_full_dataset(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
