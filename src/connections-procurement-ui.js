@@ -3,6 +3,20 @@
     return node.querySelector('.company-name')?.textContent?.trim() ?? '';
   }
 
+  function syncCompanyEdges(visibleOwnerIds, hasQuery) {
+    const review = globalThis.__atlasReview;
+    if (!review?.all) return;
+    const ownerBySite = new Map(review.all.map((plant) => [plant.id, plant.ownerId]));
+    for (const edge of document.querySelectorAll('#edge-layer .connection-edge.company')) {
+      if (!hasQuery) {
+        edge.hidden = false;
+        continue;
+      }
+      const ownerId = ownerBySite.get(edge.dataset.site);
+      edge.hidden = !visibleOwnerIds.has(ownerId);
+    }
+  }
+
   function filterCompanies() {
     const input = document.querySelector('#company-search-input');
     const container = document.querySelector('#company-nodes');
@@ -11,12 +25,17 @@
 
     const query = input.value.trim().toLocaleLowerCase('en');
     const visible = [];
+    const visibleOwnerIds = new Set();
     for (const node of container.querySelectorAll('.company-node[data-owner]')) {
       const matches = !query || companyName(node).toLocaleLowerCase('en').includes(query);
       node.hidden = !matches;
-      if (matches) visible.push(node);
+      if (matches) {
+        visible.push(node);
+        visibleOwnerIds.add(node.dataset.owner);
+      }
     }
     empty.hidden = !query || visible.length > 0;
+    syncCompanyEdges(visibleOwnerIds, Boolean(query));
     return visible;
   }
 
@@ -52,6 +71,8 @@
     });
 
     new MutationObserver(filterCompanies).observe(container, {childList: true});
+    const edges = document.querySelector('#edge-layer');
+    if (edges) new MutationObserver(filterCompanies).observe(edges, {childList: true});
     filterCompanies();
   }
 
