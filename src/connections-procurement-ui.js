@@ -11,17 +11,19 @@
     return node.querySelector('.company-name')?.textContent?.trim() ?? '';
   }
 
+  function companyIsEligible(ownerId) {
+    const eligibility = globalThis.__ATLAS_COMPANY_ELIGIBILITY__;
+    return !eligibility?.ready || eligibility.isVisible(ownerId);
+  }
+
   function syncCompanyEdges(visibleOwnerIds, hasQuery) {
     const review = currentReview();
     if (!review?.all) return;
     const ownerBySite = new Map(review.all.map((plant) => [plant.id, plant.ownerId]));
     for (const edge of document.querySelectorAll('#edge-layer .connection-edge.company')) {
-      if (!hasQuery) {
-        edge.hidden = false;
-        continue;
-      }
       const ownerId = ownerBySite.get(edge.dataset.site);
-      edge.hidden = !visibleOwnerIds.has(ownerId);
+      const eligible = companyIsEligible(ownerId);
+      edge.hidden = !eligible || (hasQuery && !visibleOwnerIds.has(ownerId));
     }
   }
 
@@ -35,7 +37,8 @@
     const visible = [];
     const visibleOwnerIds = new Set();
     for (const node of container.querySelectorAll('.company-node[data-owner]')) {
-      const matches = !query || companyName(node).toLocaleLowerCase('en').includes(query);
+      const eligible = companyIsEligible(node.dataset.owner);
+      const matches = eligible && (!query || companyName(node).toLocaleLowerCase('en').includes(query));
       node.hidden = !matches;
       if (matches) {
         visible.push(node);
@@ -125,7 +128,11 @@
     new MutationObserver(filterCompanies).observe(container, {childList: true});
     const edges = document.querySelector('#edge-layer');
     if (edges) new MutationObserver(filterCompanies).observe(edges, {childList: true});
-    new MutationObserver(syncReadingCopy).observe(selectionPath, {childList: true, subtree: true});
+    new MutationObserver(() => {
+      syncReadingCopy();
+      filterCompanies();
+    }).observe(selectionPath, {childList: true, subtree: true});
+    window.addEventListener('atlas-company-eligibility-ready', filterCompanies);
 
     filterCompanies();
     syncReadingCopy();
