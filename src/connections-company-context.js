@@ -121,6 +121,7 @@
 
     const euStatus = statusFor(payloads.eu, ownerId);
     const ofacStatus = statusFor(payloads.ofac, ownerId);
+    const hasScreeningResult = Boolean(euStatus || ofacStatus);
     const hasEuFinding = ['direct_list_match', 'review_required'].includes(euStatus?.state);
     const hasOfacFinding = ['direct_list_match', 'review_required'].includes(ofacStatus?.state);
 
@@ -141,7 +142,7 @@
     }
 
     const hasFinding = hasEuFinding || hasOfacFinding;
-    if (!hasFinding) {
+    if (hasScreeningResult && !hasFinding) {
       signal(body, 'Sanctions screening', 'No direct listing', 'No direct EU or U.S. listing found', 'This is not sanctions clearance.');
     }
 
@@ -160,17 +161,19 @@
       body.append(action);
     }
 
-    card.append(body);
+    if (body.children.length) card.append(body);
 
-    const evidence = document.createElement('button');
-    evidence.type = 'button';
-    evidence.className = 'company-context-evidence';
-    evidence.textContent = 'View evidence ↓';
-    evidence.addEventListener('click', () => {
-      const target = document.querySelector('#reading-detail .sanctions-context, #reading-detail .sanctions-secondary-result');
-      target?.scrollIntoView({behavior: 'smooth', block: 'start'});
-    });
-    card.append(evidence);
+    if (hasScreeningResult) {
+      const evidence = document.createElement('button');
+      evidence.type = 'button';
+      evidence.className = 'company-context-evidence';
+      evidence.textContent = 'View evidence ↓';
+      evidence.addEventListener('click', () => {
+        const target = document.querySelector('#reading-detail .sanctions-context, #reading-detail .sanctions-secondary-result');
+        target?.scrollIntoView({behavior: 'smooth', block: 'start'});
+      });
+      card.append(evidence);
+    }
     return ownerId;
   }
 
