@@ -6,6 +6,7 @@ import unittest
 from pipeline.build_eu_steel_trade_context import (
     EXPECTED_BILATERAL_SHA256,
     EXPECTED_MEASURE_SHA256,
+    SCHEMA,
     build_context,
 )
 
@@ -71,29 +72,30 @@ def profile() -> dict[str, object]:
 class EuSteelTradeContextTests(unittest.TestCase):
     def test_emits_only_useful_trade_context_rows(self) -> None:
         payload = build_context(profile())
+        self.assertEqual(payload["meta"]["schema"], SCHEMA)
         self.assertEqual(payload["meta"]["counts"]["plants_with_context"], 2)
         self.assertEqual(payload["meta"]["counts"]["origin_specific_quota_context"], 1)
         self.assertEqual(payload["meta"]["counts"]["pooled_or_residual_quota_context"], 1)
         self.assertEqual([row["plant_id"] for row in payload["plants"]], ["P1", "P2"])
         self.assertEqual(payload["meta"]["publication_state"], "approved minimal derived public context")
+        self.assertEqual(payload["meta"]["ui_principle"], "evidence -> relationship -> meaning")
 
-    def test_named_origin_row_becomes_clear_user_context(self) -> None:
+    def test_named_origin_row_stays_factual(self) -> None:
         payload = build_context(profile())
         row = payload["plants"][0]
         self.assertEqual(row["scenario"], "if imported into the EU")
         self.assertEqual(row["quota_route"], "origin_specific")
         self.assertEqual(row["additional_duty_if_quota_exhausted_pct"], 50.0)
         self.assertEqual(row["customs_order_numbers"], ["09.9884"])
-        self.assertIn("Confirm the customs code", row["procurement_follow_up"])
-        self.assertNotIn("not performed", row["procurement_follow_up"])
-        self.assertNotIn("not evaluated", row["procurement_follow_up"])
+        self.assertNotIn("procurement_follow_up", row)
+        self.assertNotIn("confirm", str(row).lower())
 
-    def test_ambiguous_family_is_expressed_as_confirmation_need(self) -> None:
+    def test_ambiguous_family_preserves_mapping_state_without_process_advice(self) -> None:
         payload = build_context(profile())
         row = payload["plants"][1]
         self.assertEqual(row["product_family_state"], "family_requires_confirmation")
         self.assertEqual(row["quota_route"], "pooled_or_residual")
-        self.assertIn("applicable quota route", row["procurement_follow_up"])
+        self.assertNotIn("procurement_follow_up", row)
 
     def test_rejects_unreviewed_source_snapshot(self) -> None:
         bad = copy.deepcopy(profile())
