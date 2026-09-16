@@ -18,7 +18,7 @@ A statement belongs in the primary interface only if it passes all of these ques
 4. **Does it avoid absence as the headline?** Do not promote missing analyses, missing alternatives or missing records into the main story.
 5. **Does it avoid process advice?** Do not tell the user to confirm, route, qualify, source, negotiate or approve something unless that action itself is part of the source evidence.
 6. **Would the statement still be understandable without atlas jargon?** Avoid unexplained words such as `connected` when the actual relationship can be named.
-7. **Is it more useful than the raw value alone?** If not, keep the raw value in Evidence / Sources rather than the company brief.
+7. **Is it more useful than the raw value alone?** If not, keep the raw value in Evidence / Sources rather than the primary profile.
 
 ## Preferred wording
 
@@ -45,13 +45,14 @@ A limitation may appear in the main interaction only when omitting it would crea
 
 For example, a broad product-family mapping should be labelled as a broad mapping rather than converted into a process instruction.
 
-## Progressive disclosure
+## One-click selection profile
 
-Keep interpretation close to the object that caused it:
+The public interaction uses one standardized profile below the atlas:
 
-- first company click -> select the company and reveal `View company brief ->`;
-- second click -> open the non-modal company brief;
-- company brief -> relationships and reviewed interpretations supported by the available data;
-- detailed source identifiers, raw records, dates and methodology -> Evidence / Sources.
+- one click on a company, site, product, production method or area updates the profile immediately;
+- the profile combines identity, sites and products, operating production evidence, sanctions/trade findings and source access in one composition;
+- the profile does not require a second click or a separate company brief;
+- facts and relationships stay in the profile; navigation instructions, methodology and broad limitations belong in `Sources & interpretation`;
+- detailed source identifiers or official source pages may remain one click away because they are evidence, not a second interpretation layer.
 
-The company brief must not take over the whole screen or prevent continued exploration of the atlas.
+The profile must not replace the atlas or block continued exploration.
