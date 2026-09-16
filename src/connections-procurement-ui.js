@@ -7,47 +7,46 @@
     }
   }
 
-  function companyName(node) {
-    return node.querySelector('.company-name')?.textContent?.trim() ?? '';
-  }
-
   function companyIsEligible(ownerId) {
     const eligibility = globalThis.__ATLAS_COMPANY_ELIGIBILITY__;
     return !eligibility?.ready || eligibility.isVisible(ownerId);
   }
 
-  function syncCompanyEdges(visibleOwnerIds, hasQuery) {
+  function syncCompanyEdges(visibleOwnerIds) {
     const review = currentReview();
     if (!review?.all) return;
     const ownerBySite = new Map(review.all.map((plant) => [plant.id, plant.ownerId]));
     for (const edge of document.querySelectorAll('#edge-layer .connection-edge.company')) {
       const ownerId = ownerBySite.get(edge.dataset.site);
-      const eligible = companyIsEligible(ownerId);
-      edge.hidden = !eligible || (hasQuery && !visibleOwnerIds.has(ownerId));
+      edge.hidden = !companyIsEligible(ownerId) || !visibleOwnerIds.has(ownerId);
     }
   }
 
   function filterCompanies() {
-    const input = document.querySelector('#company-search-input');
     const container = document.querySelector('#company-nodes');
     const empty = document.querySelector('#company-search-empty');
-    if (!input || !container || !empty) return [];
+    if (!container) return [];
 
-    const query = input.value.trim().toLocaleLowerCase('en');
     const visible = [];
     const visibleOwnerIds = new Set();
     for (const node of container.querySelectorAll('.company-node[data-owner]')) {
       const eligible = companyIsEligible(node.dataset.owner);
-      const matches = eligible && (!query || companyName(node).toLocaleLowerCase('en').includes(query));
-      node.hidden = !matches;
-      if (matches) {
+      node.hidden = !eligible;
+      if (eligible) {
         visible.push(node);
         visibleOwnerIds.add(node.dataset.owner);
       }
     }
-    empty.hidden = !query || visible.length > 0;
-    syncCompanyEdges(visibleOwnerIds, Boolean(query));
+    if (empty) empty.hidden = true;
+    syncCompanyEdges(visibleOwnerIds);
     return visible;
+  }
+
+  function openCompanyPicker() {
+    const trigger = document.querySelector('[data-open-facet="owner"]');
+    if (!trigger) return;
+    trigger.click();
+    requestAnimationFrame(() => document.querySelector('#browse-query')?.focus());
   }
 
   function ownerDisplayName(review, ownerId) {
@@ -104,30 +103,20 @@
     if (input.dataset.searchInstalled === 'true') return;
     input.dataset.searchInstalled = 'true';
 
-    input.addEventListener('input', () => {
-      container.scrollTop = 0;
-      filterCompanies();
-    });
+    // The rail is intentionally bounded for immediate map rendering. Search opens
+    // the complete company picker instead of silently expanding hundreds of rows.
+    input.readOnly = true;
+    input.placeholder = 'Search all companies';
+    input.setAttribute('aria-haspopup', 'dialog');
+    input.addEventListener('click', openCompanyPicker);
     input.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && input.value) {
-        input.value = '';
-        container.scrollTop = 0;
-        filterCompanies();
+      if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        return;
-      }
-      if (event.key === 'Enter') {
-        const visible = filterCompanies();
-        if (visible.length === 1) {
-          visible[0].click();
-          event.preventDefault();
-        }
+        openCompanyPicker();
       }
     });
 
     new MutationObserver(filterCompanies).observe(container, {childList: true});
-    const edges = document.querySelector('#edge-layer');
-    if (edges) new MutationObserver(filterCompanies).observe(edges, {childList: true});
     new MutationObserver(() => {
       syncReadingCopy();
       filterCompanies();
