@@ -7,23 +7,32 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class CompanyContextCardContractTests(unittest.TestCase):
-    def test_context_card_is_loaded_and_non_modal(self) -> None:
+    def test_context_card_is_second_click_non_modal_and_atlas_styled(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
         script = (ROOT / "src" / "connections-company-context.js").read_text(encoding="utf-8")
-        css = (ROOT / "src" / "connections-procurement-ui.css").read_text(encoding="utf-8")
+        css = (ROOT / "src" / "connections-company-context.css").read_text(encoding="utf-8").replace(" ", "")
 
-        self.assertIn('./src/connections-company-context.js?v=20260916-3', index)
-        self.assertIn("company-context-card", script)
+        self.assertIn('./src/connections-company-context.js?v=20260916-4', index)
+        self.assertIn('./src/connections-company-context.css?v=20260916-1', index)
+        self.assertIn("function installSecondClickGate()", script)
+        self.assertIn("clicked !== selected", script)
+        self.assertIn("contextOpenOwnerId = contextOpenOwnerId === clicked ? null : clicked", script)
+        self.assertIn("event.stopImmediatePropagation()", script)
+        self.assertIn("card.hidden = contextOpenOwnerId !== ownerId", script)
         self.assertIn("COMPANY CONTEXT", script)
-        self.assertIn("function connectedSiteIds", script)
-        self.assertIn("connected ${siteCount === 1 ? 'site' : 'sites'}", script)
+        self.assertIn("Immediate owner or operator named by GEM", script)
+        self.assertIn("Connected sites", script)
+        self.assertIn("Countries", script)
+        self.assertIn("Known operating capacity", script)
         self.assertIn("View evidence ↓", script)
         self.assertIn("Procurement follow-up", script)
         self.assertIn("Listed by OFAC", script)
         self.assertIn("This is not sanctions clearance.", script)
-        self.assertIn(".company-context-card{grid-column:2;grid-row:1", css)
-        self.assertIn("max-height:calc(100% - 44px)", css)
-        self.assertIn("max-height:min(60vh,480px)", css)
+        self.assertIn(".company-context-card{", css)
+        self.assertIn("grid-column:2", css)
+        self.assertIn("justify-self:start", css)
+        self.assertIn("background:#10212af5", css)
+        self.assertIn("border:1pxsolid#496675", css)
         self.assertNotIn("position:fixed", css)
 
     def test_trade_context_is_loaded_and_expressed_as_scenario(self) -> None:
