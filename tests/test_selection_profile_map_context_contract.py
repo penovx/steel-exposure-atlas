@@ -11,18 +11,20 @@ class SelectionProfileMapContextContractTests(unittest.TestCase):
         index = (ROOT / "index.html").read_text(encoding="utf-8")
         css = (ROOT / "src" / "connections-selection-profile.css").read_text(encoding="utf-8")
         script = (ROOT / "src" / "connections-selection-profile.js").read_text(encoding="utf-8")
+        core = (ROOT / "src" / "connections-core.js").read_text(encoding="utf-8")
 
         self.assertIn('./src/connections-selection-profile.css?v=20260916-3', index)
         self.assertLess(index.index('id="geography"'), index.index('id="selection-profile"'))
         self.assertIn('.plant-node.dim{opacity:.42!important}', css.replace(" ", ""))
-        self.assertIn(
-            '.connections-stage:has(#company-nodes .company-node.is-selected) .plant-node.dim{opacity:1!important}',
-            css,
-        )
-        self.assertIn(
-            '.connections-stage:has(#company-nodes .company-node.is-selected) .plant-node:not(.dim) .plant-disc',
-            css,
-        )
+        self.assertIn('.plant-node.company-match .plant-disc', css)
+        self.assertIn('.plant-node.company-match .plant-hollow', css)
+        self.assertNotIn(':has(#company-nodes .company-node.is-selected)', css)
+        self.assertIn("function hasMapFocus()", core)
+        self.assertIn("state.site||f.country||f.route||f.products.length", core)
+        self.assertIn("focusSet=hasMapFocus()?chosenIds:null", core)
+        self.assertIn("companyHighlightSet=state.filters.owner?", core)
+        self.assertIn("companyMatch?' company-match'", core)
+        self.assertIn("companyHighlightIds:companyHighlightSet?[...companyHighlightSet]:[]", core)
         self.assertIn('overflow-anchor:none', css.replace(" ", ""))
         self.assertNotIn("document.querySelector('#geography').hidden", script)
         self.assertNotIn("document.querySelector('#connections-stage').hidden", script)
