@@ -13,14 +13,12 @@ class HomepageHeroContractTests(unittest.TestCase):
             (ROOT / "src" / "connections-hero.css").read_text(encoding="utf-8").split()
         )
 
-        self.assertIn('./src/connections-hero.css?v=20260916-7', index)
+        self.assertIn('./src/connections-hero.css?v=20260917-1', index)
         self.assertIn('class="brand-name">Steel Exposure <b>Atlas</b>', index)
         self.assertNotIn('brand-kicker', index)
         self.assertNotIn('STEEL PRODUCTION, IN CONTEXT', index)
-        self.assertIn(
-            'Trace steel companies across their plants, products and production methods,<br class="hero-break">with sanctions and trade measures brought into the same view through public evidence.',
-            index,
-        )
+        self.assertNotIn('class="intro"', index)
+        self.assertNotIn('Trace steel companies across their plants', index)
         self.assertIn('class="scope-action">· Select area</span>', index)
         self.assertNotIn('class="small-cross"', index)
         self.assertNotIn('Explore the connections.', index)
@@ -30,10 +28,11 @@ class HomepageHeroContractTests(unittest.TestCase):
         self.assertIn('background:var(--night)!important', css)
         self.assertIn('.brand-copy{display:flex;align-items:center', css)
         self.assertNotIn('.brand-kicker{', css)
-        self.assertIn('.hero-break{display:block}', css)
+        self.assertNotIn('.intro{', css)
+        self.assertNotIn('.opening-hint{', css)
         self.assertIn('#scope-meta{display:none!important}', css)
-        self.assertIn('.atlas{min-height:100svh;padding-top:148px', css)
-        self.assertIn('.connections-stage{height:calc(100svh-220px)!important', css)
+        self.assertIn('.atlas{min-height:100svh;padding-top:72px', css)
+        self.assertIn('.connections-stage{height:calc(100svh-122px)!important', css)
 
 
 if __name__ == "__main__":
