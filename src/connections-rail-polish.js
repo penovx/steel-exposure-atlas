@@ -94,6 +94,11 @@
     }
   }
 
+  function removeMisleadingSublines() {
+    for (const node of document.querySelectorAll('#company-nodes .company-sub')) node.remove();
+    document.querySelector('#method-nodes .method-node[data-route="Other"] .method-sub')?.remove();
+  }
+
   function ensureProductDescriptions() {
     for (const node of document.querySelectorAll('#product-nodes .product-node')) {
       let description = node.querySelector(':scope > .product-description');
@@ -175,6 +180,7 @@
     requestAnimationFrame(() => {
       queued = false;
       appendScrollableOwners();
+      removeMisleadingSublines();
       ensureProductDescriptions();
       renderMethodEndpointDots();
     });
