@@ -243,23 +243,21 @@
     }
   }
 
-  // Sites and site-level product labels are already shown above. The compact trade
-  // signal should keep only the attributes that change the interpretation of the EU measure.
+  // Derivation details stay in View evidence. The compact company brief shows the
+  // consequence that can materially change an EU-import decision.
   function patchTradeSignal(card) {
-    const detail = card.querySelector(
-      '.company-context-signal-trade .company-context-signal-detail'
-    );
-    if (!detail) return;
+    const signal = card.querySelector('.company-context-signal-trade');
+    if (!signal) return;
 
-    const raw = detail.textContent ?? '';
-    const origin = raw.match(/(?:^| · )Origin:\s*(.*?)(?= · GIST product labels map to:|$)/)?.[1]?.trim();
-    const families = raw.match(/GIST product labels map to:\s*(.*?)(?= · (?:Broad )?Product-family mapping|$)/)?.[1]?.trim();
-    const parts = [
-      origin ? `Origin used for the measure: ${origin}` : '',
-      families ? `GIST product labels map to: ${families}` : '',
-    ].filter(Boolean);
+    const title = signal.querySelector('.company-context-signal-title');
+    const detail = signal.querySelector('.company-context-signal-detail');
+    const consequence = signal.querySelector('.company-context-signal-consequence');
 
-    if (parts.length) detail.textContent = parts.join(' · ');
+    if (title) title.textContent = '50% additional duty after quota exhaustion';
+    if (detail) {
+      detail.textContent = 'If imported into the EU, an additional duty of 50% applies once the applicable quota is exhausted.';
+    }
+    consequence?.remove();
   }
 
   function patchRole(card) {
