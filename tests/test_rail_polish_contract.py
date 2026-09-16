@@ -55,17 +55,21 @@ class RailPolishContractTests(unittest.TestCase):
         self.assertIn("pathEnd(edge)", script)
         self.assertIn("method-endpoint-port", script)
 
-    def test_every_product_receives_a_visible_description(self) -> None:
+    def test_product_descriptions_live_in_picker_not_atlas_rail(self) -> None:
         css = (ROOT / "src" / "connections-visual-polish.css").read_text(
             encoding="utf-8"
         ).replace(" ", "")
         script = (ROOT / "src" / "connections-rail-polish.js").read_text(
             encoding="utf-8"
         )
-        self.assertIn("function ensureProductDescriptions()", script)
+        self.assertIn("function removeInlineProductDescriptions()", script)
+        self.assertIn("#product-nodes .product-description", script)
+        self.assertIn("function decorateProductPickerDescriptions()", script)
+        self.assertIn('#browse-result .browse-item[data-browse-kind="product"]', script)
+        self.assertIn("Semi-finished long steel", script)
         self.assertIn("GIST-listed steel product category", script)
-        self.assertIn(".product-description{display:block!important", css)
-        self.assertIn("min-height:28px", css)
+        self.assertIn(".product-description{display:none!important}", css)
+        self.assertNotIn("function ensureProductDescriptions()", script)
 
 
 if __name__ == "__main__":
