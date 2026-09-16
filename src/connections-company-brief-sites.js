@@ -243,8 +243,8 @@
     }
   }
 
-  // Derivation details stay in View evidence. The compact company brief shows the
-  // consequence that can materially change an EU-import decision.
+  // Derivation details stay in View evidence. The company brief first explains the
+  // legal quota mechanism, then the consequence of quota exhaustion.
   function patchTradeSignal(card) {
     const signal = card.querySelector('.company-context-signal-trade');
     if (!signal) return;
@@ -253,11 +253,13 @@
     const detail = signal.querySelector('.company-context-signal-detail');
     const consequence = signal.querySelector('.company-context-signal-consequence');
 
-    if (title) title.textContent = '50% additional duty after quota exhaustion';
+    if (title) title.textContent = 'EU tariff-quota framework in force';
     if (detail) {
-      detail.textContent = 'If imported into the EU, an additional duty of 50% applies once the applicable quota is exhausted.';
+      detail.textContent = 'European Parliament and Council: Regulation (EU) 2026/1384 · annual quota period 1 Jul–30 Jun. European Commission: current allocation under Implementing Regulation (EU) 2026/1457 applies 1 Jul–31 Dec 2026. Purpose: address trade-related effects of global steel overcapacity.';
     }
-    consequence?.remove();
+    if (consequence) {
+      consequence.textContent = '50% out-of-quota duty after quota exhaustion. If covered steel is imported into the EU, the 50% duty applies once the applicable quota is exhausted.';
+    }
   }
 
   function patchRole(card) {
