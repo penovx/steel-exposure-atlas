@@ -27,18 +27,23 @@ class SelectionProfileMapContextContractTests(unittest.TestCase):
         self.assertNotIn("document.querySelector('#geography').hidden", script)
         self.assertNotIn("document.querySelector('#connections-stage').hidden", script)
 
-    def test_company_click_does_not_rebuild_the_long_rail_twice_in_the_click_handler(self) -> None:
+    def test_company_rail_is_complete_immediately_and_not_reconstructed_after_click(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
+        core = (ROOT / "src" / "connections-core.js").read_text(encoding="utf-8")
         rail = (ROOT / "src" / "connections-rail-polish.js").read_text(encoding="utf-8")
+        bootstrap = (ROOT / "src" / "connections-bootstrap.js").read_text(encoding="utf-8")
 
         self.assertIn('./src/connections-rail-polish.js?v=20260916-5', index)
-        self.assertIn('document.createDocumentFragment()', rail)
-        self.assertIn("companyNodes.dataset.restoreScrollTop = String(scrollTop)", rail)
-        self.assertIn("api.choose('owner', button.dataset.owner)", rail)
-        self.assertIn("window.scrollTo({left: pageX, top: pageY, behavior: 'auto'})", rail)
-        click_block = rail.split("companyNodes.addEventListener('click'", 1)[1].split("function removeMisleadingSublines", 1)[0]
-        self.assertNotIn("appendScrollableOwners();", click_block)
-        self.assertNotIn("restoreStableOwnerOrder(companyNodes);", click_block)
+        self.assertIn('./src/connections-runtime-bridge.js?v=20260916-2', index)
+        self.assertIn('./src/connections-bootstrap.js?v=20260916-2', index)
+        self.assertIn("import('./connections-core.js?v=20260916-2')", bootstrap)
+        self.assertIn("function syncCompanyRail(availableOwners,chosen)", core)
+        self.assertIn("ownerList=availableOwners", core)
+        self.assertIn("if(container.dataset.ownerSignature!==signature)", core)
+        self.assertNotIn(".slice(0,5)", core)
+        self.assertNotIn("appendScrollableOwners", rail)
+        self.assertNotIn("restoreStableOwnerOrder", rail)
+        self.assertNotIn("installOwnerSelectionBridge", rail)
 
 
 if __name__ == "__main__":
