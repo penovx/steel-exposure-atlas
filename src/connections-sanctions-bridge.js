@@ -278,9 +278,12 @@
     const sourceContent = document.querySelector('#source-content');
     if (!sourceContent || !sourceContent.children.length) return;
 
-    for (const paragraph of sourceContent.querySelectorAll('p')) {
-      if (!paragraph.textContent?.includes('No water-stress, trade, emissions or buyer-supplier layer is present.')) continue;
-      paragraph.textContent = 'Water-stress, emissions and buyer-supplier layers are not present. EU and U.S. sanctions context and the EU steel-import scenario are separate reviewed layers built from pinned source snapshots. The integration remains pre-publication until the repository release checklist is completed.';
+    const cartographySection = [...sourceContent.querySelectorAll('.source-section')].find(
+      (section) => section.querySelector('h3')?.textContent === 'Cartography and local review'
+    );
+    const scopeParagraph = cartographySection?.querySelector('p:last-child');
+    if (scopeParagraph) {
+      scopeParagraph.textContent = 'Water-stress, emissions and buyer-supplier layers are not present. EU and U.S. sanctions context and the EU steel-import scenario are separate reviewed layers built from pinned source snapshots. The integration remains pre-publication until the repository release checklist is completed.';
     }
 
     if (payloads.eu && !sourceContent.querySelector('.sanctions-source-section-eu')) {
