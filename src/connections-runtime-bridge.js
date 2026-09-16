@@ -369,6 +369,10 @@ function updateEdgeReadabilityMask() {
   if (!fadeZones) return;
   fadeZones.replaceChildren();
 
+  // Do not inspect every company row here. The company rail can contain hundreds
+  // of stable rows; masking each row forced hundreds of layout reads on every map
+  // redraw and caused visible stalls. Company edges are clipped separately to the
+  // scroll viewport by connections-rail-polish.js.
   const protectedSelectors = [
     '.country-label',
     '.plant-name',
@@ -377,9 +381,7 @@ function updateEdgeReadabilityMask() {
     '.map-key',
     '.rail-heading',
     '.rail-subtitle',
-    '.company-name',
-    '.company-count',
-    '.company-sub',
+    '.company-search',
     '.method-name',
     '.method-value',
     '.method-sub',
@@ -422,9 +424,9 @@ function installEdgeReadabilityObserver() {
   if (!stage || stage.dataset.edgeMaskObserver === 'true') return;
   stage.dataset.edgeMaskObserver = 'true';
 
-  const mutationObserver = new MutationObserver(queueEdgeReadabilityMask);
-  mutationObserver.observe(stage, {childList: true, subtree: true, attributes: true});
-
+  // Edge/product/method observers already schedule the mask after a redraw.
+  // Watching every attribute mutation in the entire stage produced a large
+  // feedback loop when company selection changed hundreds of classes.
   const resizeObserver = new ResizeObserver(queueEdgeReadabilityMask);
   resizeObserver.observe(stage);
 
