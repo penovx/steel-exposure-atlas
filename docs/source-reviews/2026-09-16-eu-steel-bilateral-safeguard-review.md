@@ -2,9 +2,9 @@
 
 ## Decision
 
-**Approved for local processing. Public publication remains conditional on pinning and fingerprinting the exact EUR-Lex snapshot through the project fetch pipeline.**
+**Approved for publication of a minimal derived context layer.**
 
-This review supplements `2026-09-16-eu-steel-import-measure-review.md`.
+This review supplements `2026-09-16-eu-steel-import-measure-review.md` and records the exact snapshot that closes the remaining publication condition.
 
 ## Why this additional source is needed
 
@@ -22,20 +22,35 @@ Official ELI:
 
 - https://eur-lex.europa.eu/eli/reg_impl/2026/1930/oj/eng
 
-Relevant source facts checked on 2026-09-16:
+## Pinned snapshot
 
-- the measure covers the same 26 steel product categories defined in Annex I of Regulation 2026/1384;
+Local fetch completed on 2026-09-16.
+
+- retrieved at: `2026-09-16T17:44:31+00:00`
+- SHA-256: `5F0214CD0FC9FC85A114B9EC485E2D6887F3F2137BD177EE357CC00FE2BB32BE`
+- bytes: `351,592`
+- bilateral safeguard origins parsed: `9`
+- additional duty rate parsed: `50%`
+- effective from: `2026-08-06`
+
+The raw EUR-Lex snapshot remains local. Only minimal derived legal-route/context fields may be published.
+
+## Relevant source facts
+
+The reviewed source establishes that:
+
+- the measure covers the same steel product framework defined by Regulation (EU) 2026/1384;
 - Article 1 applies bilateral safeguard measures to steel products originating in **Albania, Israel, Jordan, Morocco, North Macedonia, Serbia, Switzerland, Tunisia and Türkiye**;
 - the measure uses an **out-of-quota duty of 50% ad valorem**;
 - the duty applies after the applicable tariff quota distributed under Implementing Regulation 2026/1457 has been exhausted, whether that quota is country-specific or accessed in competition with other countries;
 - Article 2 applies Union non-preferential-origin rules for determining origin;
-- the Regulation entered into force on the day following its publication in the Official Journal on 5 August 2026, therefore **6 August 2026**.
+- the Regulation entered into force on **6 August 2026**.
 
 ## Product consequence
 
-For the atlas, this source changes legal provenance, not the product UX hierarchy.
+For the atlas, this source changes legal provenance, not the primary UX hierarchy.
 
-A user should still see a simple EU-import scenario such as:
+A user-facing EU-import context may expose:
 
 - relevant EU steel measure;
 - origin;
@@ -44,22 +59,22 @@ A user should still see a simple EU-import scenario such as:
 - additional duty if the relevant quota is exhausted;
 - procurement follow-up.
 
-The UI should not force the user to understand whether the legal route comes from Article 2 of Regulation 2026/1384 or a bilateral safeguard under Regulation 2026/1930. That distinction belongs in evidence detail and provenance unless it materially changes the decision.
+The UI should not require the user to interpret whether the legal route comes from Article 2 of Regulation 2026/1384 or a bilateral safeguard under Regulation 2026/1930 unless that distinction materially changes the decision. The route remains available in evidence/provenance.
 
 ## Derived-model rule
 
-The trade profile must preserve one of these legal routes for non-EU origin plants:
+The trade profile preserves one of these legal routes:
 
 - `steel_regulation_2026_1384`;
 - `bilateral_safeguard_2026_1930`;
 - `eea_exempt_origin`;
 - `intra_eu_origin`.
 
-The legal route is a source/derived evidence field. It is not a risk score.
+The legal route is evidence/provenance, not a risk score.
 
 ## Reuse / publication
 
-The same project policy used for the other EUR-Lex steel-measure source applies:
+Project publication policy:
 
 - raw Official Journal content remains local;
 - publish only minimal derived fields needed by the atlas;
@@ -68,4 +83,4 @@ The same project policy used for the other EUR-Lex steel-measure source applies:
 - link to the official ELI;
 - stop publication if a conflicting source-specific reuse notice is found.
 
-The exact 2026/1930 bytes have not yet been fingerprinted by the local pipeline at the time of this review, so public publication is not yet approved.
+The exact source bytes are now pinned and fingerprinted. Together with the reviewed Commission reuse basis, this closes the source-specific publication condition for a minimal derived trade-context layer.
