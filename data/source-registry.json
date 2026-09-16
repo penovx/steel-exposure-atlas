@@ -175,6 +175,42 @@
         }
       ],
       "review_notes": "Approval covers company-level direct-list identity evidence and categorical screening states only. SDN and Consolidated Non-SDN records retain their source-list and program context. A no-match is not sanctions clearance, and ownership/control effects such as OFAC's 50 Percent Rule are not inferred by the direct-list screen. Individual, Vessel and Aircraft records are excluded from automatic GIST-company candidate generation."
+    },
+    {
+      "id": "eu-steel-import-measures-2026",
+      "publisher": "European Union / European Commission",
+      "dataset": "Commission Implementing Regulations (EU) 2026/1457 and 2026/1930",
+      "status": "approved_for_publication",
+      "publication_status": "approved_for_publication",
+      "cost_status": "free",
+      "source_url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1457/oj/eng",
+      "terms_url": "https://commission.europa.eu/legal-notice_en",
+      "dataset_version": "Regulation 2026/1457 snapshot retrieved 2026-09-16T17:15:49+00:00; Regulation 2026/1930 snapshot retrieved 2026-09-16T17:44:31+00:00",
+      "reviewed_at": "2026-09-16",
+      "retrieved_at": "2026-09-16",
+      "intended_use": "minimal derived EU steel import scenario context connecting GIST plant origin and product-family candidates to reviewed quota-route evidence and procurement follow-up",
+      "licence": "European Commission reuse basis / CC BY 4.0 unless otherwise indicated, as documented in the source review",
+      "commercial_reuse": "permitted under the reviewed Commission reuse basis with attribution and indication of changes",
+      "redistribution": "approved for a minimal derived trade-context layer only; raw Official Journal snapshots remain local and the full legal documents are not republished",
+      "access_conditions": "free official EUR-Lex access; no account, API key or paid service required",
+      "attribution": "Source: European Union / European Commission, Commission Implementing Regulations (EU) 2026/1457 and 2026/1930. Derived product-family and plant context by Steel Exposure Atlas; link to the official EUR-Lex sources.",
+      "source_artifacts": [
+        {
+          "file": "2026-1457.html",
+          "source_url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1457/oj/eng",
+          "retrieved_at": "2026-09-16T17:15:49+00:00",
+          "sha256": "B869A4BB8C4E4F7AE320B4CE4A117A33B05CADEEDF1C9DF106845EBCA9D9B21B",
+          "repository_policy": "do_not_commit"
+        },
+        {
+          "file": "2026-1930.html",
+          "source_url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1930/oj/eng",
+          "retrieved_at": "2026-09-16T17:44:31+00:00",
+          "sha256": "5F0214CD0FC9FC85A114B9EC485E2D6887F3F2137BD177EE357CC00FE2BB32BE",
+          "repository_policy": "do_not_commit"
+        }
+      ],
+      "review_notes": "Approval is limited to the reviewed 2026 steel-import scenario layer. GIST product labels remain product-family candidates rather than customs classifications. The layer does not imply that a plant exports to the EU and does not publish live quota-availability or transaction-specific landed-cost conclusions."
     }
   ]
 }
