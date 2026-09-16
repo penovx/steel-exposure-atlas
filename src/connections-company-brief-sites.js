@@ -243,6 +243,25 @@
     }
   }
 
+  // Sites and site-level product labels are already shown above. The compact trade
+  // signal should keep only the attributes that change the interpretation of the EU measure.
+  function patchTradeSignal(card) {
+    const detail = card.querySelector(
+      '.company-context-signal-trade .company-context-signal-detail'
+    );
+    if (!detail) return;
+
+    const raw = detail.textContent ?? '';
+    const origin = raw.match(/(?:^| · )Origin:\s*(.*?)(?= · GIST product labels map to:|$)/)?.[1]?.trim();
+    const families = raw.match(/GIST product labels map to:\s*(.*?)(?= · (?:Broad )?Product-family mapping|$)/)?.[1]?.trim();
+    const parts = [
+      origin ? `Origin used for the measure: ${origin}` : '',
+      families ? `GIST product labels map to: ${families}` : '',
+    ].filter(Boolean);
+
+    if (parts.length) detail.textContent = parts.join(' · ');
+  }
+
   function patchRole(card) {
     const role = card.querySelector('.company-context-role');
     if (role) {
@@ -261,6 +280,7 @@
     keepCapacityMetricOnly(card, review, plants);
     renderSitesAndProducts(card, plants);
     patchProductionProfile(card, review, plants);
+    patchTradeSignal(card);
   }
 
   function queuePatch() {
