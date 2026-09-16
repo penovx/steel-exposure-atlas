@@ -14,7 +14,7 @@ class ProcurementUiContractTests(unittest.TestCase):
         self.assertIn('id="company-title">Companies<', index)
         self.assertIn('id="method-title">Production methods<', index)
         self.assertIn('placeholder="Search companies"', index)
-        self.assertIn('./src/connections-company-virtual-rail.js?v=20260916-1', index)
+        self.assertIn('./src/connections-company-virtual-rail.js?v=20260917-2', index)
         self.assertIn('./src/connections-procurement-ui.css?v=20260916-4', index)
         self.assertIn("__ATLAS_COMPANY_ELIGIBILITY__", virtual)
         self.assertIn("eligibility.isVisible(group.id)", virtual)
