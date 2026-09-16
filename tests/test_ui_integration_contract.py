@@ -13,6 +13,7 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn('id="company-nodes"', index)
         self.assertIn('id="method-nodes"', index)
         self.assertIn('id="product-nodes"', index)
+        self.assertIn('class="product-divider"', index)
         self.assertIn('./src/connections.css', index)
         self.assertIn('./src/connections-sanctions.css', index)
         self.assertIn('./src/connections-runtime-bridge.js', index)
@@ -61,19 +62,19 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn("products.length", bridge)
         self.assertIn("has()", bridge)
         self.assertIn("return hasRelationalFocus(reviewState())", bridge)
-        self.assertIn('selecting "bar"', bridge)
 
-    def test_product_counts_are_described_not_bare_numbers(self) -> None:
+    def test_product_counts_and_descriptions_are_explicit(self) -> None:
         bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(encoding="utf-8")
         polish = (ROOT / "src" / "connections-visual-polish.css").read_text(
             encoding="utf-8"
         ).replace(" ", "")
         self.assertIn("decorateProductLabels", bridge)
-        self.assertIn("has-relational-focus", bridge)
-        self.assertIn("aria-label", bridge)
+        self.assertIn("productDescription", bridge)
         self.assertIn("${value} listed sites", bridge)
         self.assertIn("${value} connected sites", bridge)
-        self.assertIn(".product-node>span{display:block", polish)
+        self.assertIn("descriptionNode.className = 'product-description'", bridge)
+        self.assertIn(".product-description{display:block", polish)
+        self.assertIn(".product-node>span,.product-count{display:block", polish)
 
     def test_steelmaking_values_expose_mtpa_unit(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
