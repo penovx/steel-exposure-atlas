@@ -3,6 +3,13 @@
   let loadedPayloads = {eu: null, ofac: null};
   let loadedTradePayload = null;
 
+  const ROUTES = [
+    {id: 'BOF', name: 'Basic oxygen furnace', field: 'bof_steel_capacity_ttpa'},
+    {id: 'EAF', name: 'Electric arc furnace', field: 'eaf_steel_capacity_ttpa'},
+    {id: 'IF', name: 'Induction furnace', field: 'if_steel_capacity_ttpa'},
+    {id: 'Other', name: 'Other steelmaking', field: 'other_steel_capacity_ttpa'},
+  ];
+
   function reviewApi() {
     try {
       return globalThis.__atlasReview ?? null;
@@ -37,26 +44,68 @@
     return connectedPlants(review, ownerId).map((plant) => plant.id);
   }
 
+  function formatCapacity(capacity) {
+    if (capacity?.known === null || capacity?.known === undefined) return '—';
+    const value = capacity.known / 1000;
+    return `${value.toLocaleString('en-GB', {maximumFractionDigits: value < 10 ? 2 : 1})}${capacity.positive ? '+' : ''} Mtpa`;
+  }
+
   function companyScopeSummary(review, ownerId) {
     const plants = connectedPlants(review, ownerId);
-    const countries = new Set(plants.map((plant) => plant.country).filter(Boolean));
+    const countries = new Map();
+    for (const plant of plants) {
+      if (!plant.country) continue;
+      countries.set(plant.country, (countries.get(plant.country) ?? 0) + 1);
+    }
     let capacity = null;
     try {
       capacity = review.model?.total?.(plants) ?? null;
     } catch {
       capacity = null;
     }
-    let capacityText = '—';
-    if (capacity?.known !== null && capacity?.known !== undefined) {
-      const value = capacity.known / 1000;
-      capacityText = `${value.toLocaleString('en-GB', {maximumFractionDigits: value < 10 ? 2 : 1})}${capacity.positive ? '+' : ''} Mtpa`;
-    }
     return {
       plants,
       siteCount: plants.length,
       countryCount: countries.size,
-      capacityText,
+      countries: [...countries.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'en')),
+      capacityText: formatCapacity(capacity),
     };
+  }
+
+  function productSummary(plants) {
+    const counts = new Map();
+    for (const plant of plants) {
+      for (const product of new Set(plant.products?.values ?? [])) {
+        counts.set(product, (counts.get(product) ?? 0) + 1);
+      }
+    }
+    return [...counts.entries()]
+      .map(([name, count]) => ({name, count}))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'en'));
+  }
+
+  function routeSummary(review, plants) {
+    return ROUTES.map((route) => {
+      const siteCount = plants.filter((plant) => review.model?.hasRoute?.(plant, route.id)).length;
+      if (!siteCount) return null;
+      let capacity = null;
+      try {
+        capacity = review.model?.total?.(plants, route.field) ?? null;
+      } catch {
+        capacity = null;
+      }
+      return {id: route.id, name: route.name, siteCount, capacityText: formatCapacity(capacity)};
+    }).filter(Boolean);
+  }
+
+  function siteSummary(plants) {
+    return [...plants]
+      .sort((a, b) => String(a.country).localeCompare(String(b.country), 'en') || String(a.name).localeCompare(String(b.name), 'en'))
+      .map((plant) => ({
+        id: plant.id,
+        name: plant.city && plant.city !== 'unknown' ? plant.city : plant.name,
+        country: plant.country,
+      }));
   }
 
   function formatDate(value) {
@@ -93,7 +142,7 @@
     card.id = 'company-context-card';
     card.className = 'company-context-card';
     card.setAttribute('aria-live', 'polite');
-    card.setAttribute('aria-label', 'Company context');
+    card.setAttribute('aria-label', 'Company brief');
     card.hidden = true;
     stage.append(card);
     return card;
@@ -105,6 +154,61 @@
     text(item, 'strong', '', value);
     text(item, 'span', '', label);
     parent.append(item);
+  }
+
+  function addSection(parent, label, title = '') {
+    const section = document.createElement('section');
+    section.className = 'company-brief-section';
+    text(section, 'span', 'company-brief-section-label', label);
+    if (title) text(section, 'h4', 'company-brief-section-title', title);
+    parent.append(section);
+    return section;
+  }
+
+  function addRankedRows(section, rows, totalSites, limit = 6) {
+    const list = document.createElement('div');
+    list.className = 'company-brief-ranked-list';
+    for (const row of rows.slice(0, limit)) {
+      const item = document.createElement('div');
+      item.className = 'company-brief-ranked-row';
+      text(item, 'span', 'company-brief-ranked-name', row.name);
+      text(item, 'span', 'company-brief-ranked-value', `${row.count}/${totalSites} sites`);
+      list.append(item);
+    }
+    if (rows.length > limit) text(list, 'p', 'company-brief-more', `+${rows.length - limit} more`);
+    section.append(list);
+  }
+
+  function addRouteRows(section, rows) {
+    const list = document.createElement('div');
+    list.className = 'company-brief-ranked-list';
+    for (const row of rows) {
+      const item = document.createElement('div');
+      item.className = 'company-brief-ranked-row';
+      text(item, 'span', 'company-brief-ranked-name', row.name);
+      const detail = row.capacityText === '—'
+        ? `${row.siteCount} ${row.siteCount === 1 ? 'site' : 'sites'}`
+        : `${row.siteCount} ${row.siteCount === 1 ? 'site' : 'sites'} · ${row.capacityText}`;
+      text(item, 'span', 'company-brief-ranked-value', detail);
+      list.append(item);
+    }
+    section.append(list);
+  }
+
+  function addFootprintRows(section, scope) {
+    const countries = scope.countries.map(([country, count]) => `${country} ${count}`).join(' · ');
+    text(section, 'p', 'company-brief-footprint-line', countries);
+    const sites = siteSummary(scope.plants);
+    const list = document.createElement('div');
+    list.className = 'company-brief-site-list';
+    for (const site of sites.slice(0, 5)) {
+      const row = document.createElement('div');
+      text(row, 'span', 'company-brief-site-name', site.name);
+      text(row, 'span', 'company-brief-site-country', site.country);
+      list.append(row);
+    }
+    if (sites.length > 5) text(list, 'p', 'company-brief-more', `+${sites.length - 5} more sites`);
+    section.append(list);
   }
 
   function signal(parent, {label, state, title, detail, consequence = '', kind = ''}) {
@@ -228,6 +332,24 @@
     readingDetail.append(section);
   }
 
+  function syncCompanyBriefOffer() {
+    const review = reviewApi();
+    const selected = selectedOwnerId(review);
+    for (const row of document.querySelectorAll('#company-nodes .company-node[data-owner]')) {
+      row.querySelector('.company-brief-offer')?.remove();
+      row.classList.remove('has-company-brief-offer');
+      if (!selected || row.dataset.owner !== selected) continue;
+      const offer = document.createElement('span');
+      offer.className = 'company-brief-offer';
+      offer.setAttribute('aria-hidden', 'true');
+      offer.textContent = contextOpenOwnerId === selected ? 'Company brief open ↑' : 'Open company brief →';
+      row.append(offer);
+      row.classList.add('has-company-brief-offer');
+      const name = row.querySelector('.company-name')?.textContent?.trim() ?? 'Company';
+      row.setAttribute('aria-label', `${name}, selected. Click again to ${contextOpenOwnerId === selected ? 'close' : 'open'} company brief.`);
+    }
+  }
+
   function renderCard(payloads = loadedPayloads, tradePayload = loadedTradePayload) {
     const review = reviewApi();
     const stage = document.querySelector('#connections-stage');
@@ -238,10 +360,13 @@
     if (!ownerId) {
       card.hidden = true;
       card.removeAttribute('data-owner');
+      syncCompanyBriefOffer();
       return null;
     }
 
     const scope = companyScopeSummary(review, ownerId);
+    const products = productSummary(scope.plants);
+    const routes = routeSummary(review, scope.plants);
     const siteIds = scope.plants.map((plant) => plant.id);
     const tradeRows = tradeRowsFor(tradePayload, siteIds);
     const trade = tradeSummary(tradeRows);
@@ -253,17 +378,18 @@
     const header = document.createElement('div');
     header.className = 'company-context-header';
     const heading = document.createElement('div');
-    text(heading, 'span', 'company-context-eyebrow', 'COMPANY CONTEXT');
+    text(heading, 'span', 'company-context-eyebrow', 'COMPANY BRIEF');
     text(heading, 'h3', 'company-context-title', ownerName(review, ownerId));
-    text(heading, 'p', 'company-context-role', 'Immediate owner or operator named by GEM');
+    text(heading, 'p', 'company-context-role', 'Immediate owner or operator named by GEM · current connected scope');
     const close = document.createElement('button');
     close.type = 'button';
     close.className = 'company-context-close';
-    close.setAttribute('aria-label', 'Close company context');
+    close.setAttribute('aria-label', 'Close company brief');
     close.textContent = '×';
     close.addEventListener('click', () => {
       contextOpenOwnerId = null;
       card.hidden = true;
+      syncCompanyBriefOffer();
     });
     header.append(heading, close);
     card.append(header);
@@ -272,8 +398,18 @@
     metrics.className = 'company-context-metrics';
     addMetric(metrics, scope.siteCount.toLocaleString('en-GB'), 'Connected sites');
     addMetric(metrics, scope.countryCount.toLocaleString('en-GB'), 'Countries');
-    addMetric(metrics, scope.capacityText, 'Known operating capacity');
+    addMetric(metrics, scope.capacityText, 'Known operating crude-steel capacity');
     card.append(metrics);
+
+    const overview = document.createElement('div');
+    overview.className = 'company-brief-overview';
+    const footprint = addSection(overview, 'FOOTPRINT');
+    addFootprintRows(footprint, scope);
+    const productsSection = addSection(overview, 'PRODUCTS', `${products.length} listed product types`);
+    addRankedRows(productsSection, products, scope.siteCount);
+    const methodsSection = addSection(overview, 'PRODUCTION METHODS', `${routes.length} methods in connected sites`);
+    addRouteRows(methodsSection, routes);
+    card.append(overview);
 
     const euStatus = statusFor(payloads.eu, ownerId);
     const ofacStatus = statusFor(payloads.ofac, ownerId);
@@ -283,6 +419,7 @@
 
     const body = document.createElement('div');
     body.className = 'company-context-body';
+    text(body, 'span', 'company-brief-section-label company-brief-decision-label', 'DECISION SIGNALS');
 
     if (euStatus?.state === 'direct_list_match') {
       signal(body, {label: 'EU sanctions list', state: 'Listed', title: 'Listed by the EU', detail: 'Financial sanctions list', kind: 'sanctions'});
@@ -303,7 +440,7 @@
     }
 
     if (trade) {
-      const detail = ['If imported into the EU', `${tradeRows.length} connected ${tradeRows.length === 1 ? 'site' : 'sites'}`, trade.origins, trade.families].filter(Boolean).join(' · ');
+      const detail = ['If imported into the EU', `${tradeRows.length}/${scope.siteCount} connected sites`, trade.origins, trade.families].filter(Boolean).join(' · ');
       signal(body, {
         label: 'EU steel import measure',
         state: trade.state,
@@ -324,8 +461,10 @@
     }
     if (trade) followUps.push(trade.followUp);
     addAction(body, followUps);
-    if (body.children.length) card.append(body);
+    if (hasScreeningResult || trade || followUps.length) card.append(body);
 
+    const footer = document.createElement('div');
+    footer.className = 'company-brief-footer';
     if (hasScreeningResult || trade) {
       const evidence = document.createElement('button');
       evidence.type = 'button';
@@ -335,8 +474,12 @@
         const target = document.querySelector('#reading-detail .sanctions-context, #reading-detail .trade-context, #reading-detail .sanctions-secondary-result');
         target?.scrollIntoView({behavior: 'smooth', block: 'start'});
       });
-      card.append(evidence);
+      footer.append(evidence);
     }
+    text(footer, 'span', 'company-brief-footer-note', 'Public-data brief · no supplier ranking');
+    card.append(footer);
+
+    syncCompanyBriefOffer();
     return ownerId;
   }
 
@@ -374,7 +517,8 @@
       const review = reviewApi();
       const selectionPath = document.querySelector('#selection-path');
       const stage = document.querySelector('#connections-stage');
-      if (!review?.snapshot || !selectionPath || !stage) {
+      const companyNodes = document.querySelector('#company-nodes');
+      if (!review?.snapshot || !selectionPath || !stage || !companyNodes) {
         requestAnimationFrame(wait);
         return;
       }
@@ -386,9 +530,11 @@
         const siteIds = ownerId ? connectedSiteIds(review, ownerId) : [];
         renderTradeEvidence(loadedTradePayload, tradeRowsFor(loadedTradePayload, siteIds));
         renderCard();
+        requestAnimationFrame(syncCompanyBriefOffer);
       };
 
       new MutationObserver(reconcile).observe(selectionPath, {childList: true, subtree: true});
+      new MutationObserver(() => requestAnimationFrame(syncCompanyBriefOffer)).observe(companyNodes, {childList: true});
       reconcile();
     };
 
