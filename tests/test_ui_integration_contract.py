@@ -18,6 +18,8 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn('./src/connections-sanctions.css', index)
         self.assertIn('./src/connections-runtime-bridge.js', index)
         self.assertIn('./src/connections-sanctions-loader.js', index)
+        self.assertIn('./src/connections-trade-loader.js', index)
+        self.assertIn('./src/connections-company-context.js', index)
         self.assertIn('./src/connections-sanctions-bridge.js', index)
         self.assertIn('./src/connections-bootstrap.js', index)
         self.assertNotIn('type="application/json"', index)
@@ -107,6 +109,16 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertNotIn("Identity resolution: Confirmed", bridge)
         self.assertNotIn("OFAC SDN", bridge)
         self.assertNotIn("85%", bridge)
+
+    def test_trade_context_is_pinned_and_documented_in_sources(self) -> None:
+        loader = (ROOT / "src" / "connections-trade-loader.js").read_text(encoding="utf-8")
+        bridge = (ROOT / "src" / "connections-sanctions-bridge.js").read_text(encoding="utf-8")
+        self.assertIn("eu-steel-trade-context.v1.json", loader)
+        self.assertIn("B869A4BB8C4E4F7AE320B4CE4A117A33B05CADEEDF1C9DF106845EBCA9D9B21B", loader)
+        self.assertIn("5F0214CD0FC9FC85A114B9EC485E2D6887F3F2137BD177EE357CC00FE2BB32BE", loader)
+        self.assertIn("EU steel import scenario", bridge)
+        self.assertIn("hypothetical import into the EU", bridge)
+        self.assertNotIn("No water-stress, trade, emissions or buyer-supplier layer is present", bridge)
 
     def test_homepage_does_not_embed_the_full_dataset(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
