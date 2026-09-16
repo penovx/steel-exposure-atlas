@@ -13,20 +13,23 @@ class HomepageHeroContractTests(unittest.TestCase):
             (ROOT / "src" / "connections-hero.css").read_text(encoding="utf-8").split()
         )
 
-        self.assertIn('./src/connections-hero.css?v=20260916-3', index)
-        self.assertIn('Steel Exposure <b>Atlas</b>', index)
-        self.assertIn('STEEL PRODUCTION, IN CONTEXT', index)
+        self.assertIn('./src/connections-hero.css?v=20260916-4', index)
+        self.assertIn('class="brand-name">Steel Exposure <b>Atlas</b>', index)
+        self.assertIn('class="brand-kicker">STEEL PRODUCTION, IN CONTEXT</span>', index)
         self.assertIn(
-            'Trace steel companies across their plants, products and production methods, with sanctions and trade measures brought into the same view through public evidence.',
+            'Trace steel companies across their plants, products and production methods,<br class="hero-break">with sanctions and trade measures brought into the same view through public evidence.',
             index,
         )
+        self.assertIn('class="scope-action">· Select area</span>', index)
+        self.assertNotIn('class="small-cross"', index)
         self.assertNotIn('Explore the connections.', index)
         self.assertNotIn('Know who makes what, where.', index)
         self.assertNotIn('Steel production, ownership and sourcing exposure', index)
-        self.assertIn('.masthead{position:absolute!important', css)
-        self.assertIn('.intro{position:absolute!important', css)
-        self.assertIn('.atlas{min-height:100svh;padding-top:98px', css)
-        self.assertIn('.connections-stage{height:calc(100svh-180px)!important', css)
+        self.assertIn('.brand-kicker{font-size:8.5px', css)
+        self.assertIn('.hero-break{display:block}', css)
+        self.assertIn('#scope-meta{display:none!important}', css)
+        self.assertIn('.atlas{min-height:100svh;padding-top:148px', css)
+        self.assertIn('.connections-stage{height:calc(100svh-220px)!important', css)
 
 
 if __name__ == "__main__":
