@@ -18,7 +18,7 @@
 .masthead .edition{color:#8fa8b7;border-left-color:#304856}
 .brand-copy{display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:0}
 .brand-name{font-size:18px;line-height:1.08;letter-spacing:-.5px;white-space:nowrap}
-.brand-kicker{font-size:8.5px;line-height:1;letter-spacing:1.45px;font-weight:650;color:#8fb2c4;white-space:nowrap}
+.brand-kicker{display:block;font-size:8.5px;line-height:1;letter-spacing:1.45px;font-weight:650;color:#8fb2c4;white-space:nowrap;transform:scaleX(.866);transform-origin:left center}
 
 /* Purpose statement is a composed two-line deck, not another headline. */
 .intro{
