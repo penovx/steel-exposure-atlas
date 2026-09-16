@@ -12,9 +12,10 @@ class CompanyContextCardContractTests(unittest.TestCase):
         script = (ROOT / "src" / "connections-company-context.js").read_text(encoding="utf-8")
         css = (ROOT / "src" / "connections-procurement-ui.css").read_text(encoding="utf-8")
 
-        self.assertIn('./src/connections-company-context.js?v=20260916-1', index)
+        self.assertIn('./src/connections-company-context.js?v=20260916-2', index)
         self.assertIn("company-context-card", script)
         self.assertIn("COMPANY CONTEXT", script)
+        self.assertIn("function connectedSiteCount", script)
         self.assertIn("connected ${siteCount === 1 ? 'site' : 'sites'}", script)
         self.assertIn("View evidence ↓", script)
         self.assertIn("Procurement follow-up", script)
