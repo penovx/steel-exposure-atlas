@@ -1,4 +1,8 @@
 (() => {
+  let contextOpenOwnerId = null;
+  let loadedPayloads = {eu: null, ofac: null};
+  let loadedTradePayload = null;
+
   function reviewApi() {
     try {
       return globalThis.__atlasReview ?? null;
@@ -23,12 +27,36 @@
     return review.all?.find?.((plant) => plant.ownerId === ownerId)?.owner ?? ownerId;
   }
 
-  function connectedSiteIds(review, ownerId) {
+  function connectedPlants(review, ownerId) {
     const snapshot = review?.snapshot?.();
     const selected = new Set(Array.isArray(snapshot?.selectedIds) ? snapshot.selectedIds : []);
-    return review.all
-      .filter((plant) => plant.ownerId === ownerId && selected.has(plant.id))
-      .map((plant) => plant.id);
+    return review.all.filter((plant) => plant.ownerId === ownerId && selected.has(plant.id));
+  }
+
+  function connectedSiteIds(review, ownerId) {
+    return connectedPlants(review, ownerId).map((plant) => plant.id);
+  }
+
+  function companyScopeSummary(review, ownerId) {
+    const plants = connectedPlants(review, ownerId);
+    const countries = new Set(plants.map((plant) => plant.country).filter(Boolean));
+    let capacity = null;
+    try {
+      capacity = review.model?.total?.(plants) ?? null;
+    } catch {
+      capacity = null;
+    }
+    let capacityText = '—';
+    if (capacity?.known !== null && capacity?.known !== undefined) {
+      const value = capacity.known / 1000;
+      capacityText = `${value.toLocaleString('en-GB', {maximumFractionDigits: value < 10 ? 2 : 1})}${capacity.positive ? '+' : ''} Mtpa`;
+    }
+    return {
+      plants,
+      siteCount: plants.length,
+      countryCount: countries.size,
+      capacityText,
+    };
   }
 
   function formatDate(value) {
@@ -61,14 +89,22 @@
   function ensureCard(stage) {
     let card = stage.querySelector('#company-context-card');
     if (card) return card;
-
     card = document.createElement('aside');
     card.id = 'company-context-card';
     card.className = 'company-context-card';
     card.setAttribute('aria-live', 'polite');
+    card.setAttribute('aria-label', 'Company context');
     card.hidden = true;
     stage.append(card);
     return card;
+  }
+
+  function addMetric(parent, value, label) {
+    const item = document.createElement('div');
+    item.className = 'company-context-metric';
+    text(item, 'strong', '', value);
+    text(item, 'span', '', label);
+    parent.append(item);
   }
 
   function signal(parent, {label, state, title, detail, consequence = '', kind = ''}) {
@@ -142,27 +178,19 @@
     for (const node of document.querySelectorAll('#reading-detail .trade-context')) node.remove();
     const readingDetail = document.querySelector('#reading-detail');
     if (!readingDetail || !rows.length) return;
-
     const summary = tradeSummary(rows);
     if (!summary) return;
 
     const section = document.createElement('section');
     section.className = 'trade-context';
     section.setAttribute('aria-label', 'EU import context');
-
     const top = document.createElement('div');
     top.className = 'trade-context-top';
     text(top, 'span', 'trade-context-eyebrow', 'EU IMPORT CONTEXT');
     text(top, 'span', 'trade-context-state', `${rows.length} ${rows.length === 1 ? 'site' : 'sites'}`);
     section.append(top);
-
     text(section, 'h3', 'trade-context-title', 'If imported into the EU');
-    text(
-      section,
-      'p',
-      'trade-context-intro',
-      'The connected site and product-family evidence points to the current EU steel import measure.'
-    );
+    text(section, 'p', 'trade-context-intro', 'The connected site and product-family evidence points to the current EU steel import measure.');
 
     const facts = document.createElement('dl');
     facts.className = 'trade-context-facts';
@@ -197,48 +225,55 @@
       link(sources, '', 'Implementing Regulation 2026/1930', 'https://eur-lex.europa.eu/eli/reg_impl/2026/1930/oj/eng');
     }
     section.append(sources);
-
     readingDetail.append(section);
   }
 
-  function renderCard(payloads, tradePayload, dismissed) {
+  function renderCard(payloads = loadedPayloads, tradePayload = loadedTradePayload) {
     const review = reviewApi();
     const stage = document.querySelector('#connections-stage');
     if (!review?.snapshot || !stage) return null;
 
     const card = ensureCard(stage);
     const ownerId = selectedOwnerId(review);
-    if (!ownerId || dismissed.value === ownerId) {
+    if (!ownerId) {
       card.hidden = true;
-      return ownerId;
+      card.removeAttribute('data-owner');
+      return null;
     }
 
-    const siteIds = connectedSiteIds(review, ownerId);
+    const scope = companyScopeSummary(review, ownerId);
+    const siteIds = scope.plants.map((plant) => plant.id);
     const tradeRows = tradeRowsFor(tradePayload, siteIds);
     const trade = tradeSummary(tradeRows);
 
     card.replaceChildren();
-    card.hidden = false;
     card.dataset.owner = ownerId;
+    card.hidden = contextOpenOwnerId !== ownerId;
 
     const header = document.createElement('div');
     header.className = 'company-context-header';
     const heading = document.createElement('div');
     text(heading, 'span', 'company-context-eyebrow', 'COMPANY CONTEXT');
     text(heading, 'h3', 'company-context-title', ownerName(review, ownerId));
-    const siteCount = siteIds.length;
-    text(heading, 'p', 'company-context-sites', `${siteCount.toLocaleString('en-GB')} connected ${siteCount === 1 ? 'site' : 'sites'}`);
+    text(heading, 'p', 'company-context-role', 'Immediate owner or operator named by GEM');
     const close = document.createElement('button');
     close.type = 'button';
     close.className = 'company-context-close';
     close.setAttribute('aria-label', 'Close company context');
     close.textContent = '×';
     close.addEventListener('click', () => {
-      dismissed.value = ownerId;
+      contextOpenOwnerId = null;
       card.hidden = true;
     });
     header.append(heading, close);
     card.append(header);
+
+    const metrics = document.createElement('div');
+    metrics.className = 'company-context-metrics';
+    addMetric(metrics, scope.siteCount.toLocaleString('en-GB'), 'Connected sites');
+    addMetric(metrics, scope.countryCount.toLocaleString('en-GB'), 'Countries');
+    addMetric(metrics, scope.capacityText, 'Known operating capacity');
+    card.append(metrics);
 
     const euStatus = statusFor(payloads.eu, ownerId);
     const ofacStatus = statusFor(payloads.ofac, ownerId);
@@ -250,40 +285,25 @@
     body.className = 'company-context-body';
 
     if (euStatus?.state === 'direct_list_match') {
-      signal(body, {
-        label: 'EU sanctions list', state: 'Listed', title: 'Listed by the EU', detail: 'Financial sanctions list', kind: 'sanctions',
-      });
+      signal(body, {label: 'EU sanctions list', state: 'Listed', title: 'Listed by the EU', detail: 'Financial sanctions list', kind: 'sanctions'});
     } else if (euStatus?.state === 'review_required') {
-      signal(body, {
-        label: 'EU sanctions', state: 'Needs review', title: 'Possible sanctions-list identity', detail: 'Company identity requires review', kind: 'sanctions',
-      });
+      signal(body, {label: 'EU sanctions', state: 'Needs review', title: 'Possible sanctions-list identity', detail: 'Company identity requires review', kind: 'sanctions'});
     }
 
     if (ofacStatus?.state === 'direct_list_match') {
       const summary = ofacSummary(ofacStatus);
-      signal(body, {
-        label: 'U.S. sanctions list', state: 'Listed', title: summary.title, detail: summary.detail, kind: 'sanctions',
-      });
+      signal(body, {label: 'U.S. sanctions list', state: 'Listed', title: summary.title, detail: summary.detail, kind: 'sanctions'});
     } else if (ofacStatus?.state === 'review_required') {
-      signal(body, {
-        label: 'U.S. sanctions', state: 'Needs review', title: 'Possible sanctions-list identity', detail: 'Company identity requires review', kind: 'sanctions',
-      });
+      signal(body, {label: 'U.S. sanctions', state: 'Needs review', title: 'Possible sanctions-list identity', detail: 'Company identity requires review', kind: 'sanctions'});
     }
 
     const hasFinding = hasEuFinding || hasOfacFinding;
     if (hasScreeningResult && !hasFinding) {
-      signal(body, {
-        label: 'Sanctions screening', state: 'No direct listing', title: 'No direct EU or U.S. listing found', detail: 'This is not sanctions clearance.', kind: 'sanctions-negative',
-      });
+      signal(body, {label: 'Sanctions screening', state: 'No direct listing', title: 'No direct EU or U.S. listing found', detail: 'This is not sanctions clearance.', kind: 'sanctions-negative'});
     }
 
     if (trade) {
-      const detail = [
-        'If imported into the EU',
-        `${tradeRows.length} connected ${tradeRows.length === 1 ? 'site' : 'sites'}`,
-        trade.origins,
-        trade.families,
-      ].filter(Boolean).join(' · ');
+      const detail = ['If imported into the EU', `${tradeRows.length} connected ${tradeRows.length === 1 ? 'site' : 'sites'}`, trade.origins, trade.families].filter(Boolean).join(' · ');
       signal(body, {
         label: 'EU steel import measure',
         state: trade.state,
@@ -304,7 +324,6 @@
     }
     if (trade) followUps.push(trade.followUp);
     addAction(body, followUps);
-
     if (body.children.length) card.append(body);
 
     if (hasScreeningResult || trade) {
@@ -313,9 +332,7 @@
       evidence.className = 'company-context-evidence';
       evidence.textContent = 'View evidence ↓';
       evidence.addEventListener('click', () => {
-        const target = document.querySelector(
-          '#reading-detail .sanctions-context, #reading-detail .trade-context, #reading-detail .sanctions-secondary-result'
-        );
+        const target = document.querySelector('#reading-detail .sanctions-context, #reading-detail .trade-context, #reading-detail .sanctions-secondary-result');
         target?.scrollIntoView({behavior: 'smooth', block: 'start'});
       });
       card.append(evidence);
@@ -323,12 +340,34 @@
     return ownerId;
   }
 
+  function installSecondClickGate() {
+    document.addEventListener('click', (event) => {
+      const button = event.target.closest?.('#company-nodes .company-node[data-owner]');
+      if (!button) return;
+      const review = reviewApi();
+      const selected = selectedOwnerId(review);
+      const clicked = button.dataset.owner;
+      if (!selected || clicked !== selected) {
+        contextOpenOwnerId = null;
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      contextOpenOwnerId = contextOpenOwnerId === clicked ? null : clicked;
+      renderCard();
+    }, true);
+  }
+
   async function init() {
+    installSecondClickGate();
     const [payloads, tradePayload] = await Promise.all([
       globalThis.__ATLAS_SANCTIONS_PROMISE__ ?? Promise.resolve({eu: null, ofac: null}),
       globalThis.__ATLAS_TRADE_PROMISE__ ?? Promise.resolve(null),
     ]);
-    const dismissed = {value: null};
+    loadedPayloads = payloads ?? {eu: null, ofac: null};
+    loadedTradePayload = tradePayload;
     let lastOwnerId = null;
 
     const wait = () => {
@@ -342,11 +381,11 @@
 
       const reconcile = () => {
         const ownerId = selectedOwnerId(review);
-        if (ownerId !== lastOwnerId) dismissed.value = null;
+        if (ownerId !== lastOwnerId) contextOpenOwnerId = null;
         lastOwnerId = ownerId;
         const siteIds = ownerId ? connectedSiteIds(review, ownerId) : [];
-        renderTradeEvidence(tradePayload, tradeRowsFor(tradePayload, siteIds));
-        renderCard(payloads, tradePayload, dismissed);
+        renderTradeEvidence(loadedTradePayload, tradeRowsFor(loadedTradePayload, siteIds));
+        renderCard();
       };
 
       new MutationObserver(reconcile).observe(selectionPath, {childList: true, subtree: true});
