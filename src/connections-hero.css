@@ -16,9 +16,8 @@
 .masthead .brand svg path{fill:none;stroke:var(--white)}
 .masthead .brand svg circle{fill:var(--night);stroke:var(--white)}
 .masthead .edition{color:#8fa8b7;border-left-color:#304856}
-.brand-copy{display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:0}
+.brand-copy{display:flex;align-items:center;min-width:0}
 .brand-name{font-size:18px;line-height:1.08;letter-spacing:-.5px;white-space:nowrap}
-.brand-kicker{display:block;font-size:8.5px;line-height:1;letter-spacing:1.45px;font-weight:650;color:#8fb2c4;white-space:nowrap;transform:scaleX(.866);transform-origin:left center}
 
 /* Purpose statement is a composed two-line deck, not another headline. */
 .intro{
@@ -73,7 +72,6 @@
   .masthead .edition{font-size:8px;letter-spacing:1.1px;padding-left:14px}
   .brand{font-size:16px}.brand svg{width:26px;height:26px}
   .brand-name{font-size:16px}
-  .brand-kicker{font-size:7.5px;letter-spacing:1.05px}
   .intro{top:64px;min-height:78px;padding:12px 18px 10px!important}
   .opening-hint{max-width:48ch!important;font-size:11px!important;line-height:1.5!important}
   .hero-break{display:none}
