@@ -64,7 +64,7 @@
     if (state.site) {
       description.textContent = 'This plant connects to its company, listed products and production methods. Follow those links to compare it with other sites in the same geographic scope.';
     } else if (filters.owner) {
-      description.textContent = 'These sites are linked to the same company. Use this view to see where it operates, which products its sites list, which production methods they use, and whether sanctions evidence is attached to the company.';
+      description.textContent = 'These sites are linked to the same company. Use this view to compare where it operates, what its sites produce, how they make steel, and which procurement follow-ups are supported by the available public evidence.';
     } else if (products.length) {
       const productPhrase = products.length > 1
         ? (filters.productMode === 'all' ? 'all selected products' : 'at least one selected product')
