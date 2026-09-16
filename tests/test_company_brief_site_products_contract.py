@@ -15,7 +15,7 @@ class CompanyBriefSiteProductsContractTests(unittest.TestCase):
             index,
         )
         self.assertIn(
-            './src/connections-company-brief-sites.js?v=20260916-1',
+            './src/connections-company-brief-sites.js?v=20260916-2',
             index,
         )
 
@@ -33,6 +33,27 @@ class CompanyBriefSiteProductsContractTests(unittest.TestCase):
         self.assertNotIn("Countries represented", script)
         self.assertNotIn("Sites in this view", script)
 
+    def test_company_brief_uses_company_geographic_scope_not_cross_filter_intersection(self) -> None:
+        script = (ROOT / "src" / "connections-company-brief-sites.js").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("function plantsAttributedToOwnerInGeography", script)
+        self.assertIn("region === 'World' || plant.region === region", script)
+        self.assertNotIn("selectedIds", script)
+        self.assertIn("current geographic scope", script)
+        self.assertIn("capacityFor(review, plants)", script)
+
+    def test_production_method_grammar_is_dynamic_and_scope_is_rebuilt(self) -> None:
+        script = (ROOT / "src" / "connections-company-brief-sites.js").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("routes.length === 1 ? 'method' : 'methods'", script)
+        self.assertIn("function patchProductionProfile", script)
+        self.assertIn("review.model?.hasRoute", script)
+        self.assertIn("summarizedPlaces(route.plants)", script)
+
     def test_many_sites_expand_progressively(self) -> None:
         script = (ROOT / "src" / "connections-company-brief-sites.js").read_text(
             encoding="utf-8"
@@ -42,7 +63,7 @@ class CompanyBriefSiteProductsContractTests(unittest.TestCase):
         self.assertIn("Show ${remaining} more sites ↓", script)
         self.assertIn("Show fewer sites ↑", script)
         self.assertIn("aria-expanded", script)
-        self.assertIn("row.hidden = expanded", script)
+        self.assertIn("site.hidden = expanded", script)
 
 
 if __name__ == "__main__":
