@@ -1,0 +1,61 @@
+{
+  "schema": "steel-exposure-atlas/ofac-designation-context-v1.0",
+  "records": [
+    {
+      "entity_id": "ofac-sdn:28287",
+      "listed_since": "2020-01-10",
+      "designation_action": "Iran-related designations and updates",
+      "designation_summary": "Iran metals industry",
+      "source_url": "https://ofac.treasury.gov/recent-actions/20200110"
+    },
+    {
+      "entity_id": "ofac-sdn:28295",
+      "listed_since": "2020-01-10",
+      "designation_action": "Iran-related designations and updates",
+      "designation_summary": "Iran metals industry",
+      "source_url": "https://ofac.treasury.gov/recent-actions/20200110"
+    },
+    {
+      "entity_id": "ofac-sdn:30419",
+      "listed_since": "2020-11-18",
+      "designation_action": "Iran-related designations and designation updates",
+      "designation_summary": "Iran-related designation",
+      "source_url": "https://ofac.treasury.gov/recent-actions/20201118"
+    },
+    {
+      "entity_id": "ofac-sdn:30752",
+      "listed_since": "2021-01-05",
+      "designation_action": "Iran-related designations and designation update",
+      "designation_summary": "Iran steel sector",
+      "source_url": "https://ofac.treasury.gov/recent-actions/20210105"
+    },
+    {
+      "entity_id": "ofac-sdn:30756",
+      "listed_since": "2021-01-05",
+      "designation_action": "Iran-related designations and designation update",
+      "designation_summary": "Iran steel sector",
+      "source_url": "https://ofac.treasury.gov/recent-actions/20210105"
+    },
+    {
+      "entity_id": "ofac-sdn:30761",
+      "listed_since": "2021-01-05",
+      "designation_action": "Iran-related designations and designation update",
+      "designation_summary": "Iran steel sector",
+      "source_url": "https://ofac.treasury.gov/recent-actions/20210105"
+    },
+    {
+      "entity_id": "ofac-sdn:31516",
+      "listed_since": "2021-03-25",
+      "designation_action": "Burma-related designations",
+      "designation_summary": "Burma military holding companies",
+      "source_url": "https://ofac.treasury.gov/recent-actions/20210325"
+    },
+    {
+      "entity_id": "ofac-sdn:41920",
+      "listed_since": "2023-04-12",
+      "designation_action": "Russia-related designations",
+      "designation_summary": "Russia-related designation",
+      "source_url": "https://ofac.treasury.gov/recent-actions/20230412"
+    }
+  ]
+}
