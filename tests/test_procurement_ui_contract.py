@@ -23,17 +23,16 @@ class ProcurementUiContractTests(unittest.TestCase):
         self.assertIn("event.key === 'Escape'", search)
         self.assertIn("event.key === 'Enter'", search)
 
-    def test_dynamic_reading_copy_explains_user_value_not_data_model_jargon(self) -> None:
+    def test_dynamic_reading_copy_names_the_actual_relationship(self) -> None:
         script = (ROOT / "src" / "connections-procurement-ui.js").read_text(encoding="utf-8")
         self.assertIn("function syncReadingCopy()", script)
-        self.assertIn(
-            "These sites are linked to the same company. Use this view to compare where it operates",
-            script,
-        )
-        self.assertIn("which procurement follow-ups are supported by the available public evidence", script)
-        self.assertIn("Companies, products and production methods are linked to the same sites", script)
-        self.assertIn("Product and production-method links describe the same sites, not material flows", script)
-        self.assertNotIn("Different company names elsewhere do not prove separate ultimate ownership", script)
+        self.assertIn("GEM names ${owner} as the immediate owner or operator", script)
+        self.assertIn("company attribution, listed products and production methods", script)
+        self.assertIn("companies GEM names as owner or operator", script)
+        self.assertIn("sites in the current selection", script)
+        self.assertIn("not material flows", script)
+        self.assertNotIn("procurement follow-ups", script)
+        self.assertNotIn("These sites are linked to the same company", script)
 
     def test_reading_composition_gives_more_space_to_evidence_detail(self) -> None:
         css = (ROOT / "src" / "connections-procurement-ui.css").read_text(
@@ -46,25 +45,24 @@ class ProcurementUiContractTests(unittest.TestCase):
         self.assertIn("@media(max-width:900px){.reading-grid{grid-template-columns:1fr", css)
         self.assertIn(".company-rail.rail-subtitle{margin-bottom:10px}", css)
 
-    def test_sanctions_are_visible_at_company_row_and_explained_for_procurement(self) -> None:
+    def test_sanctions_are_visible_as_evidence_not_process_advice(self) -> None:
         bridge = (ROOT / "src" / "connections-sanctions-bridge.js").read_text(encoding="utf-8")
         css = (ROOT / "src" / "connections-procurement-ui.css").read_text(encoding="utf-8")
 
         self.assertIn("U.S. sanctions list", bridge)
         self.assertIn("EU sanctions list", bridge)
         self.assertIn("company-sanctions-flags", bridge)
-        self.assertIn("Listed by OFAC", bridge)
+        self.assertIn("Company identity listed by OFAC", bridge)
         self.assertIn("Specially Designated Nationals and Blocked Persons (SDN) List", bridge)
         self.assertIn("Listed since", bridge)
         self.assertIn("Designation context", bridge)
-        self.assertIn("Procurement implication", bridge)
-        self.assertIn("before contracting, ordering or payment", bridge)
-        self.assertIn("No direct EU or U.S. listing found", bridge)
-        self.assertIn("This does not mean sanctions-cleared", bridge)
+        self.assertIn("reviewed GIST company identity", bridge)
+        self.assertNotIn("Procurement implication", bridge)
+        self.assertNotIn("before contracting, ordering or payment", bridge)
+        self.assertNotIn("No direct EU or U.S. listing found", bridge)
         self.assertNotIn("Identity resolution: Confirmed", bridge)
         self.assertNotIn("OFAC SDN", bridge)
         self.assertIn(".company-sanctions-flag", css)
-        self.assertIn(".sanctions-impact", css)
 
 
 if __name__ == "__main__":
