@@ -2,6 +2,7 @@
   let contextOpenOwnerId = null;
   let loadedPayloads = {eu: null, ofac: null};
   let loadedTradePayload = null;
+  let offerSyncQueued = false;
 
   const ROUTES = [
     {id: 'BOF', name: 'Basic oxygen furnace', field: 'bof_steel_capacity_ttpa'},
@@ -34,14 +35,14 @@
     return review.all?.find?.((plant) => plant.ownerId === ownerId)?.owner ?? ownerId;
   }
 
-  function connectedPlants(review, ownerId) {
+  function plantsAttributedToOwnerInView(review, ownerId) {
     const snapshot = review?.snapshot?.();
     const selected = new Set(Array.isArray(snapshot?.selectedIds) ? snapshot.selectedIds : []);
     return review.all.filter((plant) => plant.ownerId === ownerId && selected.has(plant.id));
   }
 
-  function connectedSiteIds(review, ownerId) {
-    return connectedPlants(review, ownerId).map((plant) => plant.id);
+  function siteIdsAttributedToOwnerInView(review, ownerId) {
+    return plantsAttributedToOwnerInView(review, ownerId).map((plant) => plant.id);
   }
 
   function formatCapacity(capacity) {
@@ -50,8 +51,17 @@
     return `${value.toLocaleString('en-GB', {maximumFractionDigits: value < 10 ? 2 : 1})}${capacity.positive ? '+' : ''} Mtpa`;
   }
 
+  function placeName(plant) {
+    if (plant.city && plant.city !== 'unknown') return plant.city;
+    return String(plant.name ?? '').replace(/\s+steel plant$/i, '') || plant.id;
+  }
+
+  function placeLabel(plant) {
+    return `${placeName(plant)} · ${plant.country}`;
+  }
+
   function companyScopeSummary(review, ownerId) {
-    const plants = connectedPlants(review, ownerId);
+    const plants = plantsAttributedToOwnerInView(review, ownerId);
     const countries = new Map();
     for (const plant of plants) {
       if (!plant.country) continue;
@@ -73,39 +83,35 @@
   }
 
   function productSummary(plants) {
-    const counts = new Map();
+    const groups = new Map();
     for (const plant of plants) {
       for (const product of new Set(plant.products?.values ?? [])) {
-        counts.set(product, (counts.get(product) ?? 0) + 1);
+        if (!groups.has(product)) groups.set(product, []);
+        groups.get(product).push(plant);
       }
     }
-    return [...counts.entries()]
-      .map(([name, count]) => ({name, count}))
-      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'en'));
+    return [...groups.entries()]
+      .map(([name, productPlants]) => ({name, plants: productPlants}))
+      .sort((a, b) => b.plants.length - a.plants.length || a.name.localeCompare(b.name, 'en'));
   }
 
   function routeSummary(review, plants) {
     return ROUTES.map((route) => {
-      const siteCount = plants.filter((plant) => review.model?.hasRoute?.(plant, route.id)).length;
-      if (!siteCount) return null;
+      const routePlants = plants.filter((plant) => review.model?.hasRoute?.(plant, route.id));
+      if (!routePlants.length) return null;
       let capacity = null;
       try {
         capacity = review.model?.total?.(plants, route.field) ?? null;
       } catch {
         capacity = null;
       }
-      return {id: route.id, name: route.name, siteCount, capacityText: formatCapacity(capacity)};
+      return {
+        id: route.id,
+        name: route.name,
+        plants: routePlants,
+        capacityText: formatCapacity(capacity),
+      };
     }).filter(Boolean);
-  }
-
-  function siteSummary(plants) {
-    return [...plants]
-      .sort((a, b) => String(a.country).localeCompare(String(b.country), 'en') || String(a.name).localeCompare(String(b.name), 'en'))
-      .map((plant) => ({
-        id: plant.id,
-        name: plant.city && plant.city !== 'unknown' ? plant.city : plant.name,
-        country: plant.country,
-      }));
   }
 
   function formatDate(value) {
@@ -165,49 +171,75 @@
     return section;
   }
 
-  function addRankedRows(section, rows, totalSites, limit = 6) {
-    const list = document.createElement('div');
-    list.className = 'company-brief-ranked-list';
-    for (const row of rows.slice(0, limit)) {
-      const item = document.createElement('div');
-      item.className = 'company-brief-ranked-row';
-      text(item, 'span', 'company-brief-ranked-name', row.name);
-      text(item, 'span', 'company-brief-ranked-value', `${row.count}/${totalSites} sites`);
-      list.append(item);
-    }
-    if (rows.length > limit) text(list, 'p', 'company-brief-more', `+${rows.length - limit} more`);
-    section.append(list);
+  function countryDistributionText(scope) {
+    return scope.countries.map(([country, count]) =>
+      `${count} ${count === 1 ? 'site' : 'sites'} in ${country}`
+    ).join(' · ');
   }
 
-  function addRouteRows(section, rows) {
-    const list = document.createElement('div');
-    list.className = 'company-brief-ranked-list';
-    for (const row of rows) {
-      const item = document.createElement('div');
-      item.className = 'company-brief-ranked-row';
-      text(item, 'span', 'company-brief-ranked-name', row.name);
-      const detail = row.capacityText === '—'
-        ? `${row.siteCount} ${row.siteCount === 1 ? 'site' : 'sites'}`
-        : `${row.siteCount} ${row.siteCount === 1 ? 'site' : 'sites'} · ${row.capacityText}`;
-      text(item, 'span', 'company-brief-ranked-value', detail);
-      list.append(item);
+  function addSitesAndCountries(section, scope, companyName) {
+    text(
+      section,
+      'p',
+      'company-brief-interpretation',
+      `GEM names ${companyName} as the immediate owner or operator of ${scope.siteCount} ${scope.siteCount === 1 ? 'site' : 'sites'} in this view, across ${scope.countryCount} ${scope.countryCount === 1 ? 'country' : 'countries'}.`
+    );
+    if (scope.countries.length) {
+      text(section, 'p', 'company-brief-footprint-line', countryDistributionText(scope));
     }
-    section.append(list);
-  }
 
-  function addFootprintRows(section, scope) {
-    const countries = scope.countries.map(([country, count]) => `${country} ${count}`).join(' · ');
-    text(section, 'p', 'company-brief-footprint-line', countries);
-    const sites = siteSummary(scope.plants);
     const list = document.createElement('div');
     list.className = 'company-brief-site-list';
-    for (const site of sites.slice(0, 5)) {
+    for (const plant of scope.plants) {
+      text(list, 'div', 'company-brief-site-row', placeLabel(plant));
+    }
+    section.append(list);
+  }
+
+  function summarizedPlaces(plants, limit = 4) {
+    const labels = plants.map(placeLabel);
+    if (labels.length <= limit) return labels.join('; ');
+
+    const countries = new Map();
+    for (const plant of plants) {
+      countries.set(plant.country, (countries.get(plant.country) ?? 0) + 1);
+    }
+    const distribution = [...countries.entries()]
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'en'))
+      .map(([country, count]) => `${count} ${count === 1 ? 'site' : 'sites'} in ${country}`)
+      .join(' · ');
+    return distribution;
+  }
+
+  function addProductRows(section, products, limit = 7) {
+    const list = document.createElement('div');
+    list.className = 'company-brief-ranked-list';
+    for (const product of products.slice(0, limit)) {
       const row = document.createElement('div');
-      text(row, 'span', 'company-brief-site-name', site.name);
-      text(row, 'span', 'company-brief-site-country', site.country);
+      row.className = 'company-brief-ranked-row';
+      text(row, 'span', 'company-brief-ranked-name', product.name);
+      text(row, 'span', 'company-brief-ranked-value', `Listed at ${summarizedPlaces(product.plants)}`);
       list.append(row);
     }
-    if (sites.length > 5) text(list, 'p', 'company-brief-more', `+${sites.length - 5} more sites`);
+    if (products.length > limit) {
+      text(list, 'p', 'company-brief-more', `${products.length - limit} additional product labels are available in the underlying site records.`);
+    }
+    section.append(list);
+  }
+
+  function addRouteRows(section, routes) {
+    const list = document.createElement('div');
+    list.className = 'company-brief-ranked-list';
+    for (const route of routes) {
+      const row = document.createElement('div');
+      row.className = 'company-brief-ranked-row';
+      text(row, 'span', 'company-brief-ranked-name', route.name);
+      const detail = route.capacityText === '—'
+        ? `Used at ${summarizedPlaces(route.plants)}`
+        : `${route.capacityText} known operating capacity · ${summarizedPlaces(route.plants)}`;
+      text(row, 'span', 'company-brief-ranked-value', detail);
+      list.append(row);
+    }
     section.append(list);
   }
 
@@ -227,16 +259,17 @@
 
   function ofacSummary(status) {
     const matches = Array.isArray(status?.reviewed_matches) ? status.reviewed_matches : [];
-    const listed = matches.map((item) => item.listed_since).filter(Boolean);
+    const listed = [...new Set(matches.map((item) => item.listed_since).filter(Boolean))];
     const contexts = [...new Set(matches.map((item) => item.designation_summary).filter(Boolean))];
-    const since = listed.length ? ` since ${listed.map(formatDate).join(', ')}` : '';
-    return {
-      title: `Listed by OFAC${since}`,
-      detail: contexts.join(' · '),
-    };
+    const programmes = [...new Set(matches.flatMap((item) => Array.isArray(item.programmes) ? item.programmes : []))];
+    const since = listed.length ? `Listed since ${listed.map(formatDate).join(', ')}` : '';
+    const detail = [since, contexts.join(' · '), programmes.length ? `Program: ${programmes.join(', ')}` : '']
+      .filter(Boolean)
+      .join(' · ');
+    return {title: 'Listed by OFAC', detail};
   }
 
-  function listSummary(values, limit = 3) {
+  function listSummary(values, limit = 4) {
     const unique = [...new Set(values.filter(Boolean))];
     if (unique.length <= limit) return unique.join(', ');
     return `${unique.slice(0, limit).join(', ')} +${unique.length - limit}`;
@@ -252,30 +285,19 @@
     if (!rows.length) return null;
     const origins = rows.map((row) => row.origin).filter(Boolean);
     const families = rows.flatMap((row) => Array.isArray(row.product_families) ? row.product_families : []);
+    const sites = rows.map((row) => row.plant_name).filter(Boolean);
     const routes = new Set(rows.map((row) => row.quota_route).filter(Boolean));
-    const needsProductConfirmation = rows.some((row) => row.product_family_state === 'family_requires_confirmation');
+    const hasBroadFamilyMapping = rows.some((row) => row.product_family_state === 'family_requires_confirmation');
     const routeLabel = routes.size > 1
       ? 'Multiple quota routes'
       : routes.has('origin_specific') ? 'Origin-specific quota' : 'Pooled / residual quota';
-    const followUp = needsProductConfirmation || routes.has('pooled_or_residual')
-      ? 'For EU import, confirm the customs code and applicable quota route before contracting or ordering.'
-      : 'For EU import, confirm the customs code and current quota position before contracting or ordering.';
     return {
       origins: listSummary(origins),
       families: listSummary(families),
+      sites: listSummary(sites, 3),
       routeLabel,
-      state: needsProductConfirmation ? 'Product check' : 'Quota context',
-      followUp,
+      mappingLabel: hasBroadFamilyMapping ? 'Broad product-family mapping' : 'Product-family mapping',
     };
-  }
-
-  function addAction(body, paragraphs) {
-    if (!paragraphs.length) return;
-    const action = document.createElement('div');
-    action.className = 'company-context-action';
-    text(action, 'strong', '', 'Procurement follow-up');
-    for (const paragraph of paragraphs) text(action, 'p', '', paragraph);
-    body.append(action);
   }
 
   function renderTradeEvidence(tradePayload, rows) {
@@ -291,16 +313,18 @@
     const top = document.createElement('div');
     top.className = 'trade-context-top';
     text(top, 'span', 'trade-context-eyebrow', 'EU IMPORT CONTEXT');
-    text(top, 'span', 'trade-context-state', `${rows.length} ${rows.length === 1 ? 'site' : 'sites'}`);
+    text(top, 'span', 'trade-context-state', `${rows.length} ${rows.length === 1 ? 'site' : 'sites'} in this view`);
     section.append(top);
-    text(section, 'h3', 'trade-context-title', 'If imported into the EU');
-    text(section, 'p', 'trade-context-intro', 'The connected site and product-family evidence points to the current EU steel import measure.');
+    text(section, 'h3', 'trade-context-title', 'If steel from these sites were imported into the EU');
+    text(section, 'p', 'trade-context-intro', 'GIST origin and product labels for these sites map to the current EU steel import measure.');
 
     const facts = document.createElement('dl');
     facts.className = 'trade-context-facts';
     for (const [label, value] of [
+      ['Sites', summary.sites],
       ['Origin', summary.origins],
-      ['Product family', summary.families],
+      ['GIST product labels map to', summary.families],
+      ['Mapping', summary.mappingLabel],
       ['Quota route', summary.routeLabel],
       ['Additional duty after quota exhaustion', '50%'],
     ]) {
@@ -311,12 +335,6 @@
       facts.append(row);
     }
     section.append(facts);
-
-    const action = document.createElement('div');
-    action.className = 'trade-context-action';
-    text(action, 'strong', '', 'Procurement follow-up');
-    text(action, 'p', '', summary.followUp);
-    section.append(action);
 
     const sources = document.createElement('p');
     sources.className = 'trade-context-source';
@@ -336,18 +354,35 @@
     const review = reviewApi();
     const selected = selectedOwnerId(review);
     for (const row of document.querySelectorAll('#company-nodes .company-node[data-owner]')) {
-      row.querySelector('.company-brief-offer')?.remove();
-      row.classList.remove('has-company-brief-offer');
-      if (!selected || row.dataset.owner !== selected) continue;
-      const offer = document.createElement('span');
-      offer.className = 'company-brief-offer';
-      offer.setAttribute('aria-hidden', 'true');
-      offer.textContent = contextOpenOwnerId === selected ? 'Company brief open ↑' : 'Open company brief →';
-      row.append(offer);
+      const isSelected = Boolean(selected && row.dataset.owner === selected);
+      let offer = row.querySelector('.company-brief-offer');
+
+      if (!isSelected) {
+        offer?.remove();
+        row.classList.remove('has-company-brief-offer');
+        continue;
+      }
+
+      if (!offer) {
+        offer = document.createElement('span');
+        offer.className = 'company-brief-offer';
+        offer.setAttribute('aria-hidden', 'true');
+        row.append(offer);
+      }
+      offer.textContent = contextOpenOwnerId === selected ? 'Company brief open ↑' : 'View company brief →';
       row.classList.add('has-company-brief-offer');
       const name = row.querySelector('.company-name')?.textContent?.trim() ?? 'Company';
-      row.setAttribute('aria-label', `${name}, selected. Click again to ${contextOpenOwnerId === selected ? 'close' : 'open'} company brief.`);
+      row.setAttribute('aria-label', `${name}, selected. Click again to ${contextOpenOwnerId === selected ? 'close' : 'view'} company brief.`);
     }
+  }
+
+  function queueCompanyBriefOfferSync() {
+    if (offerSyncQueued) return;
+    offerSyncQueued = true;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      offerSyncQueued = false;
+      syncCompanyBriefOffer();
+    }));
   }
 
   function renderCard(payloads = loadedPayloads, tradePayload = loadedTradePayload) {
@@ -360,10 +395,11 @@
     if (!ownerId) {
       card.hidden = true;
       card.removeAttribute('data-owner');
-      syncCompanyBriefOffer();
+      queueCompanyBriefOfferSync();
       return null;
     }
 
+    const companyName = ownerName(review, ownerId);
     const scope = companyScopeSummary(review, ownerId);
     const products = productSummary(scope.plants);
     const routes = routeSummary(review, scope.plants);
@@ -379,8 +415,8 @@
     header.className = 'company-context-header';
     const heading = document.createElement('div');
     text(heading, 'span', 'company-context-eyebrow', 'COMPANY BRIEF');
-    text(heading, 'h3', 'company-context-title', ownerName(review, ownerId));
-    text(heading, 'p', 'company-context-role', 'Immediate owner or operator named by GEM · current connected scope');
+    text(heading, 'h3', 'company-context-title', companyName);
+    text(heading, 'p', 'company-context-role', 'GEM names this company as the immediate owner or operator of the sites shown in this view.');
     const close = document.createElement('button');
     close.type = 'button';
     close.className = 'company-context-close';
@@ -396,76 +432,92 @@
 
     const metrics = document.createElement('div');
     metrics.className = 'company-context-metrics';
-    addMetric(metrics, scope.siteCount.toLocaleString('en-GB'), 'Connected sites');
-    addMetric(metrics, scope.countryCount.toLocaleString('en-GB'), 'Countries');
+    addMetric(metrics, scope.siteCount.toLocaleString('en-GB'), 'Sites in this view');
+    addMetric(metrics, scope.countryCount.toLocaleString('en-GB'), 'Countries represented');
     addMetric(metrics, scope.capacityText, 'Known operating crude-steel capacity');
     card.append(metrics);
 
     const overview = document.createElement('div');
     overview.className = 'company-brief-overview';
-    const footprint = addSection(overview, 'FOOTPRINT');
-    addFootprintRows(footprint, scope);
-    const productsSection = addSection(overview, 'PRODUCTS', `${products.length} listed product types`);
-    addRankedRows(productsSection, products, scope.siteCount);
-    const methodsSection = addSection(overview, 'PRODUCTION METHODS', `${routes.length} methods in connected sites`);
+    const geography = addSection(overview, 'SITES & COUNTRIES');
+    addSitesAndCountries(geography, scope, companyName);
+    const productsSection = addSection(overview, 'PRODUCT-TO-SITE RELATION', `${products.length} product labels across the sites in this view`);
+    addProductRows(productsSection, products);
+    const methodsSection = addSection(overview, 'PRODUCTION PROFILE', `${routes.length} production methods represented across these sites`);
     addRouteRows(methodsSection, routes);
     card.append(overview);
 
     const euStatus = statusFor(payloads.eu, ownerId);
     const ofacStatus = statusFor(payloads.ofac, ownerId);
-    const hasScreeningResult = Boolean(euStatus || ofacStatus);
     const hasEuFinding = ['direct_list_match', 'review_required'].includes(euStatus?.state);
     const hasOfacFinding = ['direct_list_match', 'review_required'].includes(ofacStatus?.state);
+    const hasRegulatoryContext = hasEuFinding || hasOfacFinding || Boolean(trade);
 
-    const body = document.createElement('div');
-    body.className = 'company-context-body';
-    text(body, 'span', 'company-brief-section-label company-brief-decision-label', 'DECISION SIGNALS');
+    if (hasRegulatoryContext) {
+      const body = document.createElement('div');
+      body.className = 'company-context-body';
+      text(body, 'span', 'company-brief-section-label company-brief-regulatory-label', 'REGULATORY CONTEXT');
 
-    if (euStatus?.state === 'direct_list_match') {
-      signal(body, {label: 'EU sanctions list', state: 'Listed', title: 'Listed by the EU', detail: 'Financial sanctions list', kind: 'sanctions'});
-    } else if (euStatus?.state === 'review_required') {
-      signal(body, {label: 'EU sanctions', state: 'Needs review', title: 'Possible sanctions-list identity', detail: 'Company identity requires review', kind: 'sanctions'});
+      if (euStatus?.state === 'direct_list_match') {
+        signal(body, {
+          label: 'EU sanctions list',
+          state: 'Listed',
+          title: 'Company identity listed by the EU',
+          detail: 'European Commission financial sanctions source.',
+          kind: 'sanctions',
+        });
+      } else if (euStatus?.state === 'review_required') {
+        signal(body, {
+          label: 'EU sanctions identity evidence',
+          state: 'Unresolved match',
+          title: 'Candidate identity match in the EU source data',
+          detail: 'The reviewed identity link remains unresolved.',
+          kind: 'sanctions',
+        });
+      }
+
+      if (ofacStatus?.state === 'direct_list_match') {
+        const summary = ofacSummary(ofacStatus);
+        signal(body, {
+          label: 'U.S. sanctions list',
+          state: 'Listed',
+          title: summary.title,
+          detail: summary.detail,
+          kind: 'sanctions',
+        });
+      } else if (ofacStatus?.state === 'review_required') {
+        signal(body, {
+          label: 'U.S. sanctions identity evidence',
+          state: 'Unresolved match',
+          title: 'Candidate identity match in the OFAC source data',
+          detail: 'The reviewed identity link remains unresolved.',
+          kind: 'sanctions',
+        });
+      }
+
+      if (trade) {
+        const detail = [
+          `Sites: ${trade.sites}`,
+          `Origin: ${trade.origins}`,
+          `GIST product labels map to: ${trade.families}`,
+          trade.mappingLabel,
+        ].filter(Boolean).join(' · ');
+        signal(body, {
+          label: 'EU steel import measure',
+          state: 'EU import context',
+          title: trade.routeLabel,
+          detail,
+          consequence: 'If imported into the EU, the additional duty is 50% after the applicable quota is exhausted.',
+          kind: 'trade',
+        });
+      }
+
+      card.append(body);
     }
-
-    if (ofacStatus?.state === 'direct_list_match') {
-      const summary = ofacSummary(ofacStatus);
-      signal(body, {label: 'U.S. sanctions list', state: 'Listed', title: summary.title, detail: summary.detail, kind: 'sanctions'});
-    } else if (ofacStatus?.state === 'review_required') {
-      signal(body, {label: 'U.S. sanctions', state: 'Needs review', title: 'Possible sanctions-list identity', detail: 'Company identity requires review', kind: 'sanctions'});
-    }
-
-    const hasFinding = hasEuFinding || hasOfacFinding;
-    if (hasScreeningResult && !hasFinding) {
-      signal(body, {label: 'Sanctions screening', state: 'No direct listing', title: 'No direct EU or U.S. listing found', detail: 'This is not sanctions clearance.', kind: 'sanctions-negative'});
-    }
-
-    if (trade) {
-      const detail = ['If imported into the EU', `${tradeRows.length}/${scope.siteCount} connected sites`, trade.origins, trade.families].filter(Boolean).join(' · ');
-      signal(body, {
-        label: 'EU steel import measure',
-        state: trade.state,
-        title: trade.routeLabel,
-        detail,
-        consequence: '50% additional duty after the applicable quota is exhausted.',
-        kind: 'trade',
-      });
-    }
-
-    const followUps = [];
-    if (hasFinding) {
-      followUps.push(
-        euStatus?.state === 'review_required' || ofacStatus?.state === 'review_required'
-          ? 'Resolve the company identity and route it for sanctions/compliance review before proceeding.'
-          : 'Sanctions/compliance review before contracting, ordering or payment.'
-      );
-    }
-    if (trade) followUps.push(trade.followUp);
-    addAction(body, followUps);
-    if (hasScreeningResult || trade || followUps.length) card.append(body);
 
     const footer = document.createElement('div');
     footer.className = 'company-brief-footer';
-    if (hasScreeningResult || trade) {
+    if (hasRegulatoryContext) {
       const evidence = document.createElement('button');
       evidence.type = 'button';
       evidence.className = 'company-context-evidence';
@@ -476,7 +528,7 @@
       });
       footer.append(evidence);
     }
-    text(footer, 'span', 'company-brief-footer-note', 'Public-data brief · no supplier ranking');
+    text(footer, 'span', 'company-brief-footer-note', 'Public-data interpretation · no supplier ranking');
     card.append(footer);
 
     syncCompanyBriefOffer();
@@ -490,8 +542,10 @@
       const review = reviewApi();
       const selected = selectedOwnerId(review);
       const clicked = button.dataset.owner;
+
       if (!selected || clicked !== selected) {
         contextOpenOwnerId = null;
+        queueCompanyBriefOfferSync();
         return;
       }
 
@@ -527,14 +581,14 @@
         const ownerId = selectedOwnerId(review);
         if (ownerId !== lastOwnerId) contextOpenOwnerId = null;
         lastOwnerId = ownerId;
-        const siteIds = ownerId ? connectedSiteIds(review, ownerId) : [];
+        const siteIds = ownerId ? siteIdsAttributedToOwnerInView(review, ownerId) : [];
         renderTradeEvidence(loadedTradePayload, tradeRowsFor(loadedTradePayload, siteIds));
         renderCard();
-        requestAnimationFrame(syncCompanyBriefOffer);
+        queueCompanyBriefOfferSync();
       };
 
       new MutationObserver(reconcile).observe(selectionPath, {childList: true, subtree: true});
-      new MutationObserver(() => requestAnimationFrame(syncCompanyBriefOffer)).observe(companyNodes, {childList: true});
+      new MutationObserver(queueCompanyBriefOfferSync).observe(companyNodes, {childList: true});
       reconcile();
     };
 
