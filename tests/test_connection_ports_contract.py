@@ -62,6 +62,17 @@ class ConnectionPortsContractTests(unittest.TestCase):
         self.assertIn(".method-node::before{display:none}", css)
         self.assertIn(".method-port{position:absolute;left:-5px;top:13px;width:9px;height:9px", css)
 
+    def test_company_edges_hide_when_target_row_is_outside_scroll_viewport(self) -> None:
+        rail = (ROOT / "src" / "connections-rail-polish.js").read_text(encoding="utf-8")
+
+        self.assertIn("const companyViewport = companyNodes.getBoundingClientRect()", rail)
+        self.assertIn("targetCenter >= companyViewport.top", rail)
+        self.assertIn("targetCenter <= companyViewport.bottom", rail)
+        self.assertIn("edge.style.visibility = targetVisible ? '' : 'hidden'", rail)
+        self.assertIn("ownerTargetVisibility", rail)
+        self.assertIn("companyNodes.addEventListener('scroll', sync", rail)
+        self.assertNotIn("scrollIntoView", rail)
+
 
 if __name__ == "__main__":
     unittest.main()
