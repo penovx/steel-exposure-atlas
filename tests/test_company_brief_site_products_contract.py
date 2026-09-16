@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class SelectionProfileSiteProductsContractTests(unittest.TestCase):
     def test_selection_profile_assets_are_loaded(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
-        self.assertIn('./src/connections-selection-profile.css?v=20260916-1', index)
+        self.assertIn('./src/connections-selection-profile.css?v=20260916-2', index)
         self.assertIn('./src/connections-selection-profile.js?v=20260916-1', index)
         self.assertNotIn('./src/connections-company-brief-sites.css', index)
         self.assertNotIn('./src/connections-company-brief-sites.js', index)
