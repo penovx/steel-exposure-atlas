@@ -1,9 +1,15 @@
 .reading-area[hidden]{display:none!important}
-.reading-area{padding:34px var(--margin) 58px;background:var(--paper)}
+.reading-area{padding:34px var(--margin) 58px;background:var(--paper);overflow-anchor:none}
 #selection-path{display:none!important}
 .legacy-reading-grid{display:none!important}
-/* Keep the atlas map legible while a company/site/product/method is selected. */
+.connections-stage{overflow-anchor:none}
+/* Focus can reduce visual noise for product/method/site selections, but a company
+   selection keeps the full geographic plant field visible as context. */
 .plant-node.dim{opacity:.42!important}
+.connections-stage:has(#company-nodes .company-node.is-selected) .plant-node.dim{opacity:1!important}
+.connections-stage:has(#company-nodes .company-node.is-selected) .plant-node:not(.dim) .plant-disc{fill:#f7fbff;stroke:#8ccfff;stroke-width:1.8}
+.connections-stage:has(#company-nodes .company-node.is-selected) .plant-node:not(.dim) .plant-hollow{stroke:#8ccfff;stroke-width:1.8}
+.connections-stage:has(#company-nodes .company-node.is-selected) .connection-edge.dim{opacity:.09!important}
 .selection-profile{border-top:1px solid #bdc8c8;padding-top:24px}
 .selection-profile-header{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;max-width:980px}
 .selection-profile-eyebrow,.selection-profile-section-label{font-size:9px;line-height:1.2;letter-spacing:1.35px;font-weight:700;color:#5f7a87}
