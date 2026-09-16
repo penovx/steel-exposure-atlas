@@ -12,10 +12,10 @@ class CompanyContextCardContractTests(unittest.TestCase):
         script = (ROOT / "src" / "connections-company-context.js").read_text(encoding="utf-8")
         css = (ROOT / "src" / "connections-procurement-ui.css").read_text(encoding="utf-8")
 
-        self.assertIn('./src/connections-company-context.js?v=20260916-2', index)
+        self.assertIn('./src/connections-company-context.js?v=20260916-3', index)
         self.assertIn("company-context-card", script)
         self.assertIn("COMPANY CONTEXT", script)
-        self.assertIn("function connectedSiteCount", script)
+        self.assertIn("function connectedSiteIds", script)
         self.assertIn("connected ${siteCount === 1 ? 'site' : 'sites'}", script)
         self.assertIn("View evidence ↓", script)
         self.assertIn("Procurement follow-up", script)
@@ -26,7 +26,23 @@ class CompanyContextCardContractTests(unittest.TestCase):
         self.assertIn("max-height:min(60vh,480px)", css)
         self.assertNotIn("position:fixed", css)
 
-    def test_primary_ui_does_not_list_absent_trade_analyses(self) -> None:
+    def test_trade_context_is_loaded_and_expressed_as_scenario(self) -> None:
+        index = (ROOT / "index.html").read_text(encoding="utf-8")
+        loader = (ROOT / "src" / "connections-trade-loader.js").read_text(encoding="utf-8")
+        context = (ROOT / "src" / "connections-company-context.js").read_text(encoding="utf-8")
+
+        self.assertIn('./src/connections-trade-loader.js?v=20260916-1', index)
+        self.assertIn('eu-steel-trade-context.v1.json', loader)
+        self.assertIn('B869A4BB8C4E4F7AE320B4CE4A117A33B05CADEEDF1C9DF106845EBCA9D9B21B', loader)
+        self.assertIn('5F0214CD0FC9FC85A114B9EC485E2D6887F3F2137BD177EE357CC00FE2BB32BE', loader)
+        self.assertIn("__ATLAS_TRADE_PROMISE__", context)
+        self.assertIn("If imported into the EU", context)
+        self.assertIn("EU steel import measure", context)
+        self.assertIn("50% additional duty after the applicable quota is exhausted.", context)
+        self.assertIn("confirm the customs code", context.lower())
+        self.assertIn("trade-context", context)
+
+    def test_primary_ui_does_not_list_absent_analyses(self) -> None:
         context = (ROOT / "src" / "connections-company-context.js").read_text(encoding="utf-8")
         sanctions = (ROOT / "src" / "connections-sanctions-bridge.js").read_text(encoding="utf-8")
         primary = context + sanctions
