@@ -103,11 +103,32 @@
     for (const node of document.querySelectorAll('#product-nodes .product-description')) node.remove();
   }
 
+  function sentenceCaseProductLabel(value) {
+    const text = String(value ?? '').trim();
+    return text ? text.charAt(0).toUpperCase() + text.slice(1) : text;
+  }
+
+  function sentenceCaseInlineProductLabels() {
+    for (const node of document.querySelectorAll('#product-nodes .product-node')) {
+      const labelNode = [...node.childNodes].find(
+        (child) => child.nodeType === Node.TEXT_NODE && child.textContent.trim(),
+      );
+      if (!labelNode) continue;
+      const displayName = sentenceCaseProductLabel(node.dataset.product);
+      if (labelNode.textContent.trim() !== displayName) labelNode.textContent = displayName;
+    }
+  }
+
   function decorateProductPickerDescriptions() {
     for (const item of document.querySelectorAll('#browse-result .browse-item[data-browse-kind="product"]')) {
+      const labelNode = item.querySelector('span > strong');
       const descriptionNode = item.querySelector('span > small');
-      if (!descriptionNode) continue;
       const key = String(item.dataset.browseId ?? '').trim().toLowerCase();
+      if (labelNode) {
+        const displayName = sentenceCaseProductLabel(key);
+        if (labelNode.textContent !== displayName) labelNode.textContent = displayName;
+      }
+      if (!descriptionNode) continue;
       const description = PRODUCT_DESCRIPTIONS.get(key) ?? 'GIST-listed steel product category';
       if (descriptionNode.textContent !== description) descriptionNode.textContent = description;
     }
@@ -181,6 +202,7 @@
       appendScrollableOwners();
       removeMisleadingSublines();
       removeInlineProductDescriptions();
+      sentenceCaseInlineProductLabels();
       decorateProductPickerDescriptions();
       renderMethodEndpointDots();
     });
