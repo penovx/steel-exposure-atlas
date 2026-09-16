@@ -13,7 +13,7 @@ class SelectionProfileContractTests(unittest.TestCase):
         css = (ROOT / "src" / "connections-selection-profile.css").read_text(encoding="utf-8")
 
         self.assertIn('./src/connections-selection-profile.js?v=20260916-1', index)
-        self.assertIn('./src/connections-selection-profile.css?v=20260916-1', index)
+        self.assertIn('./src/connections-selection-profile.css?v=20260916-2', index)
         self.assertNotIn('./src/connections-company-context.js', index)
         self.assertNotIn('./src/connections-company-brief-sites.js', index)
         self.assertIn('id="selection-profile"', index)
