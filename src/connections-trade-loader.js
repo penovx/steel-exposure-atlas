@@ -36,5 +36,17 @@
     return payload;
   }
 
-  globalThis.__ATLAS_TRADE_PROMISE__ = load();
+  async function safeLoad() {
+    try {
+      return await load();
+    } catch (error) {
+      console.error(error);
+      globalThis.__ATLAS_TRADE_ERROR__ = String(error?.message ?? error);
+      return null;
+    }
+  }
+
+  // Trade context enriches the base selection profile but must never prevent the
+  // Company/Site/Product profile itself from rendering.
+  globalThis.__ATLAS_TRADE_PROMISE__ = safeLoad();
 })();
