@@ -11,39 +11,49 @@ class RailPolishContractTests(unittest.TestCase):
         index = (ROOT / "index.html").read_text(encoding="utf-8")
         self.assertIn('./src/connections-rail-polish.js?v=20260916-6', index)
 
-    def test_ownership_list_is_bounded_and_never_backfilled_after_first_paint(self) -> None:
+    def test_company_rail_is_scrollable_virtualized_and_not_backfilled(self) -> None:
         css = (ROOT / "src" / "connections-visual-polish.css").read_text(
             encoding="utf-8"
         ).replace(" ", "")
         rail = (ROOT / "src" / "connections-rail-polish.js").read_text(
             encoding="utf-8"
         )
-        core = (ROOT / "src" / "connections-core.js").read_text(encoding="utf-8")
+        virtual = (ROOT / "src" / "connections-company-virtual-rail.js").read_text(
+            encoding="utf-8"
+        )
+        virtual_css = (ROOT / "src" / "connections-company-virtual-rail.css").read_text(
+            encoding="utf-8"
+        ).replace(" ", "")
 
         self.assertIn("overflow-y:scroll", css)
         self.assertIn("scrollbar-gutter:stable", css)
         self.assertIn(".company-sub{display:none!important}", css)
-        self.assertIn("ownerList=[...availableOwners]", core)
-        self.assertIn(".slice(0,5)", core)
+        self.assertIn("ROW_STEP = 72", virtual)
+        self.assertIn("BUFFER_ROWS = 6", virtual)
+        self.assertIn("logicalGroups = groups", virtual)
+        self.assertIn("container.replaceChildren(fragment)", virtual)
+        self.assertIn("company-virtual-spacer", virtual)
+        self.assertIn(".company-nodes.is-virtualized", virtual_css)
         self.assertNotIn("function appendScrollableOwners()", rail)
         self.assertNotIn("bridge-extra-owner", rail)
         self.assertIn("function removeMisleadingSublines()", rail)
         self.assertIn("#company-nodes .company-sub", rail)
 
-    def test_selected_owner_keeps_page_and_rail_viewport_stable(self) -> None:
+    def test_selected_owner_keeps_page_and_virtual_rail_viewport_stable(self) -> None:
+        virtual = (ROOT / "src" / "connections-company-virtual-rail.js").read_text(
+            encoding="utf-8"
+        )
         rail = (ROOT / "src" / "connections-rail-polish.js").read_text(
             encoding="utf-8"
         )
 
-        self.assertIn("function installCompanyViewportGuard(companyNodes)", rail)
-        self.assertIn("const pageX = window.scrollX", rail)
-        self.assertIn("const pageY = window.scrollY", rail)
-        self.assertIn("const railScrollTop = companyNodes.scrollTop", rail)
-        self.assertIn("document.createDocumentFragment()", rail)
-        self.assertIn("companyNodes.scrollTop = railScrollTop", rail)
-        self.assertIn("window.scrollTo({left: pageX, top: pageY, behavior: 'auto'})", rail)
+        self.assertIn("const pageX = window.scrollX", virtual)
+        self.assertIn("const pageY = window.scrollY", virtual)
+        self.assertIn("lastScrollTop = container.scrollTop", virtual)
+        self.assertIn("container.scrollTop = lastScrollTop", virtual)
+        self.assertIn("window.scrollTo({left: pageX, top: pageY, behavior: 'auto'})", virtual)
+        self.assertIn("container.dataset.viewportGuard = 'true'", virtual)
         self.assertIn("function syncCompanyEdgeAnchors()", rail)
-        self.assertIn("companyNodes.addEventListener('scroll', sync", rail)
         self.assertNotIn("appendScrollableOwners", rail)
 
     def test_other_method_subline_and_method_tracks_are_removed(self) -> None:
