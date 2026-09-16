@@ -33,6 +33,246 @@
         }
       ],
       "review_note": "Entity identity resolved across sources. This does not create a plant-level sanctions finding and does not infer ownership/control effects for related entities."
+    },
+    {
+      "resolution_id": "REL-2026-09-16-002",
+      "left": {
+        "source": "gem",
+        "entity_id": "E100000131103",
+        "label": "Arvand Kaveh Steel Co"
+      },
+      "right": {
+        "source": "ofac",
+        "entity_id": "ofac-sdn:30419",
+        "ofac_uid": "30419",
+        "source_list": "SDN",
+        "snapshot_sha256": "3D594ED7CDB5E0FD13F126A3815255146D730F791DCF672665C67416D03A7C1F"
+      },
+      "decision": "same_legal_entity",
+      "resolution_method": "human_review_corroborated",
+      "reviewed_at": "2026-09-16",
+      "downstream_state": "direct_list_match",
+      "evidence": [
+        {
+          "type": "ofac_current_snapshot_exact_name_and_context",
+          "url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN.XML"
+        },
+        {
+          "type": "ofac_designation_record",
+          "url": "https://ofac.treasury.gov/recent-actions/20201118"
+        }
+      ],
+      "review_note": "GEM owner name matches the OFAC SDN primary name after punctuation normalization; Iran and Khorramshahr context also align. Company identity only; no separate plant-level sanctions finding is inferred."
+    },
+    {
+      "resolution_id": "REL-2026-09-16-003",
+      "left": {
+        "source": "gem",
+        "entity_id": "E100001012537",
+        "label": "Chadormalu Mining & Industrial Co"
+      },
+      "right": {
+        "source": "ofac",
+        "entity_id": "ofac-sdn:28287",
+        "ofac_uid": "28287",
+        "source_list": "SDN",
+        "snapshot_sha256": "3D594ED7CDB5E0FD13F126A3815255146D730F791DCF672665C67416D03A7C1F"
+      },
+      "decision": "same_legal_entity",
+      "resolution_method": "human_review_corroborated",
+      "reviewed_at": "2026-09-16",
+      "downstream_state": "direct_list_match",
+      "evidence": [
+        {
+          "type": "ofac_current_snapshot_strong_alias",
+          "url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN.XML"
+        },
+        {
+          "type": "ofac_designation_record",
+          "url": "https://ofac.treasury.gov/recent-actions/20200110"
+        }
+      ],
+      "review_note": "GEM owner name matches an OFAC strong alias; source company name, Iran context and company website/registration context are consistent. Company identity only."
+    },
+    {
+      "resolution_id": "REL-2026-09-16-004",
+      "left": {
+        "source": "gem",
+        "entity_id": "E100000131116",
+        "label": "Iranian Ghadir Iron & Steel Co"
+      },
+      "right": {
+        "source": "ofac",
+        "entity_id": "ofac-sdn:28295",
+        "ofac_uid": "28295",
+        "source_list": "SDN",
+        "snapshot_sha256": "3D594ED7CDB5E0FD13F126A3815255146D730F791DCF672665C67416D03A7C1F"
+      },
+      "decision": "same_legal_entity",
+      "resolution_method": "human_review_corroborated",
+      "reviewed_at": "2026-09-16",
+      "downstream_state": "direct_list_match",
+      "evidence": [
+        {
+          "type": "ofac_current_snapshot_exact_name_and_context",
+          "url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN.XML"
+        },
+        {
+          "type": "ofac_designation_record",
+          "url": "https://ofac.treasury.gov/recent-actions/20200110"
+        }
+      ],
+      "review_note": "GEM owner name matches the OFAC SDN primary name; Iran, Yazd and website context align. Company identity only."
+    },
+    {
+      "resolution_id": "REL-2026-09-16-005",
+      "left": {
+        "source": "gem",
+        "entity_id": "E100000130933",
+        "label": "Lebedinskiy GOK JSC"
+      },
+      "right": {
+        "source": "ofac",
+        "entity_id": "ofac-sdn:41920",
+        "ofac_uid": "41920",
+        "source_list": "SDN",
+        "snapshot_sha256": "3D594ED7CDB5E0FD13F126A3815255146D730F791DCF672665C67416D03A7C1F"
+      },
+      "decision": "same_legal_entity",
+      "resolution_method": "human_review_corroborated",
+      "reviewed_at": "2026-09-16",
+      "downstream_state": "direct_list_match",
+      "evidence": [
+        {
+          "type": "ofac_current_snapshot_strong_alias",
+          "url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN.XML"
+        },
+        {
+          "type": "ofac_designation_record",
+          "url": "https://ofac.treasury.gov/recent-actions/20230412"
+        }
+      ],
+      "review_note": "GEM owner name is an OFAC strong alias for the same Russian mining company; Gubkin/Belgorod context aligns. Company identity only."
+    },
+    {
+      "resolution_id": "REL-2026-09-16-006",
+      "left": {
+        "source": "gem",
+        "entity_id": "E100000131141",
+        "label": "West Alborz Steel Co"
+      },
+      "right": {
+        "source": "ofac",
+        "entity_id": "ofac-sdn:30756",
+        "ofac_uid": "30756",
+        "source_list": "SDN",
+        "snapshot_sha256": "3D594ED7CDB5E0FD13F126A3815255146D730F791DCF672665C67416D03A7C1F"
+      },
+      "decision": "same_legal_entity",
+      "resolution_method": "human_review_corroborated",
+      "reviewed_at": "2026-09-16",
+      "downstream_state": "direct_list_match",
+      "evidence": [
+        {
+          "type": "ofac_current_snapshot_strong_alias",
+          "url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN.XML"
+        },
+        {
+          "type": "ofac_designation_record",
+          "url": "https://ofac.treasury.gov/recent-actions/20210105"
+        }
+      ],
+      "review_note": "GEM owner name matches an OFAC strong alias for West Alborz Steel Complex; Iran and website context align. Company identity only."
+    },
+    {
+      "resolution_id": "REL-2026-09-16-007",
+      "left": {
+        "source": "gem",
+        "entity_id": "E100000131076",
+        "label": "Zarand Iranian Steel Co"
+      },
+      "right": {
+        "source": "ofac",
+        "entity_id": "ofac-sdn:30761",
+        "ofac_uid": "30761",
+        "source_list": "SDN",
+        "snapshot_sha256": "3D594ED7CDB5E0FD13F126A3815255146D730F791DCF672665C67416D03A7C1F"
+      },
+      "decision": "same_legal_entity",
+      "resolution_method": "human_review_corroborated",
+      "reviewed_at": "2026-09-16",
+      "downstream_state": "direct_list_match",
+      "evidence": [
+        {
+          "type": "ofac_current_snapshot_strong_alias",
+          "url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN.XML"
+        },
+        {
+          "type": "ofac_designation_record",
+          "url": "https://ofac.treasury.gov/recent-actions/20210105"
+        }
+      ],
+      "review_note": "GEM owner name matches an OFAC strong alias; Iran, company website and organization context align. Company identity only."
+    },
+    {
+      "resolution_id": "REL-2026-09-16-008",
+      "left": {
+        "source": "gem",
+        "entity_id": "E100000131956",
+        "label": "Myanmar Economic Corp"
+      },
+      "right": {
+        "source": "ofac",
+        "entity_id": "ofac-sdn:31516",
+        "ofac_uid": "31516",
+        "source_list": "SDN",
+        "snapshot_sha256": "3D594ED7CDB5E0FD13F126A3815255146D730F791DCF672665C67416D03A7C1F"
+      },
+      "decision": "same_legal_entity",
+      "resolution_method": "human_review_corroborated",
+      "reviewed_at": "2026-09-16",
+      "downstream_state": "direct_list_match",
+      "evidence": [
+        {
+          "type": "ofac_current_snapshot_strong_alias",
+          "url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN.XML"
+        },
+        {
+          "type": "ofac_designation_record",
+          "url": "https://ofac.treasury.gov/recent-actions/20210325"
+        }
+      ],
+      "review_note": "GEM Myanmar Economic Corp resolves to OFAC Myanmar Economic Corporation Limited / Myanmar Economic Corporation. Burma/Myanmar context and registration identity align. Company identity only."
+    },
+    {
+      "resolution_id": "REL-2026-09-16-009",
+      "left": {
+        "source": "gem",
+        "entity_id": "E100000131131",
+        "label": "Pasargad Steel Complex Co"
+      },
+      "right": {
+        "source": "ofac",
+        "entity_id": "ofac-sdn:30752",
+        "ofac_uid": "30752",
+        "source_list": "SDN",
+        "snapshot_sha256": "3D594ED7CDB5E0FD13F126A3815255146D730F791DCF672665C67416D03A7C1F"
+      },
+      "decision": "same_legal_entity",
+      "resolution_method": "human_review_corroborated",
+      "reviewed_at": "2026-09-16",
+      "downstream_state": "direct_list_match",
+      "evidence": [
+        {
+          "type": "ofac_current_snapshot_legal_form_match",
+          "url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN.XML"
+        },
+        {
+          "type": "ofac_designation_record",
+          "url": "https://ofac.treasury.gov/recent-actions/20210105"
+        }
+      ],
+      "review_note": "GEM label differs only by the company legal-form suffix from OFAC Pasargad Steel Complex; Iran, company website and registration context align. Company identity only."
     }
   ]
 }
