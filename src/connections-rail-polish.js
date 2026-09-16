@@ -33,112 +33,6 @@
     return globalThis.__atlasReview ?? null;
   }
 
-  function snapshot() {
-    try {
-      return review()?.snapshot?.() ?? null;
-    } catch {
-      return null;
-    }
-  }
-
-  function scopedPlants() {
-    const api = review();
-    const state = snapshot()?.state;
-    if (!api?.all || !state) return [];
-    return state.region === 'World'
-      ? api.all
-      : api.all.filter((plant) => plant.region === state.region);
-  }
-
-  function ownerGroups() {
-    const groups = new Map();
-    for (const plant of scopedPlants()) {
-      const id = String(plant.ownerId ?? '').trim();
-      const name = String(plant.owner ?? '').trim();
-      if (!/^E\d+$/.test(id) || !name || ['unknown', 'n/a'].includes(name.toLowerCase())) continue;
-      if (!groups.has(id)) groups.set(id, {id, name, count: 0});
-      groups.get(id).count += 1;
-    }
-    return [...groups.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'en'));
-  }
-
-  function appendScrollableOwners() {
-    const state = snapshot()?.state;
-    const container = document.querySelector('#company-nodes');
-    if (!state || !container) return;
-
-    const existing = new Set(
-      [...container.querySelectorAll('[data-owner]')].map((node) => node.dataset.owner),
-    );
-    const fragment = document.createDocumentFragment();
-    let added = 0;
-
-    for (const group of ownerGroups()) {
-      if (existing.has(group.id)) continue;
-      const button = document.createElement('button');
-      button.className = 'company-node bridge-extra-owner';
-      button.type = 'button';
-      button.dataset.owner = group.id;
-      button.dataset.port = `owner:${group.id}`;
-      button.dataset.bridgeExtraOwner = 'true';
-      button.setAttribute('aria-pressed', 'false');
-      button.setAttribute('aria-label', `${group.name}, ${group.count} sites in ${state.region}`);
-
-      const name = document.createElement('span');
-      name.className = 'company-name';
-      name.textContent = group.name;
-      const count = document.createElement('span');
-      count.className = 'company-count';
-      count.textContent = group.count.toLocaleString('en-GB');
-      button.append(name, count);
-      fragment.append(button);
-      added += 1;
-    }
-    if (added) container.append(fragment);
-  }
-
-  function restoreStableOwnerOrder(container) {
-    if (!container) return;
-    const nodes = new Map(
-      [...container.querySelectorAll('.company-node[data-owner]')]
-        .map((node) => [node.dataset.owner, node]),
-    );
-    const desired = ownerGroups().map((group) => nodes.get(group.id)).filter(Boolean);
-    const current = [...container.querySelectorAll('.company-node[data-owner]')];
-    const alreadyStable = desired.length === current.length
-      && desired.every((node, index) => node === current[index]);
-    if (!alreadyStable) {
-      const fragment = document.createDocumentFragment();
-      for (const node of desired) fragment.append(node);
-      container.append(fragment);
-    }
-  }
-
-  function installOwnerSelectionBridge(companyNodes, api) {
-    if (companyNodes.dataset.ownerSelectionBridge === 'true') return;
-    companyNodes.dataset.ownerSelectionBridge = 'true';
-
-    companyNodes.addEventListener('click', (event) => {
-      const button = event.target.closest?.('.company-node[data-owner]');
-      if (!button || !companyNodes.contains(button)) return;
-
-      const scrollTop = companyNodes.scrollTop;
-      const pageX = window.scrollX;
-      const pageY = window.scrollY;
-      event.preventDefault();
-      event.stopPropagation();
-
-      // Core selection is synchronous. Let its map frame complete before the
-      // MutationObserver rebuilds the long public company rail. This avoids doing
-      // the same large DOM rebuild twice inside the click handler.
-      companyNodes.dataset.restoreScrollTop = String(scrollTop);
-      api.choose('owner', button.dataset.owner);
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        window.scrollTo({left: pageX, top: pageY, behavior: 'auto'});
-      }));
-    }, true);
-  }
-
   function removeMisleadingSublines() {
     for (const node of document.querySelectorAll('#company-nodes .company-sub')) node.remove();
     document.querySelector('#method-nodes .method-node[data-route="Other"] .method-sub')?.remove();
@@ -300,13 +194,6 @@
     queued = true;
     requestAnimationFrame(() => {
       queued = false;
-      const companyNodes = document.querySelector('#company-nodes');
-      appendScrollableOwners();
-      restoreStableOwnerOrder(companyNodes);
-      if (companyNodes?.dataset.restoreScrollTop !== undefined) {
-        companyNodes.scrollTop = Number(companyNodes.dataset.restoreScrollTop) || 0;
-        delete companyNodes.dataset.restoreScrollTop;
-      }
       removeMisleadingSublines();
       removeInlineProductDescriptions();
       sentenceCaseInlineProductLabels();
@@ -329,7 +216,6 @@
       return;
     }
 
-    installOwnerSelectionBridge(companyNodes, api);
     new MutationObserver(sync).observe(companyNodes, {childList: true});
     new MutationObserver(sync).observe(productNodes, {childList: true});
     new MutationObserver(sync).observe(methodNodes, {childList: true, subtree: true});
