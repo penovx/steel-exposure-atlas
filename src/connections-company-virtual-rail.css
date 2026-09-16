@@ -1,0 +1,6 @@
+.company-nodes.is-virtualized{gap:0;position:relative;overflow-y:scroll;overscroll-behavior-y:contain}
+.company-nodes.is-virtualized>.company-node{min-height:68px;margin:0 0 4px;width:100%;box-sizing:border-box}
+.company-virtual-spacer{display:block;flex:0 0 auto;width:1px;min-height:0;pointer-events:none}
+.company-nodes.is-virtualized .company-sanctions-flags{position:absolute;right:10px;bottom:4px;margin:0;gap:3px;justify-content:flex-end;max-width:calc(100% - 20px);pointer-events:none}
+.company-nodes.is-virtualized .company-sanctions-flag{padding:1px 4px;font-size:7px;line-height:1.1}
+.company-nodes.is-virtualized .company-sanctions-flag::before{width:9px;height:9px;font-size:6px}
