@@ -1,16 +1,21 @@
 from __future__ import annotations
 
+import copy
 import unittest
 
-from pipeline.build_eu_steel_trade_context import build_context
+from pipeline.build_eu_steel_trade_context import (
+    EXPECTED_BILATERAL_SHA256,
+    EXPECTED_MEASURE_SHA256,
+    build_context,
+)
 
 
 def profile() -> dict[str, object]:
     return {
         "meta": {
             "schema": "steel-exposure-atlas/gist-eu-steel-measure-profile-v1.1",
-            "measure_snapshot_sha256": "A" * 64,
-            "bilateral_snapshot_sha256": "B" * 64,
+            "measure_snapshot_sha256": EXPECTED_MEASURE_SHA256,
+            "bilateral_snapshot_sha256": EXPECTED_BILATERAL_SHA256,
         },
         "plants": [
             {
@@ -70,6 +75,7 @@ class EuSteelTradeContextTests(unittest.TestCase):
         self.assertEqual(payload["meta"]["counts"]["origin_specific_quota_context"], 1)
         self.assertEqual(payload["meta"]["counts"]["pooled_or_residual_quota_context"], 1)
         self.assertEqual([row["plant_id"] for row in payload["plants"]], ["P1", "P2"])
+        self.assertEqual(payload["meta"]["publication_state"], "approved minimal derived public context")
 
     def test_named_origin_row_becomes_clear_user_context(self) -> None:
         payload = build_context(profile())
@@ -88,6 +94,12 @@ class EuSteelTradeContextTests(unittest.TestCase):
         self.assertEqual(row["product_family_state"], "family_requires_confirmation")
         self.assertEqual(row["quota_route"], "pooled_or_residual")
         self.assertIn("applicable quota route", row["procurement_follow_up"])
+
+    def test_rejects_unreviewed_source_snapshot(self) -> None:
+        bad = copy.deepcopy(profile())
+        bad["meta"]["measure_snapshot_sha256"] = "A" * 64  # type: ignore[index]
+        with self.assertRaisesRegex(ValueError, "snapshot mismatch"):
+            build_context(bad)
 
 
 if __name__ == "__main__":
