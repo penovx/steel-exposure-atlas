@@ -2,6 +2,8 @@
 .reading-area{padding:34px var(--margin) 58px;background:var(--paper)}
 #selection-path{display:none!important}
 .legacy-reading-grid{display:none!important}
+/* Keep the atlas map legible while a company/site/product/method is selected. */
+.plant-node.dim{opacity:.42!important}
 .selection-profile{border-top:1px solid #bdc8c8;padding-top:24px}
 .selection-profile-header{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;max-width:980px}
 .selection-profile-eyebrow,.selection-profile-section-label{font-size:9px;line-height:1.2;letter-spacing:1.35px;font-weight:700;color:#5f7a87}
