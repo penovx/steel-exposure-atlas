@@ -8,7 +8,7 @@ DEFAULT_PROFILE = Path(
     "tmp/source-packages/eu-steel-measure/review/gist-eu-steel-measure-profile.v1.json"
 )
 DEFAULT_OUTPUT = Path("public/data/eu-steel-trade-context.v1.json")
-SCHEMA = "steel-exposure-atlas/eu-steel-trade-context-v1.0"
+SCHEMA = "steel-exposure-atlas/eu-steel-trade-context-v1.1"
 EXPECTED_MEASURE_SHA256 = "B869A4BB8C4E4F7AE320B4CE4A117A33B05CADEEDF1C9DF106845EBCA9D9B21B"
 EXPECTED_BILATERAL_SHA256 = "5F0214CD0FC9FC85A114B9EC485E2D6887F3F2137BD177EE357CC00FE2BB32BE"
 CANDIDATE_STATES = {
@@ -114,11 +114,6 @@ def build_context(profile: dict[str, object]) -> dict[str, object]:
                 "quota_route": "origin_specific" if has_named else "pooled_or_residual",
                 "customs_order_numbers": sorted(order_numbers),
                 "additional_duty_if_quota_exhausted_pct": 50.0,
-                "procurement_follow_up": (
-                    "Confirm the customs code and current quota position before using this measure in an import decision."
-                    if has_named
-                    else "Confirm the customs code and applicable quota route before using this measure in an import decision."
-                ),
             }
         )
 
@@ -141,7 +136,7 @@ def build_context(profile: dict[str, object]) -> dict[str, object]:
                 },
             },
             "publication_state": "approved minimal derived public context",
-            "ui_principle": "evidence -> meaning -> action",
+            "ui_principle": "evidence -> relationship -> meaning",
             "counts": {
                 "plants_with_context": len(context_rows),
                 "origin_specific_quota_context": named,
