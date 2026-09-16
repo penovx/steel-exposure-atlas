@@ -9,9 +9,9 @@ ROOT = Path(__file__).resolve().parents[1]
 class RailPolishContractTests(unittest.TestCase):
     def test_polish_runtime_is_loaded(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
-        self.assertIn('./src/connections-rail-polish.js?v=20260916-5', index)
+        self.assertIn('./src/connections-rail-polish.js?v=20260916-6', index)
 
-    def test_ownership_list_is_scrollable_and_rendered_complete_by_core(self) -> None:
+    def test_ownership_list_is_bounded_and_never_backfilled_after_first_paint(self) -> None:
         css = (ROOT / "src" / "connections-visual-polish.css").read_text(
             encoding="utf-8"
         ).replace(" ", "")
@@ -23,32 +23,28 @@ class RailPolishContractTests(unittest.TestCase):
         self.assertIn("overflow-y:scroll", css)
         self.assertIn("scrollbar-gutter:stable", css)
         self.assertIn(".company-sub{display:none!important}", css)
-        self.assertIn(".more-link{display:none!important}", css)
-        self.assertIn("function syncCompanyRail(availableOwners,chosen)", core)
-        self.assertIn("ownerList=availableOwners", core)
-        self.assertIn("container.dataset.ownerSignature", core)
-        self.assertIn("container.innerHTML=availableOwners.map", core)
-        self.assertNotIn("ownerList=[...availableOwners]", core)
+        self.assertIn("ownerList=[...availableOwners]", core)
+        self.assertIn(".slice(0,5)", core)
         self.assertNotIn("function appendScrollableOwners()", rail)
         self.assertNotIn("bridge-extra-owner", rail)
         self.assertIn("function removeMisleadingSublines()", rail)
         self.assertIn("#company-nodes .company-sub", rail)
 
-    def test_selected_owner_keeps_stable_row_and_edge_anchor_without_rail_rebuild(self) -> None:
-        core = (ROOT / "src" / "connections-core.js").read_text(encoding="utf-8")
+    def test_selected_owner_keeps_page_and_rail_viewport_stable(self) -> None:
         rail = (ROOT / "src" / "connections-rail-polish.js").read_text(
             encoding="utf-8"
         )
 
-        self.assertIn("if(container.dataset.ownerSignature!==signature)", core)
-        self.assertIn("node.classList.toggle('is-selected',select)", core)
-        self.assertIn("node.setAttribute('aria-pressed',String(select))", core)
-        self.assertIn('data-port="owner:${esc(g.id)}"', core)
-        self.assertNotIn("function installOwnerSelectionBridge", rail)
-        self.assertNotIn("function restoreStableOwnerOrder", rail)
-        self.assertNotIn("function appendScrollableOwners", rail)
+        self.assertIn("function installCompanyViewportGuard(companyNodes)", rail)
+        self.assertIn("const pageX = window.scrollX", rail)
+        self.assertIn("const pageY = window.scrollY", rail)
+        self.assertIn("const railScrollTop = companyNodes.scrollTop", rail)
+        self.assertIn("document.createDocumentFragment()", rail)
+        self.assertIn("companyNodes.scrollTop = railScrollTop", rail)
+        self.assertIn("window.scrollTo({left: pageX, top: pageY, behavior: 'auto'})", rail)
         self.assertIn("function syncCompanyEdgeAnchors()", rail)
         self.assertIn("companyNodes.addEventListener('scroll', sync", rail)
+        self.assertNotIn("appendScrollableOwners", rail)
 
     def test_other_method_subline_and_method_tracks_are_removed(self) -> None:
         css = (ROOT / "src" / "connections-visual-polish.css").read_text(
