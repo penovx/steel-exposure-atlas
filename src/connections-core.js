@@ -64,7 +64,7 @@ const DATA=window.__ATLAS_DATA__;if(!DATA)throw new Error('Atlas runtime data wa
 const all=DATA.plants;const lookup=new Map(all.map(p=>[p.id,p]));
 const state={region:'Europe',filters:{country:null,owner:null,products:[],productMode:'any',route:null},site:null,camera:{zoom:1,x:0,y:0}};
 const regions=['World','Europe','North America','Central & South America','Asia Pacific','Africa','Middle East','Eurasia'];
-let base=[],matched=[],focusSet=null,ownerList=[],productList=[],nodePositions=new Map(),hover=null,view={s:1,tx:0,ty:0},size={w:700,h:470},pan=null,suppressUntil=0,queued=0,browseMode='site',browseSubset=null,renderCount=0;
+let base=[],matched=[],focusSet=null,companyHighlightSet=null,ownerList=[],productList=[],nodePositions=new Map(),hover=null,view={s:1,tx:0,ty:0},size={w:700,h:470},pan=null,suppressUntil=0,queued=0,browseMode='site',browseSubset=null,renderCount=0;
 const schemaExpected='steel-exposure-atlas/relational-entry-v2';
 if(DATA.schema!==schemaExpected||all.length!==1293||lookup.size!==1293)throw new Error('Unexpected atlas data');
 for(const p of all){for(const t of p.tranches)amount([t],'crude_steel_capacity_ttpa');if(!Number.isFinite(p.latitude)||!Number.isFinite(p.longitude))throw new Error('Invalid coordinates');}
@@ -73,6 +73,7 @@ const ownCache=new Map(all.map(p=>[p.id,usableOwner(p)]));
 function current(){return state.site?matched.filter(p=>p.id===state.site):matched;}
 function hasFilters(){const f=state.filters;return !!(f.country||f.owner||f.route||f.products.length);}
 function isFocused(){return hasFilters()||!!state.site;}
+function hasMapFocus(){const f=state.filters;return !!(state.site||f.country||f.route||f.products.length);}
 function groupName(id){return all.find(p=>ownCache.get(p.id)===id)?.owner??id;}
 function routeName(id){return ROUTES.find(r=>r.id===id)?.name??id;}
 function labelFor(kind,id){return kind==='owner'?groupName(id):kind==='route'?routeName(id):id;}
@@ -82,7 +83,9 @@ function update(){
  base=state.region==='World'?all:all.filter(p=>p.region===state.region);
  matched=filterPlants(base,state.filters);
  if(state.site&&!matched.some(p=>p.id===state.site))state.site=null;
- const chosen=current();focusSet=isFocused()?new Set(chosen.map(p=>p.id)):null;
+ const chosen=current(),chosenIds=new Set(chosen.map(p=>p.id));
+ focusSet=hasMapFocus()?chosenIds:null;
+ companyHighlightSet=state.filters.owner?new Set(base.filter(p=>ownCache.get(p.id)===state.filters.owner).map(p=>p.id)):null;
  $('#region-title').textContent=state.region;$('#scope-meta').textContent=`${num(base.length)} tracked sites · June 2026`;
  $('#clear-all').hidden=!isFocused();
  const availableOwners=owners(base),selectionOwners=new Set(owners(chosen).map(g=>g.id));
@@ -184,7 +187,7 @@ function drawMap(){
   n.addEventListener('click',()=>choose('country',c.name));n.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();choose('country',c.name);}});labels.append(n);
  }
  const pointLayer=$('#plant-layer');pointLayer.replaceChildren();nodePositions=new Map();const selected=current();const labelIds=new Set(isFocused()?selected.slice().sort((a,b)=>(capCache.get(b.id).known??-1)-(capCache.get(a.id).known??-1)).slice(0,5).map(p=>p.id):[]);
- for(const g of groups){if(g.x<-20||g.x>size.w+20||g.y<-20||g.y>size.h+20)continue;const ids=g.members.map(p=>p.id);const r=circleRadius(g.known,size.w<450?.82:1);const visualR=r>0?r:3;const hit=Math.max(visualR+3,10);const group=svgEl('g',{class:`plant-node${!g.hot?' dim':''}${ids.includes(state.site)?' selected':''}`,transform:`translate(${g.x} ${g.y})`,tabindex:0,role:'button','data-members':ids.join(' '),'aria-label':g.members.length>1?`Open ${g.members.length} nearby sites`:g.members[0].name});
+ for(const g of groups){if(g.x<-20||g.x>size.w+20||g.y<-20||g.y>size.h+20)continue;const ids=g.members.map(p=>p.id);const companyMatch=!!companyHighlightSet&&ids.some(id=>companyHighlightSet.has(id));const r=circleRadius(g.known,size.w<450?.82:1);const visualR=r>0?r:3;const hit=Math.max(visualR+3,10);const group=svgEl('g',{class:`plant-node${!g.hot?' dim':''}${companyMatch?' company-match':''}${ids.includes(state.site)?' selected':''}`,transform:`translate(${g.x} ${g.y})`,tabindex:0,role:'button','data-members':ids.join(' '),'aria-label':g.members.length>1?`Open ${g.members.length} nearby sites`:g.members[0].name});
   group.append(svgEl('circle',{r:hit,class:'plant-hit'}));group.append(svgEl('circle',{r:visualR,class:r>0?'plant-disc':'plant-hollow'}));group.append(svgEl('circle',{r:visualR+5,class:'plant-focus'}));
   if(g.members.some(p=>p.accuracy==='approximate'))group.append(svgEl('circle',{r:visualR+2,fill:'none',stroke:'#d3cbb8','stroke-dasharray':'2 3','stroke-width':.8}));
   if(g.members.length>1)group.append(svgEl('text',{x:visualR+4,y:3,class:'cluster-text',style:'fill:#d1e1eb;paint-order:stroke;stroke:#0c1821;stroke-width:2'},String(g.members.length)));
@@ -258,7 +261,7 @@ window.addEventListener('pointerup',e=>{if(!pan||pan.id!==e.pointerId)return;if(
 // No wheel handler: ordinary page scrolling and native pinch zoom are preserved.
 new ResizeObserver(queueMap).observe($('#connections-stage'));
 update();
-window.__atlasReview={snapshot:()=>({state:structuredClone(state),scopeCount:base.length,matchedIds:matched.map(p=>p.id),selectedIds:current().map(p=>p.id),scopeCapacity:total(base),selectedCapacity:total(current()),ownerGroups:owners(current()).map(g=>({id:g.id,count:g.members.length})),renderCount}),all,model:{amount,total,hasRoute,filterPlants,owners,products,circleRadius},choose,setRegion,clear,chooseSite};
+window.__atlasReview={snapshot:()=>({state:structuredClone(state),scopeCount:base.length,matchedIds:matched.map(p=>p.id),selectedIds:current().map(p=>p.id),mapFocusIds:focusSet?[...focusSet]:[],companyHighlightIds:companyHighlightSet?[...companyHighlightSet]:[],scopeCapacity:total(base),selectedCapacity:total(current()),ownerGroups:owners(current()).map(g=>({id:g.id,count:g.members.length})),renderCount}),all,model:{amount,total,hasRoute,filterPlants,owners,products,circleRadius},choose,setRegion,clear,chooseSite};
 })();
 
 })();
