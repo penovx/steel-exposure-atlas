@@ -9,11 +9,14 @@ DEFAULT_GIST = Path("public/data/gist-plants.v1.json")
 DEFAULT_MEASURE = Path(
     "tmp/source-packages/eu-steel-measure/derived/eu-steel-measure-2026-1457.v1.json"
 )
+DEFAULT_BILATERAL = Path(
+    "tmp/source-packages/eu-steel-measure/derived/eu-steel-bilateral-2026-1930.v1.json"
+)
 DEFAULT_MAPPING = Path("config/eu-steel-measure-product-map.v1.json")
 DEFAULT_OUTPUT = Path(
     "tmp/source-packages/eu-steel-measure/review/gist-eu-steel-measure-profile.v1.json"
 )
-SCHEMA = "steel-exposure-atlas/gist-eu-steel-measure-profile-v1.0"
+SCHEMA = "steel-exposure-atlas/gist-eu-steel-measure-profile-v1.1"
 
 EU_COUNTRIES = {
     "Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Czech Republic", "Czechia",
@@ -54,10 +57,20 @@ def _country_for_measure(country: str) -> str:
     return COUNTRY_ALIASES.get(country, country)
 
 
+def _bilateral_country_set(bilateral: dict[str, object] | None) -> set[str]:
+    if bilateral is None:
+        return set()
+    countries = bilateral.get("countries")
+    if not isinstance(countries, list):
+        raise ValueError("EU bilateral safeguard payload has no countries list.")
+    return {_clean(country) for country in countries if _clean(country)}
+
+
 def build_profile(
     gist: dict[str, object],
     measure: dict[str, object],
     mapping: dict[str, object],
+    bilateral: dict[str, object] | None = None,
 ) -> dict[str, object]:
     plants = gist.get("plants")
     products = measure.get("products")
@@ -70,6 +83,7 @@ def build_profile(
     if not isinstance(mappings, dict):
         raise ValueError("EU steel product mapping has no mappings object.")
 
+    bilateral_countries = _bilateral_country_set(bilateral)
     product_meta = {
         _clean(item.get("product_number")): item
         for item in products
@@ -90,6 +104,8 @@ def build_profile(
     mapped_label_counts: Counter[str] = Counter()
     named_origin_candidate_plants: set[str] = set()
     residual_review_candidate_plants: set[str] = set()
+    bilateral_origin_plants: set[str] = set()
+    bilateral_candidate_plants: set[str] = set()
 
     for raw_plant in plants:
         if not isinstance(raw_plant, dict):
@@ -133,14 +149,24 @@ def build_profile(
             if state in {"family_candidate", "ambiguous_family_candidate"}:
                 mapped_label_counts[label.casefold()] += 1
 
+        measure_country = _country_for_measure(country)
         if country in EU_COUNTRIES:
             scenario_state = "not_applicable_intra_eu_origin"
+            legal_route = "intra_eu_origin"
             candidate_details: list[dict[str, object]] = []
         elif country in EEA_EXEMPT_NON_EU:
             scenario_state = "quota_duty_exempt_eea_origin"
+            legal_route = "eea_exempt_origin"
             candidate_details = []
         else:
-            measure_country = _country_for_measure(country)
+            legal_route = (
+                "bilateral_safeguard_2026_1930"
+                if measure_country in bilateral_countries
+                else "steel_regulation_2026_1384"
+            )
+            if legal_route == "bilateral_safeguard_2026_1930":
+                bilateral_origin_plants.add(plant_id)
+
             candidate_details = []
             for mapped in mapped_products:
                 if mapped["state"] not in {"family_candidate", "ambiguous_family_candidate"}:
@@ -156,6 +182,7 @@ def build_profile(
                             "product_category": meta.get("product_category"),
                             "cn_codes": meta.get("cn_codes", []),
                             "taric_codes": meta.get("taric_codes", []),
+                            "legal_route": legal_route,
                             "named_origin_quota_rows": [
                                 {
                                     "allocation": item.get("allocation"),
@@ -169,6 +196,8 @@ def build_profile(
                         }
                     )
             if candidate_details:
+                if legal_route == "bilateral_safeguard_2026_1930":
+                    bilateral_candidate_plants.add(plant_id)
                 if any(item["named_origin_quota_rows"] for item in candidate_details):
                     scenario_state = "candidate_with_named_origin_quota_row"
                     named_origin_candidate_plants.add(plant_id)
@@ -184,7 +213,8 @@ def build_profile(
                 "plant_id": plant_id,
                 "plant_name": plant_name,
                 "country_area": country,
-                "measure_country": _country_for_measure(country),
+                "measure_country": measure_country,
+                "legal_route": legal_route,
                 "scenario_state": scenario_state,
                 "gist_products": labels,
                 "product_mapping": mapped_products,
@@ -194,6 +224,7 @@ def build_profile(
 
     rows.sort(key=lambda item: str(item["plant_id"]))
     measure_meta = measure.get("meta") if isinstance(measure.get("meta"), dict) else {}
+    bilateral_meta = bilateral.get("meta") if isinstance(bilateral, dict) and isinstance(bilateral.get("meta"), dict) else {}
     return {
         "meta": {
             "schema": SCHEMA,
@@ -202,12 +233,13 @@ def build_profile(
             else None,
             "measure_schema": measure_meta.get("schema"),
             "measure_snapshot_sha256": measure_meta.get("raw_sha256"),
+            "bilateral_schema": bilateral_meta.get("schema"),
+            "bilateral_snapshot_sha256": bilateral_meta.get("raw_sha256"),
             "mapping_schema": mapping.get("schema"),
             "scenario": "hypothetical import of plant-listed steel products into the EU",
             "interpretation": (
-                "Profile only. A GIST product-family candidate is not a CN/TARIC classification, "
-                "a plant is not assumed to export to the EU, and named quota rows do not indicate "
-                "live quota availability."
+                "Profile only. GIST product-family mapping is review evidence for an EU-import scenario. "
+                "Current legal route is retained separately for the Steel Regulation and bilateral safeguards."
             ),
         },
         "counts": {
@@ -226,6 +258,8 @@ def build_profile(
             ),
             "plants_with_named_origin_quota_candidate": len(named_origin_candidate_plants),
             "plants_requiring_residual_quota_review": len(residual_review_candidate_plants),
+            "plants_from_bilateral_safeguard_origins": len(bilateral_origin_plants),
+            "candidate_plants_from_bilateral_safeguard_origins": len(bilateral_candidate_plants),
             "mapped_product_label_occurrences": dict(sorted(mapped_label_counts.items())),
         },
         "plants": rows,
@@ -236,19 +270,21 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
             "Profile GIST plant product/origin context against the pinned EU 2026 steel import measure. "
-            "This is a scenario profile, not a customs classification or tariff calculation."
+            "This is a scenario profile for procurement follow-up."
         )
     )
     parser.add_argument("--gist", type=Path, default=DEFAULT_GIST)
     parser.add_argument("--measure", type=Path, default=DEFAULT_MEASURE)
+    parser.add_argument("--bilateral", type=Path, default=DEFAULT_BILATERAL)
     parser.add_argument("--mapping", type=Path, default=DEFAULT_MAPPING)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
 
     gist = json.loads(args.gist.read_text(encoding="utf-8"))
     measure = json.loads(args.measure.read_text(encoding="utf-8"))
+    bilateral = json.loads(args.bilateral.read_text(encoding="utf-8"))
     mapping = json.loads(args.mapping.read_text(encoding="utf-8"))
-    payload = build_profile(gist, measure, mapping)
+    payload = build_profile(gist, measure, mapping, bilateral)
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -260,9 +296,12 @@ def main() -> int:
     print(f"plants with any product-family candidate: {counts['plants_with_any_trade_measure_candidate']}")
     print(f"  with named origin quota row: {counts['plants_with_named_origin_quota_candidate']}")
     print(f"  residual quota review needed: {counts['plants_requiring_residual_quota_review']}")
+    print(f"plants from bilateral safeguard origins: {counts['plants_from_bilateral_safeguard_origins']}")
+    print(
+        "  with product-family candidate: "
+        f"{counts['candidate_plants_from_bilateral_safeguard_origins']}"
+    )
     print(f"no supported product-family candidate: {counts['no_supported_product_family_candidate']}")
-    print("customs classification: not performed")
-    print("live quota availability: not evaluated")
     print(f"output: {args.output}")
     return 0
 
