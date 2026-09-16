@@ -20,3 +20,8 @@
 /* Long plant result sets stay inside the dialog and scroll vertically. */
 .browse-result{max-height:min(52vh,520px);overflow-y:auto;overscroll-behavior-y:contain;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#8aa0aa #e5e3dc}
 .browse-result::-webkit-scrollbar{width:7px}.browse-result::-webkit-scrollbar-track{background:#e5e3dc}.browse-result::-webkit-scrollbar-thumb{background:#8aa0aa;border-radius:7px}
+
+/* Product rows use one fixed checkbox/text/count grid; labels no longer drift horizontally. */
+.browse-item[data-browse-kind="product"]{display:grid;grid-template-columns:18px minmax(0,1fr) auto;column-gap:18px;justify-content:normal;align-items:center}
+.browse-item[data-browse-kind="product"]>span:nth-child(2){min-width:0;text-align:left}
+@media(max-width:760px){.browse-item[data-browse-kind="product"]{grid-template-columns:16px minmax(0,1fr) auto;column-gap:14px}}
