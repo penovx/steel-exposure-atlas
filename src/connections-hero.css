@@ -1,4 +1,4 @@
-/* Atlas-first opening composition approved 2026-09-16. */
+/* Compact atlas opening: fixed product header, then the functional scope row. */
 .masthead{
   position:fixed!important;
   top:0;
@@ -19,34 +19,9 @@
 .brand-copy{display:flex;align-items:center;min-width:0}
 .brand-name{font-size:18px;line-height:1.08;letter-spacing:-.5px;white-space:nowrap}
 
-/* Purpose statement is a composed two-line deck, not another headline. */
-.intro{
-  position:absolute!important;
-  top:72px;
-  left:0;
-  right:0;
-  z-index:40;
-  display:block;
-  min-height:64px;
-  padding:13px var(--margin) 10px!important;
-  color:var(--white);
-  pointer-events:none;
-}
-.opening-hint{
-  max-width:860px!important;
-  margin:0!important;
-  padding:0!important;
-  color:#a9bdc8!important;
-  font-size:13px!important;
-  line-height:1.52!important;
-  letter-spacing:-.05px;
-}
-.hero-break{display:block}
-
-/* Scope is a separate functional row below the explanatory copy. */
 .atlas{
   min-height:100svh;
-  padding-top:148px;
+  padding-top:72px;
 }
 .atlas-top{
   min-height:50px;
@@ -57,14 +32,13 @@
 .scope-action{font-size:11px!important;letter-spacing:.1px;color:#8fa8b7!important;font-weight:450}
 #scope-meta{display:none!important}
 .connections-stage{
-  height:calc(100svh - 220px)!important;
+  height:calc(100svh - 122px)!important;
   min-height:620px!important;
   max-height:none!important;
 }
 
 @media(max-width:900px){
-  .opening-hint{max-width:760px!important}
-  .connections-stage{height:calc(100svh - 220px)!important}
+  .connections-stage{height:calc(100svh - 122px)!important}
 }
 
 @media(max-width:760px){
@@ -72,10 +46,7 @@
   .masthead .edition{font-size:8px;letter-spacing:1.1px;padding-left:14px}
   .brand{font-size:16px}.brand svg{width:26px;height:26px}
   .brand-name{font-size:16px}
-  .intro{top:64px;min-height:78px;padding:12px 18px 10px!important}
-  .opening-hint{max-width:48ch!important;font-size:11px!important;line-height:1.5!important}
-  .hero-break{display:none}
-  .atlas{padding-top:150px}
+  .atlas{padding-top:64px}
   .atlas-top{min-height:48px;padding-top:8px}
   .scope-action{font-size:10.5px!important}
   .connections-stage{height:auto!important;min-height:579px!important}
