@@ -15,7 +15,7 @@ class ProcurementUiContractTests(unittest.TestCase):
         self.assertIn('id="method-title">Production methods<', index)
         self.assertIn('placeholder="Search companies"', index)
         self.assertIn('./src/connections-procurement-ui.js?v=20260916-3', index)
-        self.assertIn('./src/connections-procurement-ui.css?v=20260916-3', index)
+        self.assertIn('./src/connections-procurement-ui.css?v=20260916-4', index)
         self.assertIn(".company-node[data-owner]", search)
         self.assertIn("companyName(node)", search)
         self.assertIn("syncCompanyEdges", search)
