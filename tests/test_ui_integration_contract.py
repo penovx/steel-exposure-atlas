@@ -63,18 +63,25 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn("has()", bridge)
         self.assertIn("return hasRelationalFocus(reviewState())", bridge)
 
-    def test_product_counts_and_descriptions_are_explicit(self) -> None:
+    def test_product_counts_and_picker_descriptions_are_explicit(self) -> None:
         bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(encoding="utf-8")
+        rail = (ROOT / "src" / "connections-rail-polish.js").read_text(encoding="utf-8")
         polish = (ROOT / "src" / "connections-visual-polish.css").read_text(
             encoding="utf-8"
         ).replace(" ", "")
+
         self.assertIn("decorateProductLabels", bridge)
-        self.assertIn("productDescription", bridge)
         self.assertIn("${value} listed sites", bridge)
         self.assertIn("${value} connected sites", bridge)
-        self.assertIn("descriptionNode.className = 'product-description'", bridge)
-        self.assertIn(".product-description{display:block", polish)
         self.assertIn(".product-node>span,.product-count{display:block", polish)
+
+        self.assertIn("decorateProductPickerDescriptions", rail)
+        self.assertIn("PRODUCT_DESCRIPTIONS", rail)
+        self.assertIn("Semi-finished long steel", rail)
+        self.assertIn("Reinforcing bar", rail)
+        self.assertIn("#browse-result .browse-item", rail)
+        self.assertIn("removeInlineProductDescriptions", rail)
+        self.assertIn(".product-description{display:none!important}", polish)
 
     def test_steelmaking_values_expose_mtpa_unit(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
