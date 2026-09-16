@@ -27,7 +27,7 @@
 @media(max-width:760px){.browse-item[data-browse-kind="product"]{grid-template-columns:16px minmax(0,1fr) auto;column-gap:14px}}
 
 /* The branded masthead is the single persistent navigation frame. The intro stays in normal document flow. */
-.masthead{position:sticky;top:0;z-index:50;background:var(--paper)}
+.masthead{position:sticky;top:0;z-index:50;margin:0;padding:0 var(--margin);background:var(--paper)}
 .masthead nav{display:none!important}
 .masthead .edition{margin-left:auto}
 .intro{position:static}
