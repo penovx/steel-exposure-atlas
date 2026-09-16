@@ -4,6 +4,29 @@
 
 const EDGE_MASK_NS = 'http://www.w3.org/2000/svg';
 
+const PRODUCT_DESCRIPTIONS = new Map([
+  ['billet', 'Semi-finished long steel'],
+  ['rebar', 'Reinforcing bar'],
+  ['bar', 'Finished long steel bar'],
+  ['wire rod', 'Rod for wire drawing'],
+  ['coil', 'Coiled flat steel'],
+  ['plate', 'Heavy flat steel'],
+  ['wire', 'Drawn steel wire'],
+  ['hot rolled', 'Hot-rolled flat steel'],
+  ['cold rolled', 'Cold-rolled flat steel'],
+  ['pipe', 'Steel pipe or tube'],
+  ['slab', 'Semi-finished flat steel'],
+  ['sheet', 'Thin flat steel'],
+  ['sections', 'Structural steel sections'],
+  ['section', 'Structural steel section'],
+  ['profile', 'Shaped steel profile'],
+  ['profiles', 'Shaped steel profiles'],
+  ['tube', 'Steel tube'],
+  ['seamless pipe', 'Seamless steel pipe'],
+  ['tinplate', 'Tin-coated sheet steel'],
+  ['galvanized', 'Zinc-coated steel'],
+]);
+
 function reviewState() {
   try {
     return globalThis.__atlasReview?.snapshot?.().state ?? null;
@@ -30,10 +53,7 @@ document.querySelector('a[href="./prototype/evidence.html"]')?.remove();
 
 // connections-core.js reads this global binding when deciding which product edges
 // to draw. No selection keeps the global overview sparse. Once any dimension is
-// selected, every product listed by the connected plants can receive an edge. This
-// includes product-led selections: selecting "bar", for example, can reveal which
-// other product descriptions occur at those same connected plants instead of
-// forcing every product edge into the selected "bar" port.
+// selected, every product listed by the connected plants can receive an edge.
 var selectedProducts = {
   get size() {
     return hasRelationalFocus(reviewState()) ? 1 : 0;
@@ -60,6 +80,11 @@ function scopeProductCount(productId, state) {
   );
 }
 
+function productDescription(productId) {
+  const key = String(productId ?? '').trim().toLowerCase();
+  return PRODUCT_DESCRIPTIONS.get(key) ?? 'GIST-listed steel product category';
+}
+
 function decorateProductLabels() {
   const state = reviewState();
   if (!state) return;
@@ -71,6 +96,14 @@ function decorateProductLabels() {
     const count = node.querySelector(':scope > span');
     if (!count) continue;
 
+    let descriptionNode = node.querySelector(':scope > .product-description');
+    if (!descriptionNode) {
+      descriptionNode = document.createElement('small');
+      descriptionNode.className = 'product-description';
+      count.before(descriptionNode);
+    }
+    descriptionNode.textContent = productDescription(node.dataset.product);
+
     if (!count.dataset.coreCount) {
       count.dataset.coreCount = numericCountText(count.textContent);
     }
@@ -79,12 +112,13 @@ function decorateProductLabels() {
     const listed = scopeProductCount(node.dataset.product, state);
     const hasConnectedSites = focused && !node.classList.contains('dim') && connected > 0;
     const value = (hasConnectedSites ? connected : listed).toLocaleString('en-GB');
-    const description = hasConnectedSites
+    const countDescription = hasConnectedSites
       ? `${value} connected sites`
       : `${value} listed sites`;
 
-    count.textContent = description;
-    count.setAttribute('aria-label', description);
+    count.textContent = countDescription;
+    count.classList.add('product-count');
+    count.setAttribute('aria-label', countDescription);
   }
 }
 
@@ -94,9 +128,19 @@ function svgNode(name, attrs = {}) {
   return node;
 }
 
-// Product nodes are rendered in the same SVG coordinate system as their connection
-// paths. This removes CSS positioning from the port geometry: one measured grid-row
-// boundary supplies the Y coordinate for every product circle and every product edge.
+function pathEndpoints(path) {
+  const values = String(path.getAttribute('d') ?? '')
+    .match(/-?\d+(?:\.\d+)?(?:e[-+]?\d+)?/gi)
+    ?.map(Number);
+  if (!values || values.length < 4 || values.some((value) => !Number.isFinite(value))) return null;
+  return {
+    start: {x: values[0], y: values[1]},
+    end: {x: values[values.length - 2], y: values[values.length - 1]},
+  };
+}
+
+// Product ports share the SVG coordinate system with their relationship paths.
+// The Y coordinate comes from the single structural divider between grid rows.
 function ensureProductPortLayer() {
   const svg = document.querySelector('#connection-lines');
   const edgeLayer = document.querySelector('#edge-layer');
@@ -121,28 +165,17 @@ function productTargets(stageRect) {
   });
 }
 
-function pathEndpoints(path) {
-  const values = String(path.getAttribute('d') ?? '')
-    .match(/-?\d+(?:\.\d+)?(?:e[-+]?\d+)?/gi)
-    ?.map(Number);
-  if (!values || values.length < 4 || values.some((value) => !Number.isFinite(value))) return null;
-  return {
-    start: {x: values[0], y: values[1]},
-    end: {x: values[values.length - 2], y: values[values.length - 1]},
-  };
-}
-
 function syncProductPorts() {
   const stage = document.querySelector('#connections-stage');
-  const area = document.querySelector('.products-area');
+  const divider = document.querySelector('.product-divider');
   const layer = ensureProductPortLayer();
-  if (!stage || !area || !layer) return;
+  if (!stage || !divider || !layer) return;
 
   const stageRect = stage.getBoundingClientRect();
-  const areaRect = area.getBoundingClientRect();
-  if (!stageRect.width || !areaRect.width) return;
+  const dividerRect = divider.getBoundingClientRect();
+  if (!stageRect.width || !dividerRect.width) return;
 
-  const axisY = areaRect.top - stageRect.top;
+  const axisY = dividerRect.top + dividerRect.height / 2 - stageRect.top;
   const targets = productTargets(stageRect);
   const existing = new Map(
     [...layer.querySelectorAll('[data-axis-product]')].map((port) => [port.dataset.axisProduct, port]),
@@ -169,9 +202,6 @@ function syncProductPorts() {
     if (!liveIds.has(id)) port.remove();
   }
 
-  // Re-anchor the core-generated product paths to the same cx/cy coordinates used
-  // by the SVG circles. No independent line, CSS top offset or translated DOM port
-  // participates in the geometry.
   for (const edge of document.querySelectorAll('#edge-layer .connection-edge.product')) {
     const points = pathEndpoints(edge);
     if (!points || !targets.length) continue;
@@ -186,20 +216,83 @@ function syncProductPorts() {
   }
 }
 
-function installProductPortObservers() {
+function ensureMethodPorts() {
+  for (const node of document.querySelectorAll('#method-nodes .method-node')) {
+    if (node.querySelector(':scope > .method-port')) continue;
+    const port = document.createElement('i');
+    port.className = 'method-port';
+    port.setAttribute('aria-hidden', 'true');
+    node.prepend(port);
+  }
+}
+
+function syncMethodPorts() {
+  ensureMethodPorts();
+
+  const stage = document.querySelector('#connections-stage');
+  const geography = document.querySelector('#geography');
+  if (!stage || !geography) return;
+
+  const stageRect = stage.getBoundingClientRect();
+  const geoRect = geography.getBoundingClientRect();
+  if (!stageRect.width) return;
+
+  const targets = new Map();
+  for (const node of document.querySelectorAll('#method-nodes .method-node')) {
+    const marker = node.querySelector(':scope > .method-port');
+    if (!marker || !node.dataset.route) continue;
+    const rect = marker.getBoundingClientRect();
+    targets.set(node.dataset.route, {
+      x: rect.left + rect.width / 2 - stageRect.left,
+      y: rect.top + rect.height / 2 - stageRect.top,
+    });
+  }
+
+  for (const edge of document.querySelectorAll('#edge-layer .connection-edge')) {
+    const routeClass = [...edge.classList].find((value) => value.startsWith('route-'));
+    if (!routeClass) continue;
+    const routeId = routeClass.slice('route-'.length);
+    const to = targets.get(routeId);
+    const points = pathEndpoints(edge);
+    if (!to || !points) continue;
+
+    const a = points.start;
+    let d;
+    if (stageRect.width <= 760) {
+      const spine = stageRect.width / 2 + 5;
+      const bottom = geoRect.bottom - stageRect.top;
+      d = `M${a.x},${a.y} C${a.x},${a.y + 35} ${spine},${bottom - 25} ${spine},${bottom + 8} L${spine},${to.y - 14} Q${spine},${to.y} ${to.x},${to.y}`;
+    } else {
+      d = `M${a.x},${a.y} C${a.x + (to.x - a.x) * .45},${a.y} ${to.x - (to.x - a.x) * .2},${to.y} ${to.x},${to.y}`;
+    }
+    edge.setAttribute('d', d);
+    edge.dataset.routeTarget = routeId;
+  }
+}
+
+function syncStructuralPorts() {
+  syncProductPorts();
+  syncMethodPorts();
+}
+
+function installStructuralPortObservers() {
   const productNodes = document.querySelector('#product-nodes');
+  const methodNodes = document.querySelector('#method-nodes');
   const edgeLayer = document.querySelector('#edge-layer');
   const stage = document.querySelector('#connections-stage');
-  if (!productNodes || !edgeLayer || !stage || stage.dataset.productPortObserver === 'true') return;
-  stage.dataset.productPortObserver = 'true';
+  if (!productNodes || !methodNodes || !edgeLayer || !stage || stage.dataset.structuralPortObserver === 'true') return;
+  stage.dataset.structuralPortObserver = 'true';
 
   const queue = () => requestAnimationFrame(() => {
-    syncProductPorts();
+    syncStructuralPorts();
     queueEdgeReadabilityMask();
   });
 
   const productsObserver = new MutationObserver(queue);
   productsObserver.observe(productNodes, {childList: true});
+
+  const methodsObserver = new MutationObserver(queue);
+  methodsObserver.observe(methodNodes, {childList: true});
 
   const edgesObserver = new MutationObserver(queue);
   edgesObserver.observe(edgeLayer, {childList: true});
@@ -218,7 +311,7 @@ function installProductLabelObserver() {
   productNodes.dataset.labelObserver = 'true';
   const observer = new MutationObserver(() => {
     decorateProductLabels();
-    syncProductPorts();
+    syncStructuralPorts();
     queueEdgeReadabilityMask();
   });
   observer.observe(productNodes, {childList: true});
@@ -359,8 +452,8 @@ function applyWorldEntry() {
 
   installProductLabelObserver();
   decorateProductLabels();
-  installProductPortObservers();
-  syncProductPorts();
+  installStructuralPortObservers();
+  syncStructuralPorts();
   installEdgeReadabilityObserver();
   queueEdgeReadabilityMask();
 }
