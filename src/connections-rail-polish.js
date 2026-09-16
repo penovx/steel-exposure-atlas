@@ -33,6 +33,37 @@
     return globalThis.__atlasReview ?? null;
   }
 
+  function installCompanyViewportGuard(companyNodes) {
+    if (companyNodes.dataset.viewportGuard === 'true') return;
+    companyNodes.dataset.viewportGuard = 'true';
+
+    companyNodes.addEventListener('click', (event) => {
+      const button = event.target.closest?.('.company-node[data-owner]');
+      if (!button || !companyNodes.contains(button)) return;
+
+      const pageX = window.scrollX;
+      const pageY = window.scrollY;
+      const railScrollTop = companyNodes.scrollTop;
+      const order = [...companyNodes.querySelectorAll('.company-node[data-owner]')]
+        .map((node) => node.dataset.owner);
+
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        const nodes = new Map(
+          [...companyNodes.querySelectorAll('.company-node[data-owner]')]
+            .map((node) => [node.dataset.owner, node]),
+        );
+        if (order.length && order.every((id) => nodes.has(id))) {
+          const fragment = document.createDocumentFragment();
+          for (const id of order) fragment.append(nodes.get(id));
+          companyNodes.append(fragment);
+        }
+        companyNodes.scrollTop = railScrollTop;
+        window.scrollTo({left: pageX, top: pageY, behavior: 'auto'});
+        sync();
+      }));
+    }, true);
+  }
+
   function removeMisleadingSublines() {
     for (const node of document.querySelectorAll('#company-nodes .company-sub')) node.remove();
     document.querySelector('#method-nodes .method-node[data-route="Other"] .method-sub')?.remove();
@@ -216,6 +247,7 @@
       return;
     }
 
+    installCompanyViewportGuard(companyNodes);
     new MutationObserver(sync).observe(companyNodes, {childList: true});
     new MutationObserver(sync).observe(productNodes, {childList: true});
     new MutationObserver(sync).observe(methodNodes, {childList: true, subtree: true});
