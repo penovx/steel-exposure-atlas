@@ -31,6 +31,13 @@
     )).length;
   }
 
+  function connectedSiteCount(review, ownerId) {
+    const kicker = document.querySelector('#reading-kicker')?.textContent ?? '';
+    const match = kicker.match(/^([0-9,]+)\s+CONNECTED\b/i);
+    if (match) return Number(match[1].replace(/,/g, ''));
+    return ownerSiteCount(review, ownerId);
+  }
+
   function formatDate(value) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(String(value ?? ''))) return String(value ?? '');
     const [year, month, day] = value.split('-').map(Number);
@@ -105,7 +112,7 @@
     const heading = document.createElement('div');
     text(heading, 'span', 'company-context-eyebrow', 'COMPANY CONTEXT');
     text(heading, 'h3', 'company-context-title', ownerName(review, ownerId));
-    const siteCount = ownerSiteCount(review, ownerId);
+    const siteCount = connectedSiteCount(review, ownerId);
     text(heading, 'p', 'company-context-sites', `${siteCount.toLocaleString('en-GB')} connected ${siteCount === 1 ? 'site' : 'sites'}`);
     const close = document.createElement('button');
     close.type = 'button';
