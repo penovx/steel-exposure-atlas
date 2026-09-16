@@ -119,7 +119,7 @@ async function boot(){
     const maps={}; for(const region of REGIONS){const scoped=region==='World'?plants:plants.filter(p=>p.region===region); maps[region]=buildMap(region,scoped,basemap);}
     window.__ATLAS_DATA__={schema:'steel-exposure-atlas/relational-entry-v2',source:raw.meta,json_sha256:hash,plants,maps};
     if(status)status.hidden=true;
-    await import('./connections-core.js');
+    await import('./connections-core.js?v=20260916-2');
   }catch(error){
     console.error(error);
     if(status){status.hidden=false;status.classList.add('is-error');status.textContent=`Atlas data could not be loaded. ${error.message}`;}
