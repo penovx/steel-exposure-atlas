@@ -71,6 +71,22 @@ class RailPolishContractTests(unittest.TestCase):
         self.assertIn(".product-description{display:none!important}", css)
         self.assertNotIn("function ensureProductDescriptions()", script)
 
+    def test_product_picker_uses_fixed_text_column_and_sentence_case_labels(self) -> None:
+        css = (ROOT / "src" / "connections-visual-polish.css").read_text(
+            encoding="utf-8"
+        ).replace(" ", "")
+        script = (ROOT / "src" / "connections-rail-polish.js").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(
+            '.browse-item[data-browse-kind="product"]{display:grid;grid-template-columns:18pxminmax(0,1fr)auto',
+            css,
+        )
+        self.assertIn("function sentenceCaseProductLabel(value)", script)
+        self.assertIn("function sentenceCaseInlineProductLabels()", script)
+        self.assertIn("text.charAt(0).toUpperCase() + text.slice(1)", script)
+        self.assertIn("item.querySelector('span > strong')", script)
+
 
 if __name__ == "__main__":
     unittest.main()
