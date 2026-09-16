@@ -18,20 +18,29 @@ class CompanyProfileCardContractTests(unittest.TestCase):
         self.assertIn('z-index:18', css.replace(" ", ""))
         self.assertIn('max-height:calc(100%-30px)', css.replace(" ", ""))
 
-    def test_company_profile_moves_standard_profile_without_second_click(self) -> None:
+    def test_company_selection_requires_explicit_open_profile_action(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
-        script = (ROOT / "src" / "connections-company-profile-card.js").read_text(encoding="utf-8")
+        card = (ROOT / "src" / "connections-company-profile-card.js").read_text(encoding="utf-8")
+        rail = (ROOT / "src" / "connections-company-virtual-rail.js").read_text(encoding="utf-8")
 
-        self.assertIn('./src/connections-company-profile-card.js?v=20260917-1', index)
-        self.assertLess(
-            index.index('./src/connections-selection-profile.js?v=20260916-1'),
-            index.index('./src/connections-company-profile-card.js?v=20260917-1'),
-        )
-        self.assertIn("root.dataset.profileKind === 'company'", script)
-        self.assertIn('while (root.firstChild) inner.append(root.firstChild)', script)
-        self.assertIn('area.hidden = true', script)
-        self.assertIn("review.choose?.('owner', ownerId)", script)
-        self.assertNotIn('View company brief', script)
+        self.assertIn('./src/connections-company-profile-card.js?v=20260917-2', index)
+        self.assertIn('./src/connections-company-virtual-rail.js?v=20260917-2', index)
+        self.assertIn("button.textContent = 'Open company profile →'", rail)
+        self.assertIn("atlas-open-company-profile", rail)
+        self.assertIn("window.addEventListener('atlas-open-company-profile'", card)
+        self.assertIn("openOwnerId !== ownerId", card)
+        self.assertIn("area.hidden = true", card)
+        self.assertNotIn("review.choose?.('owner', ownerId)", card)
+
+    def test_clicking_selected_company_again_can_deselect_without_opening_profile(self) -> None:
+        rail = (ROOT / "src" / "connections-company-virtual-rail.js").read_text(encoding="utf-8")
+        card = (ROOT / "src" / "connections-company-profile-card.js").read_text(encoding="utf-8")
+
+        self.assertIn("review.choose('owner', button.dataset.virtualOwner)", rail)
+        self.assertIn("if (!ownerId) {", card)
+        self.assertIn("card.hidden = true", card)
+        self.assertIn("closeProfileOnly", card)
+        self.assertIn("returnCardContentToRoot", card)
 
 
 if __name__ == "__main__":
