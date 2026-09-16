@@ -63,10 +63,9 @@
   }
 
   function appendScrollableOwners() {
-    const api = review();
     const state = snapshot()?.state;
     const container = document.querySelector('#company-nodes');
-    if (!api?.choose || !state || !container) return;
+    if (!state || !container) return;
 
     const existing = new Set(
       [...container.querySelectorAll('[data-owner]')].map((node) => node.dataset.owner),
@@ -78,6 +77,7 @@
       button.className = 'company-node bridge-extra-owner';
       button.type = 'button';
       button.dataset.owner = group.id;
+      button.dataset.port = `owner:${group.id}`;
       button.dataset.bridgeExtraOwner = 'true';
       button.setAttribute('aria-pressed', 'false');
       button.setAttribute('aria-label', `${group.name}, ${group.count} sites in ${state.region}`);
@@ -89,9 +89,42 @@
       count.className = 'company-count';
       count.textContent = group.count.toLocaleString('en-GB');
       button.append(name, count);
-      button.addEventListener('click', () => api.choose('owner', group.id));
       container.append(button);
     }
+  }
+
+  function restoreStableOwnerOrder(container) {
+    const nodes = new Map(
+      [...container.querySelectorAll('.company-node[data-owner]')]
+        .map((node) => [node.dataset.owner, node]),
+    );
+    for (const group of ownerGroups()) {
+      const node = nodes.get(group.id);
+      if (node) container.append(node);
+    }
+  }
+
+  function installOwnerSelectionBridge(companyNodes, api) {
+    if (companyNodes.dataset.ownerSelectionBridge === 'true') return;
+    companyNodes.dataset.ownerSelectionBridge = 'true';
+
+    companyNodes.addEventListener('click', (event) => {
+      const button = event.target.closest?.('.company-node[data-owner]');
+      if (!button || !companyNodes.contains(button)) return;
+
+      const scrollTop = companyNodes.scrollTop;
+      event.preventDefault();
+      event.stopPropagation();
+
+      // Core selection is synchronous. It currently promotes the selected owner in
+      // its five-node working set; the public rail must not change order because of
+      // selection, so rebuild the complete rail in its stable count/name order
+      // before the queued map/edge frame runs.
+      api.choose('owner', button.dataset.owner);
+      appendScrollableOwners();
+      restoreStableOwnerOrder(companyNodes);
+      companyNodes.scrollTop = scrollTop;
+    }, true);
   }
 
   function removeMisleadingSublines() {
@@ -134,11 +167,15 @@
     }
   }
 
-  function pathEnd(path) {
-    const values = String(path.getAttribute('d') ?? '')
+  function pathNumbers(path) {
+    return String(path.getAttribute('d') ?? '')
       .match(/-?\d+(?:\.\d+)?(?:e[-+]?\d+)?/gi)
-      ?.map(Number);
-    if (!values || values.length < 4 || values.some((value) => !Number.isFinite(value))) return null;
+      ?.map(Number) ?? [];
+  }
+
+  function pathEnd(path) {
+    const values = pathNumbers(path);
+    if (values.length < 4 || values.some((value) => !Number.isFinite(value))) return null;
     return {x: values.at(-2), y: values.at(-1)};
   }
 
@@ -193,6 +230,44 @@
     }
   }
 
+  function syncCompanyEdgeAnchors() {
+    const api = review();
+    const stage = document.querySelector('#connections-stage');
+    const geography = document.querySelector('#geography');
+    if (!api?.all || !stage || !geography) return;
+
+    const stageRect = stage.getBoundingClientRect();
+    const geoRect = geography.getBoundingClientRect();
+    const ownerBySite = new Map(api.all.map((plant) => [plant.id, plant.ownerId]));
+
+    for (const edge of document.querySelectorAll('#edge-layer .connection-edge.company')) {
+      const values = pathNumbers(edge);
+      if (values.length < 4) continue;
+      const ownerId = ownerBySite.get(edge.dataset.site);
+      const ownerNode = ownerId
+        ? document.querySelector(`#company-nodes .company-node[data-owner="${CSS.escape(ownerId)}"]`)
+        : null;
+      if (!ownerNode) continue;
+
+      const rect = ownerNode.getBoundingClientRect();
+      const from = {x: values[0], y: values[1]};
+      const to = {
+        x: rect.right - stageRect.left + 4,
+        y: rect.top - stageRect.top + rect.height / 2,
+      };
+
+      let d;
+      if (stageRect.width <= 760) {
+        const spine = stageRect.width / 2 - 5;
+        const bottom = geoRect.bottom - stageRect.top;
+        d = `M${from.x},${from.y} C${from.x},${from.y + 35} ${spine},${bottom - 25} ${spine},${bottom + 8} L${spine},${to.y - 14} Q${spine},${to.y} ${to.x},${to.y}`;
+      } else {
+        d = `M${from.x},${from.y} C${from.x + (to.x - from.x) * .45},${from.y} ${to.x - (to.x - from.x) * .2},${to.y} ${to.x},${to.y}`;
+      }
+      edge.setAttribute('d', d);
+    }
+  }
+
   let queued = false;
   function sync() {
     if (queued) return;
@@ -200,10 +275,12 @@
     requestAnimationFrame(() => {
       queued = false;
       appendScrollableOwners();
+      restoreStableOwnerOrder(document.querySelector('#company-nodes'));
       removeMisleadingSublines();
       removeInlineProductDescriptions();
       sentenceCaseInlineProductLabels();
       decorateProductPickerDescriptions();
+      syncCompanyEdgeAnchors();
       renderMethodEndpointDots();
     });
   }
@@ -221,12 +298,14 @@
       return;
     }
 
+    installOwnerSelectionBridge(companyNodes, api);
     new MutationObserver(sync).observe(companyNodes, {childList: true});
     new MutationObserver(sync).observe(productNodes, {childList: true});
     new MutationObserver(sync).observe(methodNodes, {childList: true, subtree: true});
     new MutationObserver(sync).observe(browseResult, {childList: true, subtree: true});
     new MutationObserver(sync).observe(edges, {childList: true, subtree: true, attributes: true, attributeFilter: ['d']});
     new ResizeObserver(sync).observe(stage);
+    companyNodes.addEventListener('scroll', sync, {passive: true});
     window.addEventListener('resize', sync, {passive: true});
     sync();
   }
