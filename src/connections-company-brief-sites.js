@@ -6,6 +6,16 @@
     {id: 'IF', name: 'Induction furnace', field: 'if_steel_capacity_ttpa'},
     {id: 'Other', name: 'Other steelmaking', field: 'other_steel_capacity_ttpa'},
   ];
+  const STATUS_ORDER = [
+    'operating',
+    'operating pre-retirement',
+    'construction',
+    'announced',
+    'mothballed',
+    'mothballed pre-retirement',
+    'retired',
+    'cancelled',
+  ];
 
   function reviewApi() {
     try {
@@ -49,6 +59,22 @@
   function productLabel(value) {
     const label = String(value ?? '').trim();
     return label ? label.charAt(0).toUpperCase() + label.slice(1) : '';
+  }
+
+  function statusLabel(value) {
+    const label = String(value ?? '').trim();
+    return label ? label.charAt(0).toUpperCase() + label.slice(1) : '';
+  }
+
+  function siteStatuses(plant) {
+    const unique = [...new Set((plant.tranches ?? []).map((item) => String(item.status ?? '').trim()).filter(Boolean))];
+    return unique.sort((a, b) => {
+      const ai = STATUS_ORDER.indexOf(a);
+      const bi = STATUS_ORDER.indexOf(b);
+      const ar = ai === -1 ? STATUS_ORDER.length : ai;
+      const br = bi === -1 ? STATUS_ORDER.length : bi;
+      return ar - br || a.localeCompare(b, 'en');
+    });
   }
 
   function formatCapacity(result) {
@@ -113,10 +139,27 @@
     name.className = 'company-brief-site-product-name';
     name.textContent = placeName(plant);
 
+    const meta = document.createElement('div');
+    meta.className = 'company-brief-site-product-meta';
     const country = document.createElement('span');
     country.className = 'company-brief-site-product-country';
     country.textContent = plant.country ?? '';
-    head.append(name, country);
+    meta.append(country);
+
+    const statuses = siteStatuses(plant);
+    if (statuses.length) {
+      const statusWrap = document.createElement('span');
+      statusWrap.className = 'company-brief-site-statuses';
+      for (const status of statuses) {
+        const statusNode = document.createElement('span');
+        statusNode.className = 'company-brief-site-status';
+        statusNode.textContent = statusLabel(status);
+        statusWrap.append(statusNode);
+      }
+      meta.append(statusWrap);
+    }
+
+    head.append(name, meta);
     row.append(head);
 
     const products = [...new Set((plant.products?.values ?? []).map(productLabel).filter(Boolean))]
