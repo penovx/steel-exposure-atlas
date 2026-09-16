@@ -60,19 +60,6 @@ function scopeProductCount(productId, state) {
   );
 }
 
-function alignProductBaseline() {
-  const area = document.querySelector('.products-area');
-  const port = document.querySelector('#product-nodes .product-port');
-  if (!area || !port) return;
-
-  const areaRect = area.getBoundingClientRect();
-  const portRect = port.getBoundingClientRect();
-  if (!areaRect.height || !portRect.height) return;
-
-  const y = portRect.top + portRect.height / 2 - areaRect.top;
-  area.style.setProperty('--product-baseline-y', `${y.toFixed(2)}px`);
-}
-
 function decorateProductLabels() {
   const state = reviewState();
   if (!state) return;
@@ -84,9 +71,6 @@ function decorateProductLabels() {
     const count = node.querySelector(':scope > span');
     if (!count) continue;
 
-    // The core count is selection-relative while focused. Preserve it before
-    // decorating so repeated bridge passes never turn a listed-scope fallback into
-    // a false connected count.
     if (!count.dataset.coreCount) {
       count.dataset.coreCount = numericCountText(count.textContent);
     }
@@ -102,8 +86,122 @@ function decorateProductLabels() {
     count.textContent = description;
     count.setAttribute('aria-label', description);
   }
+}
 
-  alignProductBaseline();
+// Product ports use a dedicated structural axis at the top edge of the second grid
+// row. The axis is independent of product-label padding and scroll-strip geometry.
+// This deliberately replaces the previous offset/measurement approach.
+function ensureProductAxis() {
+  const area = document.querySelector('.products-area');
+  if (!area) return null;
+
+  let axis = area.querySelector(':scope > .product-axis');
+  if (!axis) {
+    axis = document.createElement('div');
+    axis.className = 'product-axis';
+    axis.setAttribute('aria-hidden', 'true');
+    area.prepend(axis);
+  }
+  return axis;
+}
+
+function productTargets(stageRect) {
+  return [...document.querySelectorAll('#product-nodes .product-node')].map((node) => {
+    const rect = node.getBoundingClientRect();
+    return {
+      id: node.dataset.product,
+      node,
+      x: rect.left + rect.width / 2 - stageRect.left,
+    };
+  });
+}
+
+function pathEndpoints(path) {
+  const values = String(path.getAttribute('d') ?? '')
+    .match(/-?\d+(?:\.\d+)?(?:e[-+]?\d+)?/gi)
+    ?.map(Number);
+  if (!values || values.length < 4 || values.some((value) => !Number.isFinite(value))) return null;
+  return {
+    start: {x: values[0], y: values[1]},
+    end: {x: values[values.length - 2], y: values[values.length - 1]},
+  };
+}
+
+function syncProductAxis() {
+  const stage = document.querySelector('#connections-stage');
+  const area = document.querySelector('.products-area');
+  const axis = ensureProductAxis();
+  if (!stage || !area || !axis) return;
+
+  const stageRect = stage.getBoundingClientRect();
+  const areaRect = area.getBoundingClientRect();
+  if (!stageRect.width || !areaRect.width) return;
+
+  const targets = productTargets(stageRect);
+  const liveIds = new Set(targets.map((target) => target.id));
+  const existing = new Map(
+    [...axis.querySelectorAll('[data-axis-product]')].map((port) => [port.dataset.axisProduct, port]),
+  );
+
+  for (const target of targets) {
+    let port = existing.get(target.id);
+    if (!port) {
+      port = document.createElement('i');
+      port.className = 'product-axis-port';
+      port.dataset.axisProduct = target.id;
+      axis.append(port);
+    }
+    port.style.left = `${target.x - (areaRect.left - stageRect.left)}px`;
+    port.classList.toggle('is-selected', target.node.classList.contains('is-selected'));
+    port.classList.toggle('dim', target.node.classList.contains('dim'));
+  }
+
+  for (const [id, port] of existing) {
+    if (!liveIds.has(id)) port.remove();
+  }
+
+  // Re-anchor the core-generated product paths to the exact structural axis.
+  // Start points remain the core's plant coordinates. End points use the measured
+  // horizontal centre of the matching product label and the grid-row boundary.
+  const axisY = areaRect.top - stageRect.top;
+  for (const edge of document.querySelectorAll('#edge-layer .connection-edge.product')) {
+    const points = pathEndpoints(edge);
+    if (!points || !targets.length) continue;
+    const target = targets.reduce((best, candidate) =>
+      Math.abs(candidate.x - points.end.x) < Math.abs(best.x - points.end.x) ? candidate : best,
+    );
+    const a = points.start;
+    const to = {x: target.x, y: axisY};
+    const d = `M${a.x},${a.y} C${a.x},${a.y + (to.y - a.y) * .45} ${to.x},${a.y + (to.y - a.y) * .8} ${to.x},${to.y}`;
+    edge.setAttribute('d', d);
+    edge.dataset.productTarget = target.id;
+  }
+}
+
+function installProductAxisObservers() {
+  const productNodes = document.querySelector('#product-nodes');
+  const edgeLayer = document.querySelector('#edge-layer');
+  const stage = document.querySelector('#connections-stage');
+  if (!productNodes || !edgeLayer || !stage || stage.dataset.productAxisObserver === 'true') return;
+  stage.dataset.productAxisObserver = 'true';
+
+  const queue = () => requestAnimationFrame(() => {
+    syncProductAxis();
+    queueEdgeReadabilityMask();
+  });
+
+  const productsObserver = new MutationObserver(queue);
+  productsObserver.observe(productNodes, {childList: true});
+
+  const edgesObserver = new MutationObserver(queue);
+  edgesObserver.observe(edgeLayer, {childList: true});
+
+  const resizeObserver = new ResizeObserver(queue);
+  resizeObserver.observe(stage);
+
+  productNodes.addEventListener('scroll', queue, {passive: true});
+  window.addEventListener('resize', queue, {passive: true});
+  queue();
 }
 
 function installProductLabelObserver() {
@@ -112,6 +210,7 @@ function installProductLabelObserver() {
   productNodes.dataset.labelObserver = 'true';
   const observer = new MutationObserver(() => {
     decorateProductLabels();
+    syncProductAxis();
     queueEdgeReadabilityMask();
   });
   observer.observe(productNodes, {childList: true});
@@ -157,8 +256,6 @@ function ensureEdgeReadabilityMask() {
 }
 
 function updateEdgeReadabilityMask() {
-  alignProductBaseline();
-
   const stage = document.querySelector('#connections-stage');
   const mask = ensureEdgeReadabilityMask();
   if (!stage || !mask) return;
@@ -206,8 +303,6 @@ function updateEdgeReadabilityMask() {
     const bottom = Math.min(stageRect.height, rect.bottom - stageRect.top + 3);
     if (right <= 0 || bottom <= 0 || left >= stageRect.width || top >= stageRect.height) continue;
 
-    // Dark grey in a luminance mask does not remove the relationship line entirely;
-    // it reduces it to roughly 18% of its normal opacity while it crosses readable UI.
     fadeZones.append(svgNode('rect', {
       x: left.toFixed(2),
       y: top.toFixed(2),
@@ -262,7 +357,8 @@ function applyWorldEntry() {
 
   installProductLabelObserver();
   decorateProductLabels();
-  alignProductBaseline();
+  installProductAxisObservers();
+  syncProductAxis();
   installEdgeReadabilityObserver();
   queueEdgeReadabilityMask();
 }
