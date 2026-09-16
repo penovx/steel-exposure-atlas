@@ -91,7 +91,7 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn("* Mtpa = million tonnes per year.", index)
         self.assertIn("<small> Mtpa*</small>", core)
 
-    def test_eu_and_ofac_sanctions_contexts_are_separate_plain_language_and_pinned(self) -> None:
+    def test_eu_and_ofac_sanctions_contexts_are_separate_factual_and_pinned(self) -> None:
         loader = (ROOT / "src" / "connections-sanctions-loader.js").read_text(encoding="utf-8")
         bridge = (ROOT / "src" / "connections-sanctions-bridge.js").read_text(encoding="utf-8")
 
@@ -100,12 +100,14 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn("049CB95CF55CD9A77DFB8D3FED21EB61A541E4C46F80D1F1B581F2E537E0F015", loader)
         self.assertIn("3D594ED7CDB5E0FD13F126A3815255146D730F791DCF672665C67416D03A7C1F", loader)
         self.assertIn("C59772F3EDD625812AC43C4AEC57513D08CDD180135A3B6368DBC086AB81DF7D", loader)
-        self.assertIn("Listed by OFAC", bridge)
+        self.assertIn("Company identity listed by OFAC", bridge)
         self.assertIn("Specially Designated Nationals and Blocked Persons (SDN) List", bridge)
         self.assertIn("Listed since", bridge)
-        self.assertIn("Procurement implication", bridge)
-        self.assertIn("No direct EU or U.S. listing found", bridge)
-        self.assertIn("not sanctions clearance", bridge)
+        self.assertIn("Designation context", bridge)
+        self.assertIn("reviewed GIST company identity", bridge)
+        self.assertNotIn("Procurement implication", bridge)
+        self.assertNotIn("No direct EU or U.S. listing found", bridge)
+        self.assertNotIn("before contracting", bridge)
         self.assertNotIn("Identity resolution: Confirmed", bridge)
         self.assertNotIn("OFAC SDN", bridge)
         self.assertNotIn("85%", bridge)
@@ -114,10 +116,12 @@ class UiIntegrationContractTests(unittest.TestCase):
         loader = (ROOT / "src" / "connections-trade-loader.js").read_text(encoding="utf-8")
         bridge = (ROOT / "src" / "connections-sanctions-bridge.js").read_text(encoding="utf-8")
         self.assertIn("eu-steel-trade-context.v1.json", loader)
+        self.assertIn("eu-steel-trade-context-v1.1", loader)
         self.assertIn("B869A4BB8C4E4F7AE320B4CE4A117A33B05CADEEDF1C9DF106845EBCA9D9B21B", loader)
         self.assertIn("5F0214CD0FC9FC85A114B9EC485E2D6887F3F2137BD177EE357CC00FE2BB32BE", loader)
         self.assertIn("EU steel import scenario", bridge)
         self.assertIn("hypothetical import into the EU", bridge)
+        self.assertNotIn("procurement follow-up", bridge.lower())
         self.assertNotIn("No water-stress, trade, emissions or buyer-supplier layer is present", bridge)
 
     def test_homepage_does_not_embed_the_full_dataset(self) -> None:
