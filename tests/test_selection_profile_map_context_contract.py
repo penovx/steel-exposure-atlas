@@ -35,10 +35,10 @@ class SelectionProfileMapContextContractTests(unittest.TestCase):
         virtual_css = (ROOT / "src" / "connections-company-virtual-rail.css").read_text(encoding="utf-8")
         core = (ROOT / "src" / "connections-core.js").read_text(encoding="utf-8")
 
-        self.assertIn('./src/connections-company-virtual-rail.js?v=20260916-1', index)
-        self.assertIn('./src/connections-company-virtual-rail.css?v=20260916-1', index)
+        self.assertIn('./src/connections-company-virtual-rail.js?v=20260917-2', index)
+        self.assertIn('./src/connections-company-virtual-rail.css?v=20260917-2', index)
         self.assertLess(
-            index.index('./src/connections-company-virtual-rail.js?v=20260916-1'),
+            index.index('./src/connections-company-virtual-rail.js?v=20260917-2'),
             index.index('./src/connections-rail-polish.js?v=20260916-6'),
         )
         self.assertIn('review.model.owners(scoped)', virtual)
@@ -47,7 +47,10 @@ class SelectionProfileMapContextContractTests(unittest.TestCase):
         self.assertIn("node.className = 'company-virtual-spacer'", virtual)
         self.assertIn('container.replaceChildren(fragment)', virtual)
         self.assertIn('BUFFER_ROWS', virtual)
+        self.assertIn('PROFILE_ACTION_HEIGHT', virtual)
+        self.assertIn("button.textContent = 'Open company profile →'", virtual)
         self.assertIn('.company-nodes.is-virtualized', virtual_css)
+        self.assertIn('.company-profile-open', virtual_css)
         # Core keeps a small owner list only as relationship-line LOD; it is no
         # longer the user-facing company population.
         self.assertIn('.slice(0,5)', core)
