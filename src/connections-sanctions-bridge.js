@@ -274,13 +274,13 @@
     return section;
   }
 
-  function reconcileSourcesDialog(payloads) {
+  function reconcileSourcesDialog(payloads, tradePayload) {
     const sourceContent = document.querySelector('#source-content');
     if (!sourceContent || !sourceContent.children.length) return;
 
     for (const paragraph of sourceContent.querySelectorAll('p')) {
       if (!paragraph.textContent?.includes('No water-stress, trade, emissions or buyer-supplier layer is present.')) continue;
-      paragraph.textContent = 'No water-stress, trade, emissions or buyer-supplier layer is present. EU and U.S. OFAC sanctions context are separate reviewed company-level layers loaded from pinned local derived artifacts. The integration remains pre-publication until the repository release checklist is completed.';
+      paragraph.textContent = 'Water-stress, emissions and buyer-supplier layers are not present. EU and U.S. sanctions context and the EU steel-import scenario are separate reviewed layers built from pinned source snapshots. The integration remains pre-publication until the repository release checklist is completed.';
     }
 
     if (payloads.eu && !sourceContent.querySelector('.sanctions-source-section-eu')) {
@@ -311,15 +311,30 @@
         'sanctions-source-section-ofac'
       ));
     }
+
+    if (tradePayload && !sourceContent.querySelector('.trade-source-section-eu-steel')) {
+      const meta = tradePayload.meta ?? {};
+      sourceContent.append(sourceSection(
+        'EU steel import scenario',
+        [
+          'Plant origin and GIST product-family evidence are connected to the current EU steel import measure to create a procurement follow-up for a hypothetical import into the EU. The scenario does not assert that a plant exports to the EU.',
+          `Pinned EUR-Lex source hashes · Regulation 2026/1457: ${meta.measure_snapshot_sha256 ?? 'not available'} · Regulation 2026/1930: ${meta.bilateral_snapshot_sha256 ?? 'not available'}`,
+        ],
+        'trade-source-section-eu-steel'
+      ));
+    }
   }
 
   async function init() {
-    const payloads = await (globalThis.__ATLAS_SANCTIONS_PROMISE__ ?? Promise.resolve({eu: null, ofac: null}));
-    if (!payloads?.eu && !payloads?.ofac) return;
+    const [payloads, tradePayload] = await Promise.all([
+      globalThis.__ATLAS_SANCTIONS_PROMISE__ ?? Promise.resolve({eu: null, ofac: null}),
+      globalThis.__ATLAS_TRADE_PROMISE__ ?? Promise.resolve(null),
+    ]);
+    if (!payloads?.eu && !payloads?.ofac && !tradePayload) return;
 
     const sourceContent = document.querySelector('#source-content');
     if (sourceContent) {
-      const sourceObserver = new MutationObserver(() => reconcileSourcesDialog(payloads));
+      const sourceObserver = new MutationObserver(() => reconcileSourcesDialog(payloads, tradePayload));
       sourceObserver.observe(sourceContent, {childList: true});
     }
 
@@ -339,7 +354,7 @@
 
       renderCompanyIndicators(payloads);
       renderContexts(payloads);
-      reconcileSourcesDialog(payloads);
+      reconcileSourcesDialog(payloads, tradePayload);
     };
 
     waitForCore();
