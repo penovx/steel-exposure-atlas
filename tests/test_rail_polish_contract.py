@@ -53,6 +53,28 @@ class RailPolishContractTests(unittest.TestCase):
         self.assertIn('.method-node[data-route="Other"].method-sub{display:none!important}', css)
         self.assertIn('#method-nodes .method-node[data-route="Other"] .method-sub', script)
 
+    def test_selected_products_and_methods_share_company_selection_grammar(self) -> None:
+        css = (ROOT / "src" / "connections-visual-polish.css").read_text(
+            encoding="utf-8"
+        ).replace(" ", "")
+        self.assertIn(
+            ".method-node.is-selected,.product-node.is-selected{background:#152b38!important;color:var(--accent)!important}",
+            css,
+        )
+        self.assertIn(".method-node.is-selected{box-shadow:9px00#152b38}", css)
+        self.assertIn(
+            ".method-node.is-selected.method-name{color:var(--accent)!important}",
+            css,
+        )
+        self.assertIn(
+            ".method-node.is-selected.method-value{color:var(--method-color)!important}",
+            css,
+        )
+        self.assertIn(
+            ".product-node.is-selected.product-count,.product-node.is-selected.product-remove{color:var(--accent)!important}",
+            css,
+        )
+
     def test_find_a_plant_results_scroll_vertically(self) -> None:
         css = (ROOT / "src" / "connections-visual-polish.css").read_text(
             encoding="utf-8"
@@ -114,7 +136,7 @@ class RailPolishContractTests(unittest.TestCase):
         self.assertIn(".mastheadnav{display:none!important}", css)
         self.assertIn(".masthead.edition{margin-left:auto}", css)
         self.assertIn(".intro{position:static}", css)
-        self.assertIn('connections-visual-polish.css?v=20260916-2', index)
+        self.assertIn('connections-visual-polish.css?v=20260916-4', index)
         self.assertIn('class="masthead"', index)
         self.assertIn('class="intro"', index)
 
