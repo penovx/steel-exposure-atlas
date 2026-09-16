@@ -13,17 +13,20 @@ class HomepageHeroContractTests(unittest.TestCase):
             (ROOT / "src" / "connections-hero.css").read_text(encoding="utf-8").split()
         )
 
-        self.assertIn('./src/connections-hero.css?v=20260916-1', index)
+        self.assertIn('./src/connections-hero.css?v=20260916-3', index)
+        self.assertIn('Steel Exposure <b>Atlas</b>', index)
         self.assertIn('STEEL PRODUCTION, IN CONTEXT', index)
-        self.assertIn('Explore the connections.', index)
         self.assertIn(
-            'See who operates which steel plants, what they produce, how they make steel, and where sanctions or EU import measures can affect sourcing.',
+            'Trace steel companies across their plants, products and production methods, with sanctions and trade measures brought into the same view through public evidence.',
             index,
         )
-        self.assertNotIn('overlap across the same industrial footprint', index)
+        self.assertNotIn('Explore the connections.', index)
+        self.assertNotIn('Know who makes what, where.', index)
+        self.assertNotIn('Steel production, ownership and sourcing exposure', index)
         self.assertIn('.masthead{position:absolute!important', css)
         self.assertIn('.intro{position:absolute!important', css)
-        self.assertIn('.atlas{min-height:100svh;padding-top:170px', css)
+        self.assertIn('.atlas{min-height:100svh;padding-top:98px', css)
+        self.assertIn('.connections-stage{height:calc(100svh-180px)!important', css)
 
 
 if __name__ == "__main__":
