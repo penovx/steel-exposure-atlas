@@ -1,0 +1,214 @@
+/* Company context is a second-click inspector, not a modal. It uses the atlas visual system. */
+.company-context-card{
+  grid-column:2;
+  grid-row:1;
+  justify-self:start;
+  align-self:start;
+  z-index:14;
+  width:min(430px,calc(100% - 44px));
+  max-height:calc(100% - 58px);
+  overflow:auto;
+  margin:28px 0 0 22px;
+  padding:0;
+  background:#10212af5;
+  color:#d7e3e9;
+  border:1px solid #496675;
+  box-shadow:0 18px 55px #0009;
+  backdrop-filter:blur(7px);
+  scrollbar-width:thin;
+  scrollbar-color:#496675 #142833;
+}
+.company-context-card::-webkit-scrollbar{width:6px}
+.company-context-card::-webkit-scrollbar-track{background:#142833}
+.company-context-card::-webkit-scrollbar-thumb{background:#496675;border-radius:6px}
+.company-context-card[hidden]{display:none!important}
+
+.company-context-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+  padding:16px 17px 15px;
+  border-bottom:1px solid #334b59;
+}
+.company-context-eyebrow{
+  display:block;
+  font-size:9px;
+  letter-spacing:1.35px;
+  font-weight:650;
+  color:#8bb3c8;
+}
+.company-context-title{
+  margin-top:6px;
+  font-size:20px;
+  line-height:1.2;
+  font-weight:540;
+  letter-spacing:-.35px;
+  color:#f4f2ec;
+}
+.company-context-role{
+  margin-top:5px;
+  font-size:10px;
+  line-height:1.45;
+  color:#8fa8b7;
+}
+.company-context-close{
+  flex:0 0 auto;
+  width:30px;
+  height:30px;
+  padding:0;
+  background:transparent;
+  color:#9bb6c6;
+  border:1px solid transparent;
+  font-size:20px;
+  line-height:1;
+}
+.company-context-close:hover{border-color:#496675;color:#f4f2ec}
+
+.company-context-metrics{
+  display:grid;
+  grid-template-columns:.8fr .8fr 1.4fr;
+  border-bottom:1px solid #334b59;
+}
+.company-context-metric{
+  min-width:0;
+  padding:12px 14px 11px;
+  border-right:1px solid #334b59;
+}
+.company-context-metric:last-child{border-right:0}
+.company-context-metric strong{
+  display:block;
+  font-size:17px;
+  line-height:1.2;
+  font-weight:500;
+  color:#f4f2ec;
+  font-variant-numeric:tabular-nums;
+}
+.company-context-metric span{
+  display:block;
+  margin-top:4px;
+  font-size:8px;
+  line-height:1.35;
+  letter-spacing:.35px;
+  text-transform:uppercase;
+  color:#7894a4;
+}
+
+.company-context-body{margin:0;padding:0 17px 14px}
+.company-context-signal{
+  padding:13px 0 12px;
+  border-top:1px solid #334b59;
+}
+.company-context-body>.company-context-signal:first-child{border-top:0}
+.company-context-signal-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+.company-context-signal-label{
+  font-size:9px;
+  letter-spacing:.75px;
+  text-transform:uppercase;
+  color:#8fa8b7;
+  font-weight:650;
+}
+.company-context-signal-state{
+  font-size:9px;
+  line-height:1;
+  padding:4px 6px;
+  color:#bcd0db;
+  border:1px solid #567180;
+  background:#142833;
+  white-space:nowrap;
+}
+.company-context-signal-sanctions .company-context-signal-state{
+  color:#efc0b0;
+  border-color:#8b5b4a;
+  background:#261b19;
+}
+.company-context-signal-sanctions-negative .company-context-signal-state{
+  color:#a9bdc7;
+  border-color:#526b77;
+  background:#132630;
+}
+.company-context-signal-trade .company-context-signal-state{
+  color:#a9d9f4;
+  border-color:#527f96;
+  background:#112a36;
+}
+.company-context-signal-title{
+  display:block;
+  margin-top:7px;
+  font-size:14px;
+  line-height:1.35;
+  font-weight:560;
+  color:#edf4f7;
+}
+.company-context-signal-detail{
+  margin-top:4px;
+  font-size:10px;
+  line-height:1.5;
+  color:#8fa8b7;
+}
+.company-context-signal-consequence{
+  margin-top:7px;
+  font-size:10px;
+  line-height:1.5;
+  color:#b9d2df;
+  font-weight:560;
+}
+.company-context-action{
+  margin-top:1px;
+  padding:11px 12px;
+  background:#142833;
+  border-left:2px solid #6b9ab1;
+}
+.company-context-action strong{
+  display:block;
+  font-size:9px;
+  letter-spacing:.55px;
+  text-transform:uppercase;
+  color:#9bc7dd;
+}
+.company-context-action p{
+  margin-top:5px;
+  font-size:10px;
+  line-height:1.55;
+  color:#b7c9d2;
+}
+.company-context-action p+p{
+  margin-top:8px;
+  padding-top:8px;
+  border-top:1px solid #2c4552;
+}
+.company-context-evidence{
+  margin:0 17px 14px;
+  padding:7px 0 6px;
+  background:transparent;
+  color:var(--accent);
+  border-bottom:1px solid #55788a;
+  font-size:10px;
+}
+.company-context-evidence:hover{color:#c9eaff;border-color:#7caac1}
+
+@media(max-width:900px){
+  .company-context-card{width:min(395px,calc(100% - 30px));margin-left:14px}
+}
+@media(max-width:760px){
+  .company-context-card{
+    position:absolute;
+    grid-column:auto;
+    grid-row:auto;
+    left:12px;
+    right:12px;
+    top:58px;
+    width:auto;
+    max-height:min(62vh,500px);
+    margin:0;
+    z-index:20;
+  }
+  .company-context-title{font-size:18px}
+  .company-context-metrics{grid-template-columns:1fr 1fr}
+  .company-context-metric:nth-child(3){grid-column:1/-1;border-top:1px solid #334b59;border-right:0}
+}
