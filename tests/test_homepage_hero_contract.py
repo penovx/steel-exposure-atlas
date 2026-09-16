@@ -13,7 +13,7 @@ class HomepageHeroContractTests(unittest.TestCase):
             (ROOT / "src" / "connections-hero.css").read_text(encoding="utf-8").split()
         )
 
-        self.assertIn('./src/connections-hero.css?v=20260916-5', index)
+        self.assertIn('./src/connections-hero.css?v=20260916-6', index)
         self.assertIn('class="brand-name">Steel Exposure <b>Atlas</b>', index)
         self.assertIn('class="brand-kicker">STEEL PRODUCTION, IN CONTEXT</span>', index)
         self.assertIn(
@@ -27,7 +27,9 @@ class HomepageHeroContractTests(unittest.TestCase):
         self.assertNotIn('Steel production, ownership and sourcing exposure', index)
         self.assertIn('.masthead{position:fixed!important', css)
         self.assertIn('background:var(--night)!important', css)
-        self.assertIn('.brand-kicker{font-size:8.5px', css)
+        self.assertIn('.brand-kicker{display:block;font-size:8.5px', css)
+        self.assertIn('transform:scaleX(.866)', css)
+        self.assertIn('transform-origin:leftcenter', css)
         self.assertIn('.hero-break{display:block}', css)
         self.assertIn('#scope-meta{display:none!important}', css)
         self.assertIn('.atlas{min-height:100svh;padding-top:148px', css)
