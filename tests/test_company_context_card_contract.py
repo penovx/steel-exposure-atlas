@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class CompanyContextCardContractTests(unittest.TestCase):
-    def test_context_card_is_second_click_non_modal_and_atlas_styled(self) -> None:
+    def test_company_brief_is_explicit_second_click_non_modal_and_atlas_styled(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
         script = (ROOT / "src" / "connections-company-context.js").read_text(encoding="utf-8")
         css = (ROOT / "src" / "connections-company-context.css").read_text(encoding="utf-8").replace(" ", "")
@@ -19,21 +19,38 @@ class CompanyContextCardContractTests(unittest.TestCase):
         self.assertIn("contextOpenOwnerId = contextOpenOwnerId === clicked ? null : clicked", script)
         self.assertIn("event.stopImmediatePropagation()", script)
         self.assertIn("card.hidden = contextOpenOwnerId !== ownerId", script)
-        self.assertIn("COMPANY CONTEXT", script)
-        self.assertIn("Immediate owner or operator named by GEM", script)
-        self.assertIn("Connected sites", script)
-        self.assertIn("Countries", script)
-        self.assertIn("Known operating capacity", script)
-        self.assertIn("View evidence ↓", script)
-        self.assertIn("Procurement follow-up", script)
-        self.assertIn("Listed by OFAC", script)
-        self.assertIn("This is not sanctions clearance.", script)
+        self.assertIn("function syncCompanyBriefOffer()", script)
+        self.assertIn("Open company brief →", script)
+        self.assertIn("Company brief open ↑", script)
+        self.assertIn("selected. Click again to", script)
+        self.assertIn(".company-brief-offer{", css)
+        self.assertIn("color:var(--accent)", css)
         self.assertIn(".company-context-card{", css)
         self.assertIn("grid-column:2", css)
         self.assertIn("justify-self:start", css)
-        self.assertIn("background:#10212af5", css)
+        self.assertIn("background:#0f2029f7", css)
         self.assertIn("border:1pxsolid#496675", css)
         self.assertNotIn("position:fixed", css)
+
+    def test_company_brief_uses_available_operational_and_procurement_context(self) -> None:
+        script = (ROOT / "src" / "connections-company-context.js").read_text(encoding="utf-8")
+
+        self.assertIn("COMPANY BRIEF", script)
+        self.assertIn("current connected scope", script)
+        self.assertIn("Connected sites", script)
+        self.assertIn("Countries", script)
+        self.assertIn("Known operating crude-steel capacity", script)
+        self.assertIn("function productSummary", script)
+        self.assertIn("function routeSummary", script)
+        self.assertIn("FOOTPRINT", script)
+        self.assertIn("PRODUCTS", script)
+        self.assertIn("PRODUCTION METHODS", script)
+        self.assertIn("DECISION SIGNALS", script)
+        self.assertIn("Listed by OFAC", script)
+        self.assertIn("This is not sanctions clearance.", script)
+        self.assertIn("Procurement follow-up", script)
+        self.assertIn("View evidence ↓", script)
+        self.assertIn("Public-data brief · no supplier ranking", script)
 
     def test_trade_context_is_loaded_and_expressed_as_scenario(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
