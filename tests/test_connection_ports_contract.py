@@ -13,7 +13,7 @@ class ConnectionPortsContractTests(unittest.TestCase):
         ).replace(" ", "")
 
         self.assertIn(".products-area{z-index:auto!important;border-top:0;position:relative;align-items:start;padding-top:22px}", css)
-        self.assertIn(".product-nodes{padding-top:15px;padding-bottom:10px;position:relative;top:-12px;margin-bottom:-12px}", css)
+        self.assertIn(".product-nodes{padding-top:15px;padding-bottom:10px;position:relative;top:-6px;margin-bottom:-6px}", css)
         self.assertIn(".product-port{width:9px;height:9px", css)
         self.assertIn("top:-15px", css)
         self.assertIn(".product-node::after{display:none}", css)
@@ -43,8 +43,8 @@ class ConnectionPortsContractTests(unittest.TestCase):
         self.assertIn("portRect.top + portRect.height / 2 - areaRect.top", bridge)
         self.assertIn("--product-baseline-y", bridge)
         self.assertIn(".products-area::before{content:''", polish)
-        self.assertIn("top:var(--product-baseline-y,10px)", polish)
-        self.assertIn("top:-12px", polish)
+        self.assertIn("top:var(--product-baseline-y,16px)", polish)
+        self.assertIn("top:-6px", polish)
 
     def test_method_ports_remain_visible_at_the_route_endpoint(self) -> None:
         css = (ROOT / "src" / "connections-visual-polish.css").read_text(
