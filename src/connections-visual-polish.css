@@ -31,3 +31,11 @@
 .masthead nav{display:none!important}
 .masthead .edition{margin-left:auto}
 .intro{position:static}
+
+/* Selected facets share one visual grammar. Method capacity keeps its route colour. */
+.method-node.is-selected,.product-node.is-selected{background:#152b38!important;color:var(--accent)!important}
+.method-node.is-selected{box-shadow:9px 0 0 #152b38}
+.method-node.is-selected .method-name{color:var(--accent)!important}
+.method-node.is-selected .method-value{color:var(--method-color)!important}
+.product-node.is-selected{border-color:#152b38!important;box-shadow:0 0 0 1px #152b38}
+.product-node.is-selected .product-count,.product-node.is-selected .product-remove{color:var(--accent)!important}
