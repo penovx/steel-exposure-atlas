@@ -1,0 +1,5466 @@
+{
+  "meta": {
+    "schema": "steel-exposure-atlas/ofac-sanctions-owner-status-v1.0",
+    "source": "ofac",
+    "publisher": "U.S. Department of the Treasury, Office of Foreign Assets Control",
+    "datasets": [
+      "Specially Designated Nationals and Blocked Persons List",
+      "Consolidated Non-SDN Sanctions List"
+    ],
+    "source_snapshot_sha256": {
+      "SDN": "3D594ED7CDB5E0FD13F126A3815255146D730F791DCF672665C67416D03A7C1F",
+      "Consolidated Non-SDN": "C59772F3EDD625812AC43C4AEC57513D08CDD180135A3B6368DBC086AB81DF7D"
+    },
+    "source_publish_dates": {
+      "SDN": "09/16/2026",
+      "Consolidated Non-SDN": "09/14/2026"
+    },
+    "screened_owner_identities": 1068,
+    "counts": {
+      "direct_list_match": 8,
+      "review_required": 0,
+      "no_direct_list_match_in_snapshot": 1060
+    },
+    "display_semantics": "Categorical evidence state only. No sanctions percentage, probability, risk score or red/green verdict is defined by this dataset.",
+    "negative_result_boundary": "No direct list match in this snapshot means only that the deterministic screen found no direct OFAC list match for the screened GIST owner identity. It is not sanctions clearance and does not address ownership/control effects.",
+    "scope": "Company-level GIST owner screening against pinned OFAC SDN and Consolidated Non-SDN Entity snapshots. No separate plant-level sanctions finding is emitted."
+  },
+  "statuses": [
+    {
+      "company_id": "E100000000510",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000000647",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000000652",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000000687",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000000687; E100001010510",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000000715",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000000953",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000000953; E100001000516",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000001058",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000001319",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000001358; E100000122571; E100000000888",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000001651",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000001677",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000001765",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000001817",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000001935",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000001959",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000001965",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000002006",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000002080",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000002088",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000002151",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000002380",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000002408",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000002453",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000002454",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000002455",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000002771",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000003270",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000003277",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000003335",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000003676",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000003954",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000004192",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000120118",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000120156",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000120326",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000120672",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000120686",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000120868",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000120933",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000121137",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000121535",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000121815",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000121927",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000122373",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000122467",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000122571",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000122786",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000122948",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000122988",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123155",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123156",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123157",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123159",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123161",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123162",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123166",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123167",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123169",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123170",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123171",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123172",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123173",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123174",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123176",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123177",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123178",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123179",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123181",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123182",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123185",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123187",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123190",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123193",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123194",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123195",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123197",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123199",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123200",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123202",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123203",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123204",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123205",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123206",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123207",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123208",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123209",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123212",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123213",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123215",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123216",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123217",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123218",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123219",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123220",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123221",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123222",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123223",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123225",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123226",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123227",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123229",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123261; E100000127570",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123285",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123322",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123544",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123737",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123803",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123804",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123902",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000123983",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000124018",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000124340",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000124354",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000124355",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000124695",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000125133",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000125134",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000125308",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126095",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126101",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126106",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126115",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126116",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126121",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126125",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126131",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126132",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126133",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126138",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126140",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126142",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126147",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126149",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126150",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126156",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126157",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126159",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126164",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126169",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126170",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126172",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126181",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126182",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126188",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126191",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126198",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126207",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126210",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126219",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126228",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126242",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126246",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126249",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126251",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126255",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126259",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126260",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126270",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126275",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126276",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126280",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126282",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126284",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126286",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126287",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126293",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126296",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126297",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126299",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126302",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126303",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126308",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126317",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126320",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126323",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126324",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126330",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126341",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126343",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126347",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126357",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126360",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126361",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126363",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126368",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126374",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126378",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126383",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126387",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126389",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126390",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126391",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126395",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126397",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126403",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126407",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126408",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126416",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126417",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126425",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126441",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126443",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126444",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126448",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126452",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126458",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126462",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126465",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126469",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126477",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126487",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126497",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126498",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126505",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126506",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126509",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126511",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126512",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126519",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126523",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126524",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126525",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126532",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126533",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126540",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126550",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126554",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126555",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126559",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126562",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126568",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126571",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126573",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126575",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126592",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126598",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126603",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126606",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126616",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126623",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126625",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126635",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126638",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126639",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126643",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126645",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126646",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126647",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126649",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126651",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126664",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126665",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126666",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126669",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126676",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126680",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126686",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126688",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126698",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126701",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126710",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126717",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126721",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126724",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126731",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126733",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126741",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126753",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126754",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126761",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126766",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126768",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126769",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126775",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126778",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126779",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126785",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126786",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126790",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126800",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126810",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126811",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126820",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126822",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126826",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126829",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126834",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126838",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126840",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126841",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126856",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126869",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126881",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126886",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126890",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126892",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126895",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126901",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126908",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126913",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126916",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126923",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126929",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126936",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126942",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126944",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126949",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126957",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126962",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126965",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126975",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126976",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126978",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126987",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000126996",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127001",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127007",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127010",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127017",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127019",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127020",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127023",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127026",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127029",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127041",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127052",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127054",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127056",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127058",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127059",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127063",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127064",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127072",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127073",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127077",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127078",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127088",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127093",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127095",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127096",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127098",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127108",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127111",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127119",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127120",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127121",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127122",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127125",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127135",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127139",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127146",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127153",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127154",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127161",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127162",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127163",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127165",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127189",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127197",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127199",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127209",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127213",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127214",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127231",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127239",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127246",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127247",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127249",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127252",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127266",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127269",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127272",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127275",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127277",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127278",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127287",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127293",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127295",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127302",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127314",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127317",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127319",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127322",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127332",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127334",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127338",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127340",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127352",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127353",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127356",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127358",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127360",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127366",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127395",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127397",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127405",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127406",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127409",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000127450",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000128137",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000128516",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000128517",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000129106; E100000126785",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130688",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130689",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130690",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130691",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130693",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130694",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130695",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130699",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130700",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130701",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130702",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130703",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130705",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130707",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130708",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130709",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130710",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130711",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130712",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130713",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130714",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130717",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130719",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130721",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130724",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130729",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130730",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130731",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130732",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130734",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130735",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130736",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130738",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130739",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130740",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130741",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130742",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130745",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130746",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130747",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130748",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130751",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130752",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130753",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130754",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130759",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130760",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130761",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130762",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130767",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130769",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130770",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130771",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130773",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130775",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130777",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130778",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130779",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130780",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130784",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130786",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130787",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130788",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130789",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130792",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130793",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130794",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130796",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130797",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130799",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130800",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130801",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130802",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130804",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130807",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130808",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130811",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130812",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130813",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130815",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130816",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130817",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130819",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130820",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130821",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130822",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130824",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130825",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130827",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130828",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130830",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130831",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130836",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130838",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130841",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130843",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130847",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130848",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130849",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130851",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130852",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130853",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130854",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130855",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130858",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130859",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130862",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130864",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130866",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130867",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130868",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130869",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130870",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130871",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130872",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130873",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130874",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130876",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130877",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130878",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130879",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130880",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130881",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130882",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130884",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130886",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130887",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130888",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130889",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130890",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130892",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130897",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130898",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130900",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130906",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130907",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130908",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130909",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130910",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130911",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130915",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130917",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130918",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130919",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130921",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130922",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130923",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130924",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130927",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130928",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130929",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130933",
+      "state": "direct_list_match",
+      "identity_resolution": "confirmed",
+      "reviewed_matches": [
+        {
+          "matched_entity_id": "ofac-sdn:41920",
+          "source_list": "SDN",
+          "ofac_uid": "41920",
+          "programmes": [
+            "RUSSIA-EO14024"
+          ],
+          "resolution_id": "REL-2026-09-16-005",
+          "reviewed_at": "2026-09-16"
+        }
+      ]
+    },
+    {
+      "company_id": "E100000130936",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130937",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130938",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130939",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130940",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130942",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130943",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130944",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130950",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130951",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130952",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130955",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130957",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130958",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130959",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130960",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130961",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130964",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130968",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130969",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130971",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130974",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130977",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130978",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130981",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130982",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130983",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130984",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130986",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130987",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130989",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130990",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130992",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130995",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130998",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000130999",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131001",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131003",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131004",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131007",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131008",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131010",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131011",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131012",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131016",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131018",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131021",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131022",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131025",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131026",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131028",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131031",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131033",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131034",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131036",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131037",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131041",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131042",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131043",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131044",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131045",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131051",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131052",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131053",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131054",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131055",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131058",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131062",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131063",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131065",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131066",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131068",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131069",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131070",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131071",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131072",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131076",
+      "state": "direct_list_match",
+      "identity_resolution": "confirmed",
+      "reviewed_matches": [
+        {
+          "matched_entity_id": "ofac-sdn:30761",
+          "source_list": "SDN",
+          "ofac_uid": "30761",
+          "programmes": [
+            "IRAN-EO13871"
+          ],
+          "resolution_id": "REL-2026-09-16-007",
+          "reviewed_at": "2026-09-16"
+        }
+      ]
+    },
+    {
+      "company_id": "E100000131081",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131086",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131087",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131089",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131090",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131092",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131093",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131095",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131096",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131097",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131098",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131099",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131100",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131101",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131102",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131103",
+      "state": "direct_list_match",
+      "identity_resolution": "confirmed",
+      "reviewed_matches": [
+        {
+          "matched_entity_id": "ofac-sdn:30419",
+          "source_list": "SDN",
+          "ofac_uid": "30419",
+          "programmes": [
+            "IRAN-EO13876"
+          ],
+          "resolution_id": "REL-2026-09-16-002",
+          "reviewed_at": "2026-09-16"
+        }
+      ]
+    },
+    {
+      "company_id": "E100000131104",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131105",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131106",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131107",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131108",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131111",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131112",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131113",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131115",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131116",
+      "state": "direct_list_match",
+      "identity_resolution": "confirmed",
+      "reviewed_matches": [
+        {
+          "matched_entity_id": "ofac-sdn:28295",
+          "source_list": "SDN",
+          "ofac_uid": "28295",
+          "programmes": [
+            "IRAN-EO13871"
+          ],
+          "resolution_id": "REL-2026-09-16-004",
+          "reviewed_at": "2026-09-16"
+        }
+      ]
+    },
+    {
+      "company_id": "E100000131118",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131119",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131120",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131121",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131123",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131125",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131126",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131127",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131128",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131130",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131131",
+      "state": "direct_list_match",
+      "identity_resolution": "confirmed",
+      "reviewed_matches": [
+        {
+          "matched_entity_id": "ofac-sdn:30752",
+          "source_list": "SDN",
+          "ofac_uid": "30752",
+          "programmes": [
+            "IRAN-EO13871"
+          ],
+          "resolution_id": "REL-2026-09-16-009",
+          "reviewed_at": "2026-09-16"
+        }
+      ]
+    },
+    {
+      "company_id": "E100000131132",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131133",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131134",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131135",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131138",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131139",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131140",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131141",
+      "state": "direct_list_match",
+      "identity_resolution": "confirmed",
+      "reviewed_matches": [
+        {
+          "matched_entity_id": "ofac-sdn:30756",
+          "source_list": "SDN",
+          "ofac_uid": "30756",
+          "programmes": [
+            "IRAN-EO13871"
+          ],
+          "resolution_id": "REL-2026-09-16-006",
+          "reviewed_at": "2026-09-16"
+        }
+      ]
+    },
+    {
+      "company_id": "E100000131157",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131172",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131173",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131174",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131175",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131177",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131178",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131179",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131180",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131181",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131182",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131186",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131187",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131188",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131190",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131191",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131193",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131194",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131195",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000131956",
+      "state": "direct_list_match",
+      "identity_resolution": "confirmed",
+      "reviewed_matches": [
+        {
+          "matched_entity_id": "ofac-sdn:31516",
+          "source_list": "SDN",
+          "ofac_uid": "31516",
+          "programmes": [
+            "BURMA-EO14014"
+          ],
+          "resolution_id": "REL-2026-09-16-008",
+          "reviewed_at": "2026-09-16"
+        }
+      ]
+    },
+    {
+      "company_id": "E100000134363",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000134775",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100000160981",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000295",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000387",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000427",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000432",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000439",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000453",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000455",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000458",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000460",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000469",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000472; E100000000689",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000480",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000487",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000493",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000494",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000495",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000496",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000497",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000498",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000500",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000501",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000502",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000503",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000504",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000506",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000507",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000508",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000509",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000516",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000524",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000525",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000527",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000528",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000529",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000530",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000536",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000542",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000556",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000568",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000589",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000597",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000598",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000599",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000649",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000652",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000665",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000703",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000709",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000711",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000737",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000919",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000920",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000929",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000957",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000958",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001000960",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010018",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010067",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010109",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010116",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010118",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010123",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010124",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010135",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010136",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010137",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010145",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010146",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010157",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010159",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010177",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010180",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010181",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010182",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010183",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010184",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010194",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010195",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010197",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010198",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010199",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010200",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010202",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010254",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010255",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010257",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010258",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010259",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010262",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010266",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010268",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010269",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010270",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010272",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010273",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010274",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010275",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010277",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010278",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010279",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010280",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010295",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010298",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010300",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010310",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010321",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010325",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010326",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010327",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010329",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010333",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010334",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010335",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010336",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010358",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010359",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010361",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010364",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010367",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010370",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010373",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010374",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010410",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010422",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010583",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010584",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010586",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010587",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010697",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001010698",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001011285",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001011644",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012045",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012047",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012048",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012054",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012056",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012066",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012067",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012068",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012070",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012071",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012072",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012073",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012077",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012078",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012080",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012081",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012092",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012092; E100000127360",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012093",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012095",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012096",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012099",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012105",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012111",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012112",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012115",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012119",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012123",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012133",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012138",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012139",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012152",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012160",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012161",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012174",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012175",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012180",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012183",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012187",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012191",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012192",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012196",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012201",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012202",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012204",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012214",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012220",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012221",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012225",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012226",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012227",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012229",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012230",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012231",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012232",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012293",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012303",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012382",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012383",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012389",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012391",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012400",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012401",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012404",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012447",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012502",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012522",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012537",
+      "state": "direct_list_match",
+      "identity_resolution": "confirmed",
+      "reviewed_matches": [
+        {
+          "matched_entity_id": "ofac-sdn:28287",
+          "source_list": "SDN",
+          "ofac_uid": "28287",
+          "programmes": [
+            "IRAN-EO13871"
+          ],
+          "resolution_id": "REL-2026-09-16-003",
+          "reviewed_at": "2026-09-16"
+        }
+      ]
+    },
+    {
+      "company_id": "E100001012702",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012762",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012768",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012802",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012890",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012891",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012892",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012895",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001012897",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001013032",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001013036",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001013041",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001013042",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001013044",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001013687",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001013916",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001013917",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100001016181",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002000080",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002001197",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002003149",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002003150",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002003233",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002003628",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002003752; E100000000004",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002003914",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002004335",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002004455",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002004552",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002004554",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002004559",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002004637",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002004639",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002004716",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002004790",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002004792",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002004867",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002005337",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002005355",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002005371",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002005402",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002005771",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002005773",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002006224",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002006602",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002006720",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002007119",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002007121",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002007317",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002007527",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002007597",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002007975",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002007981",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002007999",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002008008",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002008017",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002008021",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002008184",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002008272",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002008286",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002008298",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002008299",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002008300",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002008307",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002009156",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002016202",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002016547",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002016710",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002017129",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002017302",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002017833",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002018902",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002019190",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002019210",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002019226",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002019288",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002019324",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002019338",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002019418",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002019606",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002019673",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002019742",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002019744",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002019745",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002019750",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020285",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020303",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020306",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020448",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020454",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020472",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020513",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020544",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020545",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020546",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020549",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020550",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020551",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020558",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020562",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020563",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020566",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020570",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020592",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020601",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020614",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020615",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020628",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020630",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020634",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020639",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020640",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020642",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020643",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020645",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020649",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020650",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020658",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020661",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020662",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020678",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020679",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020680",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020683",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020684",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020686",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020687",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020690",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020693",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020697",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020710",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020731",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020746",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020762",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020776",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020787",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020833",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020858",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020966",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020973",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020978",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020985",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020986",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020990",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002020996",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021022",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021044",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021050",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021055",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021059",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021137",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021142",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021277",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021320",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021414",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021471",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021532",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021566",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021645",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021663",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021741",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021815",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021863",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021989",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021991",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    },
+    {
+      "company_id": "E100002021992",
+      "state": "no_direct_list_match_in_snapshot",
+      "identity_resolution": "none"
+    }
+  ]
+}
