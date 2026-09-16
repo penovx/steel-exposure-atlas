@@ -1,6 +1,7 @@
 (() => {
   const ROUTES = ['BOF', 'EAF', 'IF', 'Other'];
   const productionEligibleOwners = new Set();
+  const productionEligibleRegionsByOwner = new Map();
   const directListedOwners = new Set();
 
   function reviewApi() {
@@ -9,6 +10,10 @@
     } catch {
       return null;
     }
+  }
+
+  function currentRegion(review = reviewApi()) {
+    return review?.snapshot?.()?.state?.region ?? 'World';
   }
 
   function selectedOwnerId(review = reviewApi()) {
@@ -32,10 +37,16 @@
 
   function buildProductionEligibility(review) {
     productionEligibleOwners.clear();
+    productionEligibleRegionsByOwner.clear();
     for (const plant of review?.all ?? []) {
       const ownerId = String(plant.ownerId ?? '').trim();
       if (!ownerId || !hasPositiveOperatingSteel(review, plant)) continue;
       productionEligibleOwners.add(ownerId);
+      if (!productionEligibleRegionsByOwner.has(ownerId)) {
+        productionEligibleRegionsByOwner.set(ownerId, new Set());
+      }
+      const region = String(plant.region ?? '').trim();
+      if (region) productionEligibleRegionsByOwner.get(ownerId).add(region);
     }
   }
 
@@ -53,11 +64,18 @@
     addDirectListings(payloads?.ofac);
   }
 
+  function isProductionEligible(ownerId, region = currentRegion()) {
+    const id = String(ownerId ?? '').trim();
+    if (!id) return false;
+    if (region === 'World') return productionEligibleOwners.has(id);
+    return productionEligibleRegionsByOwner.get(id)?.has(region) ?? false;
+  }
+
   function isVisible(ownerId) {
     const id = String(ownerId ?? '').trim();
     if (!id) return false;
     if (!eligibility.ready) return true;
-    return productionEligibleOwners.has(id)
+    return isProductionEligible(id)
       || directListedOwners.has(id)
       || selectedOwnerId() === id;
   }
@@ -98,7 +116,7 @@
   const eligibility = {
     ready: false,
     isVisible,
-    isProductionEligible: (ownerId) => productionEligibleOwners.has(String(ownerId ?? '').trim()),
+    isProductionEligible,
     isDirectListed: (ownerId) => directListedOwners.has(String(ownerId ?? '').trim()),
     counts: () => ({
       productionEligibleOwners: productionEligibleOwners.size,
