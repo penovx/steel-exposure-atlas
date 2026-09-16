@@ -7,26 +7,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ProcurementUiContractTests(unittest.TestCase):
-    def test_facets_use_plain_language_and_company_search(self) -> None:
+    def test_facets_use_plain_language_and_inline_company_search(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
-        search = (ROOT / "src" / "connections-procurement-ui.js").read_text(encoding="utf-8")
+        virtual = (ROOT / "src" / "connections-company-virtual-rail.js").read_text(encoding="utf-8")
 
         self.assertIn('id="company-title">Companies<', index)
         self.assertIn('id="method-title">Production methods<', index)
         self.assertIn('placeholder="Search companies"', index)
-        self.assertIn('./src/connections-procurement-ui.js?v=20260916-7', index)
+        self.assertIn('./src/connections-company-virtual-rail.js?v=20260916-1', index)
         self.assertIn('./src/connections-procurement-ui.css?v=20260916-4', index)
-        self.assertIn(".company-node[data-owner]", search)
-        self.assertIn("companyIsEligible", search)
-        self.assertIn("__ATLAS_COMPANY_ELIGIBILITY__", search)
-        self.assertIn("syncCompanyEdges", search)
-        self.assertIn("edge.hidden = !companyIsEligible(ownerId) || !visibleOwnerIds.has(ownerId)", search)
-        self.assertIn("atlas-company-eligibility-ready", search)
-        self.assertIn("function openCompanyPicker()", search)
-        self.assertIn("input.readOnly = true", search)
-        self.assertIn("input.placeholder = 'Search all companies'", search)
-        self.assertIn("trigger.click()", search)
-        self.assertIn("event.key === 'Enter' || event.key === ' '", search)
+        self.assertIn("__ATLAS_COMPANY_ELIGIBILITY__", virtual)
+        self.assertIn("eligibility.isVisible(group.id)", virtual)
+        self.assertIn("input.readOnly = false", virtual)
+        self.assertIn("input.placeholder = 'Search companies'", virtual)
+        self.assertIn("input.addEventListener('input'", virtual)
+        self.assertIn("event.key === 'Escape'", virtual)
+        self.assertIn("event.key === 'Enter'", virtual)
+        self.assertIn("filteredGroups.length === 1", virtual)
+        self.assertIn("current.cloneNode(true)", virtual)
+        self.assertNotIn("openCompanyPicker", virtual)
 
     def test_dynamic_reading_copy_names_the_actual_relationship(self) -> None:
         script = (ROOT / "src" / "connections-procurement-ui.js").read_text(encoding="utf-8")
