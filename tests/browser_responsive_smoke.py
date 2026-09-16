@@ -5,7 +5,6 @@ import http.server
 import socket
 import socketserver
 import threading
-import time
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
@@ -46,15 +45,14 @@ def preview_server():
         thread.join(timeout=2)
 
 
-def wait_ready(page):
-    page.goto(page.url if page.url.startswith("http") else page.url, wait_until="domcontentloaded")
+def wait_for_atlas(page):
+    page.wait_for_selector("#geo-map .land", state="attached", timeout=15000)
+    page.wait_for_selector("#company-nodes[data-virtual-rail='true'] .company-node[data-virtual-owner]", state="attached", timeout=15000)
+    page.wait_for_function("document.querySelector('#startup-status')?.hidden === true", timeout=15000)
 
 
 def assert_layout(page, width, height):
-    page.wait_for_selector("#geo-map .land", state="attached", timeout=15000)
-    page.wait_for_selector("#company-nodes .company-node", state="attached", timeout=15000)
-    page.wait_for_function("document.querySelector('#startup-status')?.hidden === true", timeout=15000)
-
+    wait_for_atlas(page)
     metrics = page.evaluate("""() => {
       const body = document.documentElement;
       const map = document.querySelector('#geography').getBoundingClientRect();
@@ -84,13 +82,14 @@ def assert_layout(page, width, height):
 
 
 def assert_company_interaction(page):
-    company = page.locator("#company-nodes .company-node").first
+    wait_for_atlas(page)
+    company = page.locator("#company-nodes .company-node[data-virtual-owner]").first
     company.scroll_into_view_if_needed()
     company.click()
-    page.wait_for_timeout(100)
-    assert company.get_attribute("aria-pressed") == "true"
-    opener = company.locator(".company-profile-open")
-    assert opener.count() == 1
+    page.wait_for_selector("#company-nodes .company-node[aria-pressed='true'] + .company-profile-open", timeout=5000)
+    selected = page.locator("#company-nodes .company-node[aria-pressed='true']")
+    assert selected.count() == 1
+    opener = page.locator("#company-nodes .company-node[aria-pressed='true'] + .company-profile-open")
     assert page.locator("#company-profile-card").is_hidden()
 
     opener.click()
@@ -98,11 +97,10 @@ def assert_company_interaction(page):
     page.locator("#company-profile-card .company-profile-card-close").click()
     page.wait_for_timeout(50)
     assert page.locator("#company-profile-card").is_hidden()
-    assert company.get_attribute("aria-pressed") == "true"
+    assert page.locator("#company-nodes .company-node[aria-pressed='true']").count() == 1
 
-    company.click()
-    page.wait_for_timeout(100)
-    assert page.locator("#company-nodes .company-node[aria-pressed='true']").count() == 0
+    page.locator("#company-nodes .company-node[aria-pressed='true']").click()
+    page.wait_for_function("document.querySelectorAll('#company-nodes .company-node[aria-pressed=\"true\"]').length === 0", timeout=5000)
     assert page.locator("#company-profile-card").is_hidden()
 
 
@@ -111,7 +109,7 @@ def assert_filter_sync_and_clear(page):
     product.scroll_into_view_if_needed()
     product.click()
     page.wait_for_timeout(100)
-    assert product.get_attribute("aria-pressed") == "true"
+    assert page.locator("#product-nodes .product-node[aria-pressed='true']").count() >= 1
     assert page.locator("#clear-all").is_visible()
 
     method = page.locator("#method-nodes .method-node:not([disabled])").first
@@ -142,7 +140,7 @@ def main():
             for width, height in [(1440, 900), (375, 812)]:
                 page = browser.new_page(viewport={"width": width, "height": height})
                 page.goto(url, wait_until="domcontentloaded")
-                page.wait_for_selector("#company-nodes .company-node", timeout=15000)
+                wait_for_atlas(page)
                 assert_company_interaction(page)
                 assert_filter_sync_and_clear(page)
                 page.close()
