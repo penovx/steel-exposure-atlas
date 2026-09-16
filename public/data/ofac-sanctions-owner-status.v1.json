@@ -2819,7 +2819,11 @@
             "RUSSIA-EO14024"
           ],
           "resolution_id": "REL-2026-09-16-005",
-          "reviewed_at": "2026-09-16"
+          "reviewed_at": "2026-09-16",
+          "listed_since": "2023-04-12",
+          "designation_action": "Russia-related designations",
+          "designation_summary": "Russia-related designation; OFAC links the entity to Metalloinvest",
+          "designation_source_url": "https://ofac.treasury.gov/recent-actions/20230412"
         }
       ]
     },
@@ -3216,7 +3220,11 @@
             "IRAN-EO13871"
           ],
           "resolution_id": "REL-2026-09-16-007",
-          "reviewed_at": "2026-09-16"
+          "reviewed_at": "2026-09-16",
+          "listed_since": "2021-01-05",
+          "designation_action": "Iran-related designations and designation update",
+          "designation_summary": "Operating in Iran’s steel sector",
+          "designation_source_url": "https://ofac.treasury.gov/recent-actions/20210105"
         }
       ]
     },
@@ -3308,7 +3316,11 @@
             "IRAN-EO13876"
           ],
           "resolution_id": "REL-2026-09-16-002",
-          "reviewed_at": "2026-09-16"
+          "reviewed_at": "2026-09-16",
+          "listed_since": "2020-11-18",
+          "designation_action": "Iran-related designations and designation updates",
+          "designation_summary": "Owned or controlled by Kaveh Pars Mining Industries Development Company (KMID)",
+          "designation_source_url": "https://ofac.treasury.gov/recent-actions/20201118"
         }
       ]
     },
@@ -3370,7 +3382,11 @@
             "IRAN-EO13871"
           ],
           "resolution_id": "REL-2026-09-16-004",
-          "reviewed_at": "2026-09-16"
+          "reviewed_at": "2026-09-16",
+          "listed_since": "2020-01-10",
+          "designation_action": "Iran-related designations and updates",
+          "designation_summary": "Operating in Iran’s metals sector",
+          "designation_source_url": "https://ofac.treasury.gov/recent-actions/20200110"
         }
       ]
     },
@@ -3437,7 +3453,11 @@
             "IRAN-EO13871"
           ],
           "resolution_id": "REL-2026-09-16-009",
-          "reviewed_at": "2026-09-16"
+          "reviewed_at": "2026-09-16",
+          "listed_since": "2021-01-05",
+          "designation_action": "Iran-related designations and designation update",
+          "designation_summary": "Operating in Iran’s steel sector",
+          "designation_source_url": "https://ofac.treasury.gov/recent-actions/20210105"
         }
       ]
     },
@@ -3489,7 +3509,11 @@
             "IRAN-EO13871"
           ],
           "resolution_id": "REL-2026-09-16-006",
-          "reviewed_at": "2026-09-16"
+          "reviewed_at": "2026-09-16",
+          "listed_since": "2021-01-05",
+          "designation_action": "Iran-related designations and designation update",
+          "designation_summary": "Operating in Iran’s steel sector",
+          "designation_source_url": "https://ofac.treasury.gov/recent-actions/20210105"
         }
       ]
     },
@@ -3601,7 +3625,11 @@
             "BURMA-EO14014"
           ],
           "resolution_id": "REL-2026-09-16-008",
-          "reviewed_at": "2026-09-16"
+          "reviewed_at": "2026-09-16",
+          "listed_since": "2021-03-25",
+          "designation_action": "Burma-related designations",
+          "designation_summary": "Owned or controlled by Burma’s military or security forces",
+          "designation_source_url": "https://ofac.treasury.gov/recent-actions/20210325"
         }
       ]
     },
@@ -4628,7 +4656,11 @@
             "IRAN-EO13871"
           ],
           "resolution_id": "REL-2026-09-16-003",
-          "reviewed_at": "2026-09-16"
+          "reviewed_at": "2026-09-16",
+          "listed_since": "2020-01-10",
+          "designation_action": "Iran-related designations and updates",
+          "designation_summary": "Operating in Iran’s metals sector",
+          "designation_source_url": "https://ofac.treasury.gov/recent-actions/20200110"
         }
       ]
     },
