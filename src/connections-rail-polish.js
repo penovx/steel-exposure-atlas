@@ -70,6 +70,8 @@
     const existing = new Set(
       [...container.querySelectorAll('[data-owner]')].map((node) => node.dataset.owner),
     );
+    const fragment = document.createDocumentFragment();
+    let added = 0;
 
     for (const group of ownerGroups()) {
       if (existing.has(group.id)) continue;
@@ -89,8 +91,10 @@
       count.className = 'company-count';
       count.textContent = group.count.toLocaleString('en-GB');
       button.append(name, count);
-      container.append(button);
+      fragment.append(button);
+      added += 1;
     }
+    if (added) container.append(fragment);
   }
 
   function restoreStableOwnerOrder(container) {
@@ -103,7 +107,11 @@
     const current = [...container.querySelectorAll('.company-node[data-owner]')];
     const alreadyStable = desired.length === current.length
       && desired.every((node, index) => node === current[index]);
-    if (!alreadyStable) container.append(...desired);
+    if (!alreadyStable) {
+      const fragment = document.createDocumentFragment();
+      for (const node of desired) fragment.append(node);
+      container.append(fragment);
+    }
   }
 
   function installOwnerSelectionBridge(companyNodes, api) {
@@ -115,17 +123,19 @@
       if (!button || !companyNodes.contains(button)) return;
 
       const scrollTop = companyNodes.scrollTop;
+      const pageX = window.scrollX;
+      const pageY = window.scrollY;
       event.preventDefault();
       event.stopPropagation();
 
-      // Core selection is synchronous. It currently promotes the selected owner in
-      // its five-node working set; the public rail must not change order because of
-      // selection, so rebuild the complete rail in its stable count/name order
-      // before the queued map/edge frame runs.
+      // Core selection is synchronous. Let its map frame complete before the
+      // MutationObserver rebuilds the long public company rail. This avoids doing
+      // the same large DOM rebuild twice inside the click handler.
+      companyNodes.dataset.restoreScrollTop = String(scrollTop);
       api.choose('owner', button.dataset.owner);
-      appendScrollableOwners();
-      restoreStableOwnerOrder(companyNodes);
-      companyNodes.scrollTop = scrollTop;
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        window.scrollTo({left: pageX, top: pageY, behavior: 'auto'});
+      }));
     }, true);
   }
 
@@ -290,8 +300,13 @@
     queued = true;
     requestAnimationFrame(() => {
       queued = false;
+      const companyNodes = document.querySelector('#company-nodes');
       appendScrollableOwners();
-      restoreStableOwnerOrder(document.querySelector('#company-nodes'));
+      restoreStableOwnerOrder(companyNodes);
+      if (companyNodes?.dataset.restoreScrollTop !== undefined) {
+        companyNodes.scrollTop = Number(companyNodes.dataset.restoreScrollTop) || 0;
+        delete companyNodes.dataset.restoreScrollTop;
+      }
       removeMisleadingSublines();
       removeInlineProductDescriptions();
       sentenceCaseInlineProductLabels();
