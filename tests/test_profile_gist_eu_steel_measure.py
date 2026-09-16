@@ -62,6 +62,20 @@ def measure() -> dict[str, object]:
     }
 
 
+def bilateral() -> dict[str, object]:
+    return {
+        "meta": {
+            "schema": "steel-exposure-atlas/eu-steel-bilateral-2026-1930-v1.0",
+            "raw_sha256": "B" * 64,
+        },
+        "countries": [
+            "Albania", "Israel", "Jordan", "Morocco", "North Macedonia",
+            "Serbia", "Switzerland", "Tunisia", "Türkiye",
+        ],
+        "additional_duty_rate_pct": 50.0,
+    }
+
+
 def mapping() -> dict[str, object]:
     return {
         "schema": "steel-exposure-atlas/eu-steel-measure-product-map-v1.0",
@@ -83,7 +97,7 @@ def mapping() -> dict[str, object]:
 
 class GistEuSteelMeasureProfileTests(unittest.TestCase):
     def test_separates_eu_eea_named_quota_residual_and_unmapped_states(self) -> None:
-        payload = build_profile(gist(), measure(), mapping())
+        payload = build_profile(gist(), measure(), mapping(), bilateral())
         counts = payload["counts"]
         self.assertEqual(counts["gist_plants"], 5)
         self.assertEqual(counts["not_applicable_intra_eu_origin"], 1)
@@ -92,29 +106,39 @@ class GistEuSteelMeasureProfileTests(unittest.TestCase):
         self.assertEqual(counts["candidate_requires_residual_quota_review"], 1)
         self.assertEqual(counts["no_supported_product_family_candidate"], 1)
         self.assertEqual(counts["plants_with_any_trade_measure_candidate"], 2)
+        self.assertEqual(counts["plants_from_bilateral_safeguard_origins"], 1)
+        self.assertEqual(counts["candidate_plants_from_bilateral_safeguard_origins"], 1)
 
-    def test_country_alias_connects_turkey_to_turkiye_quota_row(self) -> None:
-        payload = build_profile(gist(), measure(), mapping())
+    def test_country_alias_connects_turkey_to_turkiye_quota_and_bilateral_route(self) -> None:
+        payload = build_profile(gist(), measure(), mapping(), bilateral())
         rows = {item["plant_id"]: item for item in payload["plants"]}
         turkey = rows["P-TR"]
         self.assertEqual(turkey["measure_country"], "Türkiye")
+        self.assertEqual(turkey["legal_route"], "bilateral_safeguard_2026_1930")
         self.assertEqual(turkey["scenario_state"], "candidate_with_named_origin_quota_row")
         candidate = turkey["measure_candidates"][0]
         self.assertEqual(candidate["product_number"], "13")
         self.assertEqual(candidate["product_category"], "Rebars")
+        self.assertEqual(candidate["legal_route"], "bilateral_safeguard_2026_1930")
         self.assertEqual(candidate["named_origin_quota_rows"][0]["additional_duty_rate_pct"], 50.0)
 
-    def test_profile_keeps_scenario_and_classification_boundary(self) -> None:
-        payload = build_profile(gist(), measure(), mapping())
+    def test_non_bilateral_origin_keeps_steel_regulation_route(self) -> None:
+        payload = build_profile(gist(), measure(), mapping(), bilateral())
+        rows = {item["plant_id"]: item for item in payload["plants"]}
+        self.assertEqual(rows["P-CA"]["legal_route"], "steel_regulation_2026_1384")
+
+    def test_profile_keeps_scenario_and_evidence_boundary(self) -> None:
+        payload = build_profile(gist(), measure(), mapping(), bilateral())
         self.assertIn("hypothetical import", payload["meta"]["scenario"])
-        self.assertIn("not a CN/TARIC classification", payload["meta"]["interpretation"])
-        self.assertIn("named quota rows do not indicate live quota availability", payload["meta"]["interpretation"])
+        self.assertIn("review evidence", payload["meta"]["interpretation"])
+        self.assertIn("bilateral safeguards", payload["meta"]["interpretation"])
+        self.assertEqual(payload["meta"]["bilateral_snapshot_sha256"], "B" * 64)
 
     def test_rejects_mapping_to_unknown_measure_product_number(self) -> None:
         bad_mapping = mapping()
         bad_mapping["mappings"]["rebar"]["product_numbers"] = ["999"]  # type: ignore[index]
         with self.assertRaisesRegex(ValueError, "unknown product numbers"):
-            build_profile(gist(), measure(), bad_mapping)
+            build_profile(gist(), measure(), bad_mapping, bilateral())
 
 
 if __name__ == "__main__":
