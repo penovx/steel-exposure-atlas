@@ -99,18 +99,17 @@
     document.querySelector('#method-nodes .method-node[data-route="Other"] .method-sub')?.remove();
   }
 
-  function ensureProductDescriptions() {
-    for (const node of document.querySelectorAll('#product-nodes .product-node')) {
-      let description = node.querySelector(':scope > .product-description');
-      if (!description) {
-        description = document.createElement('small');
-        description.className = 'product-description';
-        const count = node.querySelector(':scope > span');
-        if (count) count.before(description);
-        else node.append(description);
-      }
-      const key = String(node.dataset.product ?? '').trim().toLowerCase();
-      description.textContent = PRODUCT_DESCRIPTIONS.get(key) ?? 'GIST-listed steel product category';
+  function removeInlineProductDescriptions() {
+    for (const node of document.querySelectorAll('#product-nodes .product-description')) node.remove();
+  }
+
+  function decorateProductPickerDescriptions() {
+    for (const item of document.querySelectorAll('#browse-result .browse-item[data-browse-kind="product"]')) {
+      const descriptionNode = item.querySelector('span > small');
+      if (!descriptionNode) continue;
+      const key = String(item.dataset.browseId ?? '').trim().toLowerCase();
+      const description = PRODUCT_DESCRIPTIONS.get(key) ?? 'GIST-listed steel product category';
+      if (descriptionNode.textContent !== description) descriptionNode.textContent = description;
     }
   }
 
@@ -181,7 +180,8 @@
       queued = false;
       appendScrollableOwners();
       removeMisleadingSublines();
-      ensureProductDescriptions();
+      removeInlineProductDescriptions();
+      decorateProductPickerDescriptions();
       renderMethodEndpointDots();
     });
   }
@@ -192,8 +192,9 @@
     const companyNodes = document.querySelector('#company-nodes');
     const productNodes = document.querySelector('#product-nodes');
     const methodNodes = document.querySelector('#method-nodes');
+    const browseResult = document.querySelector('#browse-result');
     const edges = document.querySelector('#edge-layer');
-    if (!api?.snapshot || !stage || !companyNodes || !productNodes || !methodNodes || !edges) {
+    if (!api?.snapshot || !stage || !companyNodes || !productNodes || !methodNodes || !browseResult || !edges) {
       requestAnimationFrame(install);
       return;
     }
@@ -201,6 +202,7 @@
     new MutationObserver(sync).observe(companyNodes, {childList: true});
     new MutationObserver(sync).observe(productNodes, {childList: true});
     new MutationObserver(sync).observe(methodNodes, {childList: true, subtree: true});
+    new MutationObserver(sync).observe(browseResult, {childList: true, subtree: true});
     new MutationObserver(sync).observe(edges, {childList: true, subtree: true, attributes: true, attributeFilter: ['d']});
     new ResizeObserver(sync).observe(stage);
     window.addEventListener('resize', sync, {passive: true});
