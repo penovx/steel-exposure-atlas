@@ -7,10 +7,10 @@ from pathlib import Path
 DEFAULT_PROFILE = Path(
     "tmp/source-packages/eu-steel-measure/review/gist-eu-steel-measure-profile.v1.json"
 )
-DEFAULT_OUTPUT = Path(
-    "tmp/source-packages/eu-steel-measure/derived/eu-steel-trade-context.v1.json"
-)
+DEFAULT_OUTPUT = Path("public/data/eu-steel-trade-context.v1.json")
 SCHEMA = "steel-exposure-atlas/eu-steel-trade-context-v1.0"
+EXPECTED_MEASURE_SHA256 = "B869A4BB8C4E4F7AE320B4CE4A117A33B05CADEEDF1C9DF106845EBCA9D9B21B"
+EXPECTED_BILATERAL_SHA256 = "5F0214CD0FC9FC85A114B9EC485E2D6887F3F2137BD177EE357CC00FE2BB32BE"
 CANDIDATE_STATES = {
     "candidate_with_named_origin_quota_row",
     "candidate_requires_residual_quota_review",
@@ -21,6 +21,21 @@ def _clean(value: object) -> str:
     return " ".join(str(value or "").split())
 
 
+def _validate_sources(meta: dict[str, object]) -> None:
+    measure = _clean(meta.get("measure_snapshot_sha256")).upper()
+    bilateral = _clean(meta.get("bilateral_snapshot_sha256")).upper()
+    if measure != EXPECTED_MEASURE_SHA256:
+        raise ValueError(
+            "EU steel measure snapshot mismatch: "
+            f"expected {EXPECTED_MEASURE_SHA256}, got {measure or 'missing'}."
+        )
+    if bilateral != EXPECTED_BILATERAL_SHA256:
+        raise ValueError(
+            "EU bilateral safeguard snapshot mismatch: "
+            f"expected {EXPECTED_BILATERAL_SHA256}, got {bilateral or 'missing'}."
+        )
+
+
 def build_context(profile: dict[str, object]) -> dict[str, object]:
     plants = profile.get("plants")
     meta = profile.get("meta")
@@ -28,6 +43,7 @@ def build_context(profile: dict[str, object]) -> dict[str, object]:
         raise ValueError("EU steel-measure profile has no plants list.")
     if not isinstance(meta, dict):
         raise ValueError("EU steel-measure profile has no meta object.")
+    _validate_sources(meta)
 
     context_rows: list[dict[str, object]] = []
     for raw in plants:
@@ -114,9 +130,17 @@ def build_context(profile: dict[str, object]) -> dict[str, object]:
             "schema": SCHEMA,
             "scenario": "hypothetical import into the EU",
             "profile_schema": meta.get("schema"),
-            "measure_snapshot_sha256": meta.get("measure_snapshot_sha256"),
-            "bilateral_snapshot_sha256": meta.get("bilateral_snapshot_sha256"),
-            "publication_state": "local review output; publication requires completed source snapshot review",
+            "sources": {
+                "commission_implementing_regulation_2026_1457": {
+                    "sha256": EXPECTED_MEASURE_SHA256,
+                    "source_url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1457/oj/eng",
+                },
+                "commission_implementing_regulation_2026_1930": {
+                    "sha256": EXPECTED_BILATERAL_SHA256,
+                    "source_url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1930/oj/eng",
+                },
+            },
+            "publication_state": "approved minimal derived public context",
             "ui_principle": "evidence -> meaning -> action",
             "counts": {
                 "plants_with_context": len(context_rows),
@@ -130,7 +154,7 @@ def build_context(profile: dict[str, object]) -> dict[str, object]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Build a compact procurement-facing EU steel import scenario context from the reviewed profile."
+        description="Build the reviewed public EU steel import scenario context from the pinned profile."
     )
     parser.add_argument("--profile", type=Path, default=DEFAULT_PROFILE)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
