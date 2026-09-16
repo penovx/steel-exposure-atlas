@@ -1,0 +1,65 @@
+/* The atlas is the opening screen. Brand and value proposition sit directly on the product. */
+.masthead{
+  position:absolute!important;
+  top:0;
+  left:0;
+  right:0;
+  z-index:60;
+  height:64px;
+  margin:0!important;
+  padding:0 var(--margin)!important;
+  background:transparent!important;
+  color:var(--white);
+  border-bottom:1px solid #304856!important;
+}
+.masthead .brand{color:var(--white)}
+.masthead .brand svg path{fill:none;stroke:var(--white)}
+.masthead .brand svg circle{fill:var(--night);stroke:var(--white)}
+.masthead .edition{color:#8fa8b7;border-left-color:#304856}
+
+.intro{
+  position:absolute!important;
+  top:64px;
+  left:0;
+  right:0;
+  z-index:40;
+  display:block;
+  padding:22px var(--margin) 0!important;
+  color:var(--white);
+  pointer-events:none;
+}
+.intro .eyebrow{color:#8fb2c4}
+.intro h1{
+  margin-top:7px;
+  max-width:780px;
+  color:var(--white);
+  font-size:clamp(31px,3vw,44px);
+  line-height:1.08;
+  font-weight:470;
+  letter-spacing:-1.35px;
+}
+.opening-hint{
+  max-width:860px!important;
+  margin-top:10px!important;
+  padding:0!important;
+  color:#a9bdc8!important;
+  font-size:13px!important;
+  line-height:1.55!important;
+}
+.desktop-break{display:none}
+
+.atlas{
+  min-height:100svh;
+  padding-top:170px;
+}
+.atlas-top{padding-top:4px}
+
+@media(max-width:760px){
+  .masthead{height:58px;padding:0 18px!important}
+  .masthead .edition{font-size:8px;letter-spacing:1.1px;padding-left:14px}
+  .brand{font-size:16px}.brand svg{width:26px;height:26px}
+  .intro{top:58px;padding:18px 18px 0!important}
+  .intro h1{font-size:31px}
+  .opening-hint{max-width:42ch!important;font-size:12px!important;line-height:1.5!important}
+  .atlas{padding-top:188px}
+}
