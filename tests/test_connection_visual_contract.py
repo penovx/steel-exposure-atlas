@@ -36,11 +36,18 @@ class ConnectionVisualContractTests(unittest.TestCase):
         self.assertIn(".product-port{width:9px;height:9px;left:50%;top:-15px", css)
         self.assertIn("transform:translate(-50%,-50%)", css)
 
-    def test_disconnected_product_does_not_show_zero_as_a_data_value(self) -> None:
+    def test_disconnected_product_keeps_scope_description_not_zero(self) -> None:
         css = (ROOT / "src" / "connections-visual-polish.css").read_text(
             encoding="utf-8"
         ).replace(" ", "")
-        self.assertIn(".product-node.dim>span{visibility:hidden}", css)
+        bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn(".product-node.dim>span{visibility:visible}", css)
+        self.assertIn("scopeProductCount", bridge)
+        self.assertIn("connected > 0", bridge)
+        self.assertIn("`${value} listed sites`", bridge)
 
 
 if __name__ == "__main__":
