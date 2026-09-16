@@ -52,20 +52,23 @@ class ConnectionVisualContractTests(unittest.TestCase):
         self.assertIn("connected > 0", bridge)
         self.assertIn("`${value} listed sites`", bridge)
 
-    def test_every_product_gets_plain_language_description(self) -> None:
-        bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(
+    def test_product_descriptions_are_moved_to_picker(self) -> None:
+        polish_script = (ROOT / "src" / "connections-rail-polish.js").read_text(
             encoding="utf-8"
         )
         css = (ROOT / "src" / "connections-visual-polish.css").read_text(
             encoding="utf-8"
         ).replace(" ", "")
 
-        self.assertIn("PRODUCT_DESCRIPTIONS", bridge)
-        self.assertIn("Semi-finished long steel", bridge)
-        self.assertIn("Reinforcing bar", bridge)
-        self.assertIn("GIST-listed steel product category", bridge)
-        self.assertIn("descriptionNode.className = 'product-description'", bridge)
-        self.assertIn(".product-description{display:block", css)
+        self.assertIn("PRODUCT_DESCRIPTIONS", polish_script)
+        self.assertIn("Semi-finished long steel", polish_script)
+        self.assertIn("Reinforcing bar", polish_script)
+        self.assertIn("GIST-listed steel product category", polish_script)
+        self.assertIn("function decorateProductPickerDescriptions()", polish_script)
+        self.assertIn('#browse-result .browse-item[data-browse-kind="product"]', polish_script)
+        self.assertIn("function removeInlineProductDescriptions()", polish_script)
+        self.assertIn("#product-nodes .product-description", polish_script)
+        self.assertIn(".product-description{display:none!important}", css)
 
 
 if __name__ == "__main__":
