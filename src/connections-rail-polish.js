@@ -236,10 +236,12 @@
     const api = review();
     const stage = document.querySelector('#connections-stage');
     const geography = document.querySelector('#geography');
-    if (!api?.all || !stage || !geography) return;
+    const companyNodes = document.querySelector('#company-nodes');
+    if (!api?.all || !stage || !geography || !companyNodes) return;
 
     const stageRect = stage.getBoundingClientRect();
     const geoRect = geography.getBoundingClientRect();
+    const companyViewport = companyNodes.getBoundingClientRect();
     const ownerBySite = new Map(api.all.map((plant) => [plant.id, plant.ownerId]));
 
     for (const edge of document.querySelectorAll('#edge-layer .connection-edge.company')) {
@@ -249,9 +251,21 @@
       const ownerNode = ownerId
         ? document.querySelector(`#company-nodes .company-node[data-owner="${CSS.escape(ownerId)}"]`)
         : null;
-      if (!ownerNode) continue;
+      if (!ownerNode) {
+        edge.style.visibility = 'hidden';
+        edge.dataset.ownerTargetVisibility = 'missing';
+        continue;
+      }
 
       const rect = ownerNode.getBoundingClientRect();
+      const targetCenter = rect.top + rect.height / 2;
+      const targetVisible = !ownerNode.hidden
+        && targetCenter >= companyViewport.top
+        && targetCenter <= companyViewport.bottom;
+      edge.style.visibility = targetVisible ? '' : 'hidden';
+      edge.dataset.ownerTargetVisibility = targetVisible ? 'visible' : 'offscreen';
+      if (!targetVisible) continue;
+
       const from = {x: values[0], y: values[1]};
       const to = {
         x: rect.right - stageRect.left + 4,
