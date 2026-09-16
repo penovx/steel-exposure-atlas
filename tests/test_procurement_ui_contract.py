@@ -14,9 +14,11 @@ class ProcurementUiContractTests(unittest.TestCase):
         self.assertIn('id="company-title">Companies<', index)
         self.assertIn('id="method-title">Production methods<', index)
         self.assertIn('placeholder="Search companies"', index)
-        self.assertIn('./src/connections-procurement-ui.js?v=20260916-1', index)
+        self.assertIn('./src/connections-procurement-ui.js?v=20260916-2', index)
         self.assertIn(".company-node[data-owner]", search)
         self.assertIn("companyName(node)", search)
+        self.assertIn("syncCompanyEdges", search)
+        self.assertIn("edge.hidden = !visibleOwnerIds.has(ownerId)", search)
         self.assertIn("event.key === 'Escape'", search)
         self.assertIn("event.key === 'Enter'", search)
 
