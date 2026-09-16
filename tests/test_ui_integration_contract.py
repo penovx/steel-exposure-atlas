@@ -15,6 +15,8 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn('id="product-nodes"', index)
         self.assertIn('class="product-divider"', index)
         self.assertIn('id="selection-profile"', index)
+        self.assertIn('class="atlas-bottom" hidden aria-hidden="true"', index)
+        self.assertIn('id="map-basis" type="button" tabindex="-1"', index)
         self.assertIn('./src/connections.css', index)
         self.assertIn('./src/connections-sanctions.css', index)
         self.assertIn('./src/connections-runtime-bridge.js', index)
