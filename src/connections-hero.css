@@ -1,11 +1,11 @@
-/* The atlas is the opening screen. Brand and value proposition sit directly on the product. */
+/* The atlas is the opening screen. Keep the brand and value proposition compact so the data gets the viewport. */
 .masthead{
   position:absolute!important;
   top:0;
   left:0;
   right:0;
   z-index:60;
-  height:64px;
+  height:54px;
   margin:0!important;
   padding:0 var(--margin)!important;
   background:transparent!important;
@@ -19,47 +19,71 @@
 
 .intro{
   position:absolute!important;
-  top:64px;
+  top:54px;
   left:0;
   right:0;
   z-index:40;
-  display:block;
-  padding:22px var(--margin) 0!important;
+  display:grid;
+  grid-template-columns:minmax(250px,.62fr) minmax(440px,1.38fr);
+  align-items:center;
+  gap:34px;
+  min-height:62px;
+  padding:10px var(--margin) 8px!important;
   color:var(--white);
   pointer-events:none;
 }
-.intro .eyebrow{color:#8fb2c4}
+.intro .eyebrow{display:none!important}
 .intro h1{
-  margin-top:7px;
-  max-width:780px;
+  margin:0;
   color:var(--white);
-  font-size:clamp(31px,3vw,44px);
+  font-size:clamp(22px,1.65vw,28px);
   line-height:1.08;
-  font-weight:470;
-  letter-spacing:-1.35px;
+  font-weight:500;
+  letter-spacing:-.65px;
+  white-space:nowrap;
 }
 .opening-hint{
-  max-width:860px!important;
-  margin-top:10px!important;
+  max-width:96ch!important;
+  margin:0!important;
   padding:0!important;
   color:#a9bdc8!important;
-  font-size:13px!important;
-  line-height:1.55!important;
+  font-size:12px!important;
+  line-height:1.45!important;
 }
 .desktop-break{display:none}
 
 .atlas{
   min-height:100svh;
-  padding-top:170px;
+  padding-top:116px;
 }
-.atlas-top{padding-top:4px}
+.atlas-top{
+  min-height:50px;
+  padding-top:0;
+}
+.connections-stage{
+  height:clamp(579px,calc(100svh - 211px),940px)!important;
+  max-height:none!important;
+}
+
+@media(max-width:900px){
+  .intro{
+    grid-template-columns:1fr;
+    align-items:start;
+    gap:4px;
+    min-height:82px;
+  }
+  .intro h1{white-space:normal}
+  .atlas{padding-top:136px}
+  .connections-stage{height:clamp(579px,calc(100svh - 231px),850px)!important}
+}
 
 @media(max-width:760px){
-  .masthead{height:58px;padding:0 18px!important}
+  .masthead{height:52px;padding:0 18px!important}
   .masthead .edition{font-size:8px;letter-spacing:1.1px;padding-left:14px}
   .brand{font-size:16px}.brand svg{width:26px;height:26px}
-  .intro{top:58px;padding:18px 18px 0!important}
-  .intro h1{font-size:31px}
-  .opening-hint{max-width:42ch!important;font-size:12px!important;line-height:1.5!important}
-  .atlas{padding-top:188px}
+  .intro{top:52px;padding:12px 18px 8px!important;min-height:92px}
+  .intro h1{font-size:22px}
+  .opening-hint{max-width:46ch!important;font-size:11px!important;line-height:1.45!important}
+  .atlas{padding-top:144px}
+  .connections-stage{height:auto!important;min-height:579px}
 }
