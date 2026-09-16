@@ -76,11 +76,9 @@ function decorateProductLabels() {
       count.dataset.countValue = numericCountText(count.textContent);
     }
     const value = count.dataset.countValue;
-    count.textContent = value;
-    count.setAttribute(
-      'aria-label',
-      focused ? `${value} connected sites` : `${value} listed sites`
-    );
+    const description = focused ? `${value} connected sites` : `${value} listed sites`;
+    count.textContent = description;
+    count.setAttribute('aria-label', description);
   }
 
   alignProductBaseline();
