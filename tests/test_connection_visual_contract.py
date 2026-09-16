@@ -21,8 +21,7 @@ class ConnectionVisualContractTests(unittest.TestCase):
         self.assertIn(".brandsvgpath{fill:none", css)
         self.assertIn(".brandsvgcircle{fill:var(--paper)", css)
 
-    def test_visible_ports_share_the_active_edge_anchors(self) -> None:
-        core = (ROOT / "src" / "connections-core.js").read_text(encoding="utf-8")
+    def test_visible_ports_share_active_edge_anchors(self) -> None:
         bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(
             encoding="utf-8"
         )
@@ -30,17 +29,15 @@ class ConnectionVisualContractTests(unittest.TestCase):
             encoding="utf-8"
         ).replace(" ", "")
 
-        self.assertIn("b.right-stage.left+4", core)
-        self.assertIn("kind==='route'?{x:b.left-stage.left-5,y:b.top-stage.top+13}", core)
-        self.assertIn("left:calc(100%+4px)", css)
-        self.assertIn(".method-node::before{width:9px;height:9px;left:-5px;top:13px", css)
-
         self.assertIn("function syncProductPorts()", bridge)
-        self.assertIn("const axisY = areaRect.top - stageRect.top", bridge)
-        self.assertIn("port.setAttribute('cy', axisY.toFixed(2))", bridge)
-        self.assertIn("const to = {x: target.x, y: axisY}", bridge)
+        self.assertIn("dividerRect.top + dividerRect.height / 2 - stageRect.top", bridge)
         self.assertIn("edge.dataset.productTarget = target.id", bridge)
         self.assertIn(".product-axis-port{fill:var(--night);stroke:#9fb7c4", css)
+
+        self.assertIn("function syncMethodPorts()", bridge)
+        self.assertIn("marker.getBoundingClientRect()", bridge)
+        self.assertIn("edge.dataset.routeTarget = routeId", bridge)
+        self.assertIn(".method-port{position:absolute", css)
 
     def test_disconnected_product_keeps_scope_description_not_zero(self) -> None:
         css = (ROOT / "src" / "connections-visual-polish.css").read_text(
@@ -54,6 +51,21 @@ class ConnectionVisualContractTests(unittest.TestCase):
         self.assertIn("scopeProductCount", bridge)
         self.assertIn("connected > 0", bridge)
         self.assertIn("`${value} listed sites`", bridge)
+
+    def test_every_product_gets_plain_language_description(self) -> None:
+        bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(
+            encoding="utf-8"
+        )
+        css = (ROOT / "src" / "connections-visual-polish.css").read_text(
+            encoding="utf-8"
+        ).replace(" ", "")
+
+        self.assertIn("PRODUCT_DESCRIPTIONS", bridge)
+        self.assertIn("Semi-finished long steel", bridge)
+        self.assertIn("Reinforcing bar", bridge)
+        self.assertIn("GIST-listed steel product category", bridge)
+        self.assertIn("descriptionNode.className = 'product-description'", bridge)
+        self.assertIn(".product-description{display:block", css)
 
 
 if __name__ == "__main__":
