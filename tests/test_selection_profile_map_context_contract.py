@@ -40,7 +40,7 @@ class SelectionProfileMapContextContractTests(unittest.TestCase):
         self.assertIn("function syncCompanyRail(availableOwners,chosen)", core)
         self.assertIn("ownerList=availableOwners", core)
         self.assertIn("if(container.dataset.ownerSignature!==signature)", core)
-        self.assertNotIn(".slice(0,5)", core)
+        self.assertNotIn("ownerList=[...availableOwners]", core)
         self.assertNotIn("appendScrollableOwners", rail)
         self.assertNotIn("restoreStableOwnerOrder", rail)
         self.assertNotIn("installOwnerSelectionBridge", rail)
