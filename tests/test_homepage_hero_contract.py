@@ -9,7 +9,9 @@ ROOT = Path(__file__).resolve().parents[1]
 class HomepageHeroContractTests(unittest.TestCase):
     def test_atlas_is_the_opening_hero(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
-        css = (ROOT / "src" / "connections-hero.css").read_text(encoding="utf-8").replace(" ", "")
+        css = "".join(
+            (ROOT / "src" / "connections-hero.css").read_text(encoding="utf-8").split()
+        )
 
         self.assertIn('./src/connections-hero.css?v=20260916-1', index)
         self.assertIn('STEEL PRODUCTION, IN CONTEXT', index)
