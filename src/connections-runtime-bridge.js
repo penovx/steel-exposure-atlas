@@ -48,6 +48,18 @@ function numericCountText(value) {
   return match ? match[0] : String(value ?? '').trim();
 }
 
+function scopeProductCount(productId, state) {
+  const review = globalThis.__atlasReview;
+  const all = Array.isArray(review?.all) ? review.all : [];
+  const scoped = state?.region === 'World'
+    ? all
+    : all.filter((plant) => plant.region === state?.region);
+  return scoped.reduce(
+    (count, plant) => count + (plant.products?.values?.includes(productId) ? 1 : 0),
+    0,
+  );
+}
+
 function alignProductBaseline() {
   const area = document.querySelector('.products-area');
   const port = document.querySelector('#product-nodes .product-port');
@@ -72,11 +84,21 @@ function decorateProductLabels() {
     const count = node.querySelector(':scope > span');
     if (!count) continue;
 
-    if (!count.dataset.countValue) {
-      count.dataset.countValue = numericCountText(count.textContent);
+    // The core count is selection-relative while focused. Preserve it before
+    // decorating so repeated bridge passes never turn a listed-scope fallback into
+    // a false connected count.
+    if (!count.dataset.coreCount) {
+      count.dataset.coreCount = numericCountText(count.textContent);
     }
-    const value = count.dataset.countValue;
-    const description = focused ? `${value} connected sites` : `${value} listed sites`;
+
+    const connected = Number(count.dataset.coreCount.replace(/,/g, ''));
+    const listed = scopeProductCount(node.dataset.product, state);
+    const hasConnectedSites = focused && !node.classList.contains('dim') && connected > 0;
+    const value = (hasConnectedSites ? connected : listed).toLocaleString('en-GB');
+    const description = hasConnectedSites
+      ? `${value} connected sites`
+      : `${value} listed sites`;
+
     count.textContent = description;
     count.setAttribute('aria-label', description);
   }
