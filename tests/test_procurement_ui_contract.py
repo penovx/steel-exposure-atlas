@@ -27,10 +27,10 @@ class ProcurementUiContractTests(unittest.TestCase):
         script = (ROOT / "src" / "connections-procurement-ui.js").read_text(encoding="utf-8")
         self.assertIn("function syncReadingCopy()", script)
         self.assertIn(
-            "These sites are linked to the same company. Use this view to see where it operates",
+            "These sites are linked to the same company. Use this view to compare where it operates",
             script,
         )
-        self.assertIn("whether sanctions evidence is attached to the company", script)
+        self.assertIn("which procurement follow-ups are supported by the available public evidence", script)
         self.assertIn("Companies, products and production methods are linked to the same sites", script)
         self.assertIn("Product and production-method links describe the same sites, not material flows", script)
         self.assertNotIn("Different company names elsewhere do not prove separate ultimate ownership", script)
