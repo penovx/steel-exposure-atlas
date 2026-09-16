@@ -24,40 +24,43 @@ class ConnectionPortsContractTests(unittest.TestCase):
         self.assertIn(".product-axis-port{fill:var(--night);stroke:#9fb7c4", css)
         self.assertIn(".product-port{display:none}", css)
 
-    def test_products_area_has_no_independent_horizontal_baseline(self) -> None:
+    def test_single_structural_divider_separates_upper_field_from_products(self) -> None:
+        index = (ROOT / "index.html").read_text(encoding="utf-8")
         polish = (ROOT / "src" / "connections-visual-polish.css").read_text(
             encoding="utf-8"
         ).replace(" ", "")
-        bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(
-            encoding="utf-8"
-        )
 
-        self.assertIn(".products-area{z-index:auto!important;border-top:0", polish)
+        self.assertIn('class="product-divider"', index)
+        self.assertIn(".product-divider{grid-column:1/-1;grid-row:2", polish)
+        self.assertIn("height:1px;background:#2d4553", polish)
+        self.assertIn(".more-link{border-top:0}", polish)
         self.assertIn(".products-area::before{display:none}", polish)
-        self.assertNotIn(".product-axis{", polish)
-        self.assertNotIn("alignProductBaseline", bridge)
-        self.assertNotIn("--product-baseline-y", bridge)
 
-    def test_product_circle_and_edge_share_exact_svg_y_coordinate(self) -> None:
+    def test_product_circle_and_edge_share_structural_divider_y_coordinate(self) -> None:
         bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(
             encoding="utf-8"
         )
 
-        self.assertIn("const axisY = areaRect.top - stageRect.top", bridge)
+        self.assertIn("document.querySelector('.product-divider')", bridge)
+        self.assertIn("dividerRect.top + dividerRect.height / 2 - stageRect.top", bridge)
         self.assertIn("port.setAttribute('cy', axisY.toFixed(2))", bridge)
         self.assertIn("const to = {x: target.x, y: axisY}", bridge)
         self.assertIn("edge.dataset.productTarget = target.id", bridge)
-        self.assertIn("#edge-layer .connection-edge.product", bridge)
 
-    def test_method_ports_remain_visible_at_the_route_endpoint(self) -> None:
+    def test_method_ports_are_real_elements_and_edges_are_reanchored_to_them(self) -> None:
         css = (ROOT / "src" / "connections-visual-polish.css").read_text(
             encoding="utf-8"
         ).replace(" ", "")
-        core = (ROOT / "src" / "connections-core.js").read_text(encoding="utf-8")
+        bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(
+            encoding="utf-8"
+        )
 
-        self.assertIn(".method-rail,.method-nodes,.method-node{overflow:visible}", css)
-        self.assertIn(".method-node::before{width:9px;height:9px;left:-5px;top:13px", css)
-        self.assertIn("kind==='route'?{x:b.left-stage.left-5,y:b.top-stage.top+13}", core)
+        self.assertIn("function ensureMethodPorts()", bridge)
+        self.assertIn("port.className = 'method-port'", bridge)
+        self.assertIn("function syncMethodPorts()", bridge)
+        self.assertIn("edge.dataset.routeTarget = routeId", bridge)
+        self.assertIn(".method-node::before{display:none}", css)
+        self.assertIn(".method-port{position:absolute;left:-5px;top:13px;width:9px;height:9px", css)
 
 
 if __name__ == "__main__":
