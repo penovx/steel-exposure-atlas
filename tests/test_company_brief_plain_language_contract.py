@@ -6,39 +6,35 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-class CompanyBriefPlainLanguageContractTests(unittest.TestCase):
-    def test_first_click_affordance_is_integrated_and_immediate(self) -> None:
+class SelectionProfilePlainLanguageContractTests(unittest.TestCase):
+    def test_profile_updates_from_first_selection_without_affordance_click(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
-        script = (ROOT / "src" / "connections-company-context.js").read_text(encoding="utf-8")
+        script = (ROOT / "src" / "connections-selection-profile.js").read_text(encoding="utf-8")
 
-        self.assertIn('./src/connections-company-context.js?v=20260916-5', index)
-        self.assertNotIn('connections-company-brief-affordance.js', index)
-        self.assertIn("View company brief →", script)
-        self.assertIn("function queueCompanyBriefOfferSync()", script)
-        self.assertIn("requestAnimationFrame(() => requestAnimationFrame", script)
-        self.assertIn("queueCompanyBriefOfferSync();\n        return;", script)
+        self.assertIn('./src/connections-selection-profile.js?v=20260916-1', index)
+        self.assertIn("new MutationObserver(reconcile).observe(path", script)
+        self.assertIn("renderProfile(review", script)
+        self.assertNotIn("View company brief", script)
+        self.assertNotIn("Company brief open", script)
 
-    def test_company_brief_names_relationships_instead_of_using_shorthand(self) -> None:
-        script = (ROOT / "src" / "connections-company-context.js").read_text(encoding="utf-8")
+    def test_profile_names_relationships_instead_of_using_shorthand(self) -> None:
+        script = (ROOT / "src" / "connections-selection-profile.js").read_text(encoding="utf-8")
 
-        self.assertIn("SITES & COUNTRIES", script)
-        self.assertIn("GEM names ${companyName} as the immediate owner or operator", script)
-        self.assertIn("site' : 'sites'} in ${country}", script)
-        self.assertIn("PRODUCT-TO-SITE RELATION", script)
-        self.assertIn("Listed at ${summarizedPlaces(product.plants)}", script)
-        self.assertIn("PRODUCTION PROFILE", script)
-        self.assertIn("known operating capacity", script)
-        self.assertNotIn("${row.count}/${totalSites} sites", script)
-        self.assertNotIn("current connected scope", script)
-        self.assertNotIn("Procurement follow-up", script)
-        self.assertNotIn("confirm the customs code", script.lower())
+        self.assertIn("Immediate owner or operator named by GEM", script)
+        self.assertIn("GIST-listed products", script)
+        self.assertIn("Known operating crude-steel capacity", script)
+        self.assertIn("Known operating method capacity", script)
+        self.assertNotIn("connected sites", script.lower())
+        self.assertNotIn("1/4 sites", script)
+        self.assertNotIn("procurement follow-up", script.lower())
 
     def test_regulatory_copy_stays_factual(self) -> None:
-        script = (ROOT / "src" / "connections-company-context.js").read_text(encoding="utf-8")
+        script = (ROOT / "src" / "connections-selection-profile.js").read_text(encoding="utf-8")
 
-        self.assertIn("REGULATORY CONTEXT", script)
-        self.assertIn("Listed by OFAC", script)
-        self.assertIn("If imported into the EU, the additional duty is 50%", script)
+        self.assertIn("EU sanctions list", script)
+        self.assertIn("U.S. sanctions list", script)
+        self.assertIn("EU tariff-quota framework in force", script)
+        self.assertIn("50% out-of-quota duty after applicable quota exhaustion", script)
         self.assertNotIn("route it for", script.lower())
         self.assertNotIn("before contracting", script.lower())
         self.assertNotIn("no direct eu or u.s. listing found", script.lower())
