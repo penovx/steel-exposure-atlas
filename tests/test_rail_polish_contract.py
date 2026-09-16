@@ -27,6 +27,7 @@ class RailPolishContractTests(unittest.TestCase):
         self.assertIn("bridge-extra-owner", script)
         self.assertIn("function removeMisleadingSublines()", script)
         self.assertIn("#company-nodes .company-sub", script)
+        self.assertIn("document.createDocumentFragment()", script)
 
     def test_selected_owner_keeps_stable_position_and_edge_anchor(self) -> None:
         script = (ROOT / "src" / "connections-rail-polish.js").read_text(
@@ -36,7 +37,8 @@ class RailPolishContractTests(unittest.TestCase):
         self.assertIn("function installOwnerSelectionBridge(companyNodes, api)", script)
         self.assertIn("const scrollTop = companyNodes.scrollTop", script)
         self.assertIn("api.choose('owner', button.dataset.owner)", script)
-        self.assertIn("companyNodes.scrollTop = scrollTop", script)
+        self.assertIn("companyNodes.dataset.restoreScrollTop = String(scrollTop)", script)
+        self.assertIn("companyNodes.scrollTop = Number(companyNodes.dataset.restoreScrollTop) || 0", script)
         self.assertNotIn("companyNodes.scrollTop = 0", script)
         self.assertIn("function syncCompanyEdgeAnchors()", script)
         self.assertIn("companyNodes.addEventListener('scroll', sync", script)
