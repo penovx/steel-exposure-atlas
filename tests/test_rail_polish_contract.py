@@ -87,6 +87,19 @@ class RailPolishContractTests(unittest.TestCase):
         self.assertIn("text.charAt(0).toUpperCase() + text.slice(1)", script)
         self.assertIn("item.querySelector('span > strong')", script)
 
+    def test_masthead_stays_sticky_while_intro_scrolls_away(self) -> None:
+        css = (ROOT / "src" / "connections-visual-polish.css").read_text(
+            encoding="utf-8"
+        ).replace(" ", "")
+        index = (ROOT / "index.html").read_text(encoding="utf-8")
+
+        self.assertIn(".masthead{position:sticky;top:0;z-index:50", css)
+        self.assertIn(".mastheadnav{display:none!important}", css)
+        self.assertIn(".masthead.edition{margin-left:auto}", css)
+        self.assertIn(".intro{position:static}", css)
+        self.assertIn('class="masthead"', index)
+        self.assertIn('class="intro"', index)
+
 
 if __name__ == "__main__":
     unittest.main()
