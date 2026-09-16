@@ -1,5 +1,7 @@
 # Procurement-facing source gate — 2026-09-15
 
+> **Status note — 2026-09-16:** This document is retained as the audit record of the 2026-09-15 source gate. Its product-scope statements have since been superseded. The sanctions layer now includes reviewed EU and U.S. OFAC evidence; see `docs/source-reviews/2026-09-16-ofac-sanctions-source-review.md`. The first trade-measure candidate is now the EU 2026 steel import measure under Regulation (EU) 2026/1384 and Commission Implementing Regulation (EU) 2026/1457; see `docs/source-reviews/2026-09-16-eu-steel-import-measure-review.md`. The original assessment below is intentionally unchanged for traceability.
+
 This review applies the project source-governance rules to procurement-oriented data sources: sanctions, tariffs/trade measures and environmental/ESG context.
 
 The public atlas is reviewed as commercial-capable professional use. Public accessibility alone is not enough; unclear redistribution rights block publication by default.
