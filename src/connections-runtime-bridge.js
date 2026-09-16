@@ -88,21 +88,26 @@ function decorateProductLabels() {
   }
 }
 
-// Product ports use a dedicated structural axis at the top edge of the second grid
-// row. The axis is independent of product-label padding and scroll-strip geometry.
-// This deliberately replaces the previous offset/measurement approach.
-function ensureProductAxis() {
-  const area = document.querySelector('.products-area');
-  if (!area) return null;
+function svgNode(name, attrs = {}) {
+  const node = document.createElementNS(EDGE_MASK_NS, name);
+  for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value));
+  return node;
+}
 
-  let axis = area.querySelector(':scope > .product-axis');
-  if (!axis) {
-    axis = document.createElement('div');
-    axis.className = 'product-axis';
-    axis.setAttribute('aria-hidden', 'true');
-    area.prepend(axis);
+// Product nodes are rendered in the same SVG coordinate system as their connection
+// paths. This removes CSS positioning from the port geometry: one measured grid-row
+// boundary supplies the Y coordinate for every product circle and every product edge.
+function ensureProductPortLayer() {
+  const svg = document.querySelector('#connection-lines');
+  const edgeLayer = document.querySelector('#edge-layer');
+  if (!svg || !edgeLayer) return null;
+
+  let layer = svg.querySelector('#product-port-layer');
+  if (!layer) {
+    layer = svgNode('g', {id: 'product-port-layer', 'aria-hidden': 'true'});
+    edgeLayer.after(layer);
   }
-  return axis;
+  return layer;
 }
 
 function productTargets(stageRect) {
@@ -127,31 +132,35 @@ function pathEndpoints(path) {
   };
 }
 
-function syncProductAxis() {
+function syncProductPorts() {
   const stage = document.querySelector('#connections-stage');
   const area = document.querySelector('.products-area');
-  const axis = ensureProductAxis();
-  if (!stage || !area || !axis) return;
+  const layer = ensureProductPortLayer();
+  if (!stage || !area || !layer) return;
 
   const stageRect = stage.getBoundingClientRect();
   const areaRect = area.getBoundingClientRect();
   if (!stageRect.width || !areaRect.width) return;
 
+  const axisY = areaRect.top - stageRect.top;
   const targets = productTargets(stageRect);
-  const liveIds = new Set(targets.map((target) => target.id));
   const existing = new Map(
-    [...axis.querySelectorAll('[data-axis-product]')].map((port) => [port.dataset.axisProduct, port]),
+    [...layer.querySelectorAll('[data-axis-product]')].map((port) => [port.dataset.axisProduct, port]),
   );
+  const liveIds = new Set(targets.map((target) => target.id));
 
   for (const target of targets) {
     let port = existing.get(target.id);
     if (!port) {
-      port = document.createElement('i');
-      port.className = 'product-axis-port';
-      port.dataset.axisProduct = target.id;
-      axis.append(port);
+      port = svgNode('circle', {
+        class: 'product-axis-port',
+        'data-axis-product': target.id,
+        r: '4.5',
+      });
+      layer.append(port);
     }
-    port.style.left = `${target.x - (areaRect.left - stageRect.left)}px`;
+    port.setAttribute('cx', target.x.toFixed(2));
+    port.setAttribute('cy', axisY.toFixed(2));
     port.classList.toggle('is-selected', target.node.classList.contains('is-selected'));
     port.classList.toggle('dim', target.node.classList.contains('dim'));
   }
@@ -160,10 +169,9 @@ function syncProductAxis() {
     if (!liveIds.has(id)) port.remove();
   }
 
-  // Re-anchor the core-generated product paths to the exact structural axis.
-  // Start points remain the core's plant coordinates. End points use the measured
-  // horizontal centre of the matching product label and the grid-row boundary.
-  const axisY = areaRect.top - stageRect.top;
+  // Re-anchor the core-generated product paths to the same cx/cy coordinates used
+  // by the SVG circles. No independent line, CSS top offset or translated DOM port
+  // participates in the geometry.
   for (const edge of document.querySelectorAll('#edge-layer .connection-edge.product')) {
     const points = pathEndpoints(edge);
     if (!points || !targets.length) continue;
@@ -178,15 +186,15 @@ function syncProductAxis() {
   }
 }
 
-function installProductAxisObservers() {
+function installProductPortObservers() {
   const productNodes = document.querySelector('#product-nodes');
   const edgeLayer = document.querySelector('#edge-layer');
   const stage = document.querySelector('#connections-stage');
-  if (!productNodes || !edgeLayer || !stage || stage.dataset.productAxisObserver === 'true') return;
-  stage.dataset.productAxisObserver = 'true';
+  if (!productNodes || !edgeLayer || !stage || stage.dataset.productPortObserver === 'true') return;
+  stage.dataset.productPortObserver = 'true';
 
   const queue = () => requestAnimationFrame(() => {
-    syncProductAxis();
+    syncProductPorts();
     queueEdgeReadabilityMask();
   });
 
@@ -210,7 +218,7 @@ function installProductLabelObserver() {
   productNodes.dataset.labelObserver = 'true';
   const observer = new MutationObserver(() => {
     decorateProductLabels();
-    syncProductAxis();
+    syncProductPorts();
     queueEdgeReadabilityMask();
   });
   observer.observe(productNodes, {childList: true});
@@ -218,12 +226,6 @@ function installProductLabelObserver() {
 }
 
 let edgeMaskQueued = 0;
-
-function svgNode(name, attrs = {}) {
-  const node = document.createElementNS(EDGE_MASK_NS, name);
-  for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value));
-  return node;
-}
 
 function ensureEdgeReadabilityMask() {
   const svg = document.querySelector('#connection-lines');
@@ -357,8 +359,8 @@ function applyWorldEntry() {
 
   installProductLabelObserver();
   decorateProductLabels();
-  installProductAxisObservers();
-  syncProductAxis();
+  installProductPortObservers();
+  syncProductPorts();
   installEdgeReadabilityObserver();
   queueEdgeReadabilityMask();
 }
