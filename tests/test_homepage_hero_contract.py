@@ -18,7 +18,7 @@ class HomepageHeroContractTests(unittest.TestCase):
         self.assertNotIn('brand-kicker', index)
         self.assertNotIn('STEEL PRODUCTION, IN CONTEXT', index)
         self.assertNotIn('class="intro"', index)
-        self.assertNotIn('Trace steel companies across their plants', index)
+        self.assertNotIn('class="opening-hint"', index)
         self.assertIn('class="scope-action">· Select area</span>', index)
         self.assertNotIn('class="small-cross"', index)
         self.assertNotIn('Explore the connections.', index)
