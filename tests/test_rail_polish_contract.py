@@ -28,6 +28,20 @@ class RailPolishContractTests(unittest.TestCase):
         self.assertIn("function removeMisleadingSublines()", script)
         self.assertIn("#company-nodes .company-sub", script)
 
+    def test_selected_owner_keeps_stable_position_and_edge_anchor(self) -> None:
+        script = (ROOT / "src" / "connections-rail-polish.js").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("function restoreStableOwnerOrder(container)", script)
+        self.assertIn("function installOwnerSelectionBridge(companyNodes, api)", script)
+        self.assertIn("const scrollTop = companyNodes.scrollTop", script)
+        self.assertIn("api.choose('owner', button.dataset.owner)", script)
+        self.assertIn("companyNodes.scrollTop = scrollTop", script)
+        self.assertNotIn("companyNodes.scrollTop = 0", script)
+        self.assertIn("function syncCompanyEdgeAnchors()", script)
+        self.assertIn("companyNodes.addEventListener('scroll', sync", script)
+        self.assertIn("button.dataset.port = `owner:${group.id}`", script)
+
     def test_other_method_subline_and_method_tracks_are_removed(self) -> None:
         css = (ROOT / "src" / "connections-visual-polish.css").read_text(
             encoding="utf-8"
