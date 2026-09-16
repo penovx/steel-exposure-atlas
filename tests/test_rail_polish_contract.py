@@ -93,10 +93,14 @@ class RailPolishContractTests(unittest.TestCase):
         ).replace(" ", "")
         index = (ROOT / "index.html").read_text(encoding="utf-8")
 
-        self.assertIn(".masthead{position:sticky;top:0;z-index:50;margin:0;padding:0var(--margin)", css)
+        self.assertIn(".masthead{position:sticky;top:0;left:0;right:0;z-index:50", css)
+        self.assertIn("width:100%!important", css)
+        self.assertIn("margin:0!important", css)
+        self.assertIn("padding:0var(--margin)!important", css)
         self.assertIn(".mastheadnav{display:none!important}", css)
         self.assertIn(".masthead.edition{margin-left:auto}", css)
         self.assertIn(".intro{position:static}", css)
+        self.assertIn('connections-visual-polish.css?v=20260916-2', index)
         self.assertIn('class="masthead"', index)
         self.assertIn('class="intro"', index)
 
