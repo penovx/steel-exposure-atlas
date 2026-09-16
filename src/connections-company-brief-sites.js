@@ -1,5 +1,11 @@
 (() => {
   const INITIAL_SITE_LIMIT = 4;
+  const ROUTES = [
+    {id: 'BOF', name: 'Basic oxygen furnace', field: 'bof_steel_capacity_ttpa'},
+    {id: 'EAF', name: 'Electric arc furnace', field: 'eaf_steel_capacity_ttpa'},
+    {id: 'IF', name: 'Induction furnace', field: 'if_steel_capacity_ttpa'},
+    {id: 'Other', name: 'Other steelmaking', field: 'other_steel_capacity_ttpa'},
+  ];
 
   function reviewApi() {
     try {
@@ -17,10 +23,14 @@
     return review.all?.find?.((plant) => plant.id === state.site)?.ownerId ?? null;
   }
 
-  function plantsAttributedToOwnerInView(review, ownerId) {
-    const selected = new Set(review?.snapshot?.()?.selectedIds ?? []);
+  // A company brief describes the selected company inside the chosen geography.
+  // Product/method cross-filters must not turn the company brief into an empty intersection.
+  function plantsAttributedToOwnerInGeography(review, ownerId) {
+    const region = review?.snapshot?.()?.state?.region ?? 'World';
     return (review?.all ?? [])
-      .filter((plant) => plant.ownerId === ownerId && selected.has(plant.id))
+      .filter((plant) =>
+        plant.ownerId === ownerId && (region === 'World' || plant.region === region)
+      )
       .sort((a, b) =>
         String(a.country ?? '').localeCompare(String(b.country ?? ''), 'en') ||
         placeName(a).localeCompare(placeName(b), 'en')
@@ -32,9 +42,33 @@
     return String(plant.name ?? '').replace(/\s+steel plant$/i, '') || plant.id;
   }
 
+  function placeLabel(plant) {
+    return `${placeName(plant)} · ${plant.country ?? ''}`;
+  }
+
   function productLabel(value) {
     const label = String(value ?? '').trim();
     return label ? label.charAt(0).toUpperCase() + label.slice(1) : '';
+  }
+
+  function formatCapacity(result) {
+    if (!result) return 'Not quantified';
+    if (result.known !== null && result.known !== undefined) {
+      const value = result.known / 1000;
+      return `${value.toLocaleString('en-GB', {
+        maximumFractionDigits: value < 10 ? 2 : 1,
+      })}${result.positive ? '+' : ''} Mtpa`;
+    }
+    if (result.positive) return '>0 Mtpa · not numerically quantified';
+    return 'Not quantified';
+  }
+
+  function capacityFor(review, plants, field = 'crude_steel_capacity_ttpa') {
+    try {
+      return review.model?.total?.(plants, field) ?? null;
+    } catch {
+      return null;
+    }
   }
 
   function sectionByLabel(card, label) {
@@ -42,18 +76,29 @@
       .find((section) => section.querySelector('.company-brief-section-label')?.textContent?.trim() === label) ?? null;
   }
 
-  function keepCapacityMetricOnly(card) {
+  function keepCapacityMetricOnly(card, review, plants) {
     const metrics = card.querySelector('.company-context-metrics');
-    if (!metrics || metrics.dataset.siteProductView === 'true') return;
+    if (!metrics) return;
 
-    const capacity = [...metrics.querySelectorAll('.company-context-metric')]
+    let capacity = [...metrics.querySelectorAll('.company-context-metric')]
       .find((item) => item.querySelector('span')?.textContent?.includes('Known operating crude-steel capacity'));
 
-    metrics.replaceChildren();
-    if (capacity) metrics.append(capacity);
+    if (!capacity) {
+      capacity = document.createElement('div');
+      capacity.className = 'company-context-metric';
+      const value = document.createElement('strong');
+      const label = document.createElement('span');
+      label.textContent = 'Known operating crude-steel capacity';
+      capacity.append(value, label);
+    }
+
+    const value = capacity.querySelector('strong');
+    if (value) value.textContent = formatCapacity(capacityFor(review, plants));
+
+    metrics.replaceChildren(capacity);
     metrics.dataset.siteProductView = 'true';
     metrics.classList.add('company-context-metrics-capacity-only');
-    if (!capacity) metrics.hidden = true;
+    metrics.hidden = false;
   }
 
   function siteRow(plant, hidden) {
@@ -99,9 +144,9 @@
     return row;
   }
 
-  function renderSitesAndProducts(card, review, ownerId) {
+  function renderSitesAndProducts(card, plants) {
     const sitesSection = sectionByLabel(card, 'SITES & COUNTRIES') ?? sectionByLabel(card, 'SITES & PRODUCTS');
-    if (!sitesSection || sitesSection.dataset.siteProductView === 'true') return;
+    if (!sitesSection) return;
 
     const productSection = sectionByLabel(card, 'PRODUCT-TO-SITE RELATION');
     productSection?.remove();
@@ -113,10 +158,9 @@
     if (sectionLabel) sectionLabel.textContent = 'SITES & PRODUCTS';
 
     for (const node of sitesSection.querySelectorAll(
-      '.company-brief-interpretation,.company-brief-footprint-line,.company-brief-site-list,.company-brief-section-title'
+      '.company-brief-interpretation,.company-brief-footprint-line,.company-brief-site-list,.company-brief-section-title,.company-brief-site-product-list,.company-brief-site-toggle'
     )) node.remove();
 
-    const plants = plantsAttributedToOwnerInView(review, ownerId);
     const list = document.createElement('div');
     list.className = 'company-brief-site-product-list';
     plants.forEach((plant, index) => list.append(siteRow(plant, index >= INITIAL_SITE_LIMIT)));
@@ -131,11 +175,8 @@
       toggle.textContent = `Show ${remaining} more sites ↓`;
       toggle.addEventListener('click', () => {
         const expanded = toggle.getAttribute('aria-expanded') === 'true';
-        for (const row of list.querySelectorAll('.company-brief-site-product-row')) {
-          if (row.dataset.initial === 'true') continue;
-        }
-        [...list.children].forEach((row, index) => {
-          if (index >= INITIAL_SITE_LIMIT) row.hidden = expanded;
+        [...list.children].forEach((site, index) => {
+          if (index >= INITIAL_SITE_LIMIT) site.hidden = expanded;
         });
         toggle.setAttribute('aria-expanded', String(!expanded));
         toggle.textContent = expanded ? `Show ${remaining} more sites ↓` : 'Show fewer sites ↑';
@@ -146,14 +187,80 @@
     sitesSection.dataset.siteProductView = 'true';
   }
 
+  function routeRows(review, plants) {
+    return ROUTES.map((route) => {
+      const routePlants = plants.filter((plant) => review.model?.hasRoute?.(plant, route.id));
+      if (!routePlants.length) return null;
+      return {
+        ...route,
+        plants: routePlants,
+        capacity: capacityFor(review, plants, route.field),
+      };
+    }).filter(Boolean);
+  }
+
+  function summarizedPlaces(plants, limit = 4) {
+    const labels = plants.map(placeLabel);
+    if (labels.length <= limit) return labels.join('; ');
+    return `${labels.slice(0, limit).join('; ')}; +${labels.length - limit} more sites`;
+  }
+
+  function patchProductionProfile(card, review, plants) {
+    const section = sectionByLabel(card, 'PRODUCTION PROFILE');
+    if (!section) return;
+
+    const routes = routeRows(review, plants);
+    let title = section.querySelector('.company-brief-section-title');
+    if (!title) {
+      title = document.createElement('h4');
+      title.className = 'company-brief-section-title';
+      section.querySelector('.company-brief-section-label')?.after(title);
+    }
+    title.textContent = `${routes.length} production ${routes.length === 1 ? 'method' : 'methods'} represented across these sites`;
+
+    let list = section.querySelector('.company-brief-ranked-list');
+    if (!list) {
+      list = document.createElement('div');
+      list.className = 'company-brief-ranked-list';
+      section.append(list);
+    }
+    list.replaceChildren();
+
+    for (const route of routes) {
+      const row = document.createElement('div');
+      row.className = 'company-brief-ranked-row';
+
+      const name = document.createElement('span');
+      name.className = 'company-brief-ranked-name';
+      name.textContent = route.name;
+
+      const value = document.createElement('span');
+      value.className = 'company-brief-ranked-value';
+      const capacity = formatCapacity(route.capacity);
+      value.textContent = `${capacity} known operating capacity · ${summarizedPlaces(route.plants)}`;
+      row.append(name, value);
+      list.append(row);
+    }
+  }
+
+  function patchRole(card) {
+    const role = card.querySelector('.company-context-role');
+    if (role) {
+      role.textContent = 'GEM names this company as the immediate owner or operator of the sites in the current geographic scope.';
+    }
+  }
+
   function patchOpenCard() {
     const review = reviewApi();
     const ownerId = selectedOwnerId(review);
     const card = document.querySelector('#company-context-card');
     if (!review || !ownerId || !card || card.hidden || card.dataset.owner !== ownerId) return;
 
-    keepCapacityMetricOnly(card);
-    renderSitesAndProducts(card, review, ownerId);
+    const plants = plantsAttributedToOwnerInGeography(review, ownerId);
+    patchRole(card);
+    keepCapacityMetricOnly(card, review, plants);
+    renderSitesAndProducts(card, plants);
+    patchProductionProfile(card, review, plants);
   }
 
   function queuePatch() {
