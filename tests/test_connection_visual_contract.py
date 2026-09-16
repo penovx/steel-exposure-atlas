@@ -21,19 +21,24 @@ class ConnectionVisualContractTests(unittest.TestCase):
         self.assertIn(".brandsvgpath{fill:none", css)
         self.assertIn(".brandsvgcircle{fill:var(--paper)", css)
 
-    def test_visible_ports_share_the_edge_endpoint_coordinates(self) -> None:
+    def test_visible_ports_share_the_active_edge_anchors(self) -> None:
         core = (ROOT / "src" / "connections-core.js").read_text(encoding="utf-8")
+        bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(
+            encoding="utf-8"
+        )
         css = (ROOT / "src" / "connections-visual-polish.css").read_text(
             encoding="utf-8"
         ).replace(" ", "")
 
         self.assertIn("b.right-stage.left+4", core)
         self.assertIn("kind==='route'?{x:b.left-stage.left-5,y:b.top-stage.top+13}", core)
-        self.assertIn("{x:b.left-stage.left+b.width/2,y:b.top-stage.top-15}", core)
-
         self.assertIn("left:calc(100%+4px)", css)
         self.assertIn(".method-node::before{width:9px;height:9px;left:-5px;top:13px", css)
-        self.assertIn(".product-port{width:9px;height:9px;left:50%;top:-15px", css)
+
+        self.assertIn("function syncProductAxis()", bridge)
+        self.assertIn("const axisY = areaRect.top - stageRect.top", bridge)
+        self.assertIn("edge.dataset.productTarget = target.id", bridge)
+        self.assertIn(".product-axis-port{position:absolute;top:0;width:9px;height:9px", css)
         self.assertIn("transform:translate(-50%,-50%)", css)
 
     def test_disconnected_product_keeps_scope_description_not_zero(self) -> None:
@@ -44,7 +49,7 @@ class ConnectionVisualContractTests(unittest.TestCase):
             encoding="utf-8"
         )
 
-        self.assertIn(".product-node.dim>span{visibility:visible}", css)
+        self.assertIn(".product-node.dim>span{visibility:visible", css)
         self.assertIn("scopeProductCount", bridge)
         self.assertIn("connected > 0", bridge)
         self.assertIn("`${value} listed sites`", bridge)
