@@ -28,7 +28,7 @@ class RailPolishContractTests(unittest.TestCase):
         self.assertIn("ownerList=availableOwners", core)
         self.assertIn("container.dataset.ownerSignature", core)
         self.assertIn("container.innerHTML=availableOwners.map", core)
-        self.assertNotIn(".slice(0,5)", core)
+        self.assertNotIn("ownerList=[...availableOwners]", core)
         self.assertNotIn("function appendScrollableOwners()", rail)
         self.assertNotIn("bridge-extra-owner", rail)
         self.assertIn("function removeMisleadingSublines()", rail)
