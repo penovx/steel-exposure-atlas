@@ -15,7 +15,7 @@ class CompanyBriefSiteProductsContractTests(unittest.TestCase):
             index,
         )
         self.assertIn(
-            './src/connections-company-brief-sites.js?v=20260916-3',
+            './src/connections-company-brief-sites.js?v=20260916-4',
             index,
         )
 
@@ -65,14 +65,17 @@ class CompanyBriefSiteProductsContractTests(unittest.TestCase):
         self.assertIn("aria-expanded", script)
         self.assertIn("site.hidden = expanded", script)
 
-    def test_trade_signal_keeps_only_measure_relevant_relationships(self) -> None:
+    def test_trade_signal_shows_decision_relevant_consequence_only(self) -> None:
         script = (ROOT / "src" / "connections-company-brief-sites.js").read_text(
             encoding="utf-8"
         )
 
         self.assertIn("function patchTradeSignal(card)", script)
-        self.assertIn("Origin used for the measure:", script)
-        self.assertIn("GIST product labels map to:", script)
+        self.assertIn("50% additional duty after quota exhaustion", script)
+        self.assertIn("an additional duty of 50% applies once the applicable quota is exhausted", script)
+        self.assertIn("consequence?.remove()", script)
+        self.assertNotIn("Origin used for the measure:", script)
+        self.assertNotIn("GIST product labels map to:", script)
         self.assertNotIn("Sites: ${trade.sites}", script)
         self.assertNotIn("trade.mappingLabel", script)
 
