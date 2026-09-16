@@ -1,5 +1,6 @@
 (() => {
   const ROW_STEP = 72;
+  const PROFILE_ACTION_HEIGHT = 28;
   const BUFFER_ROWS = 6;
   const FALLBACK_VISIBLE_ROWS = 7;
 
@@ -85,6 +86,33 @@
     return node;
   }
 
+  function selectedIndex(snapshot) {
+    const ownerId = snapshot?.state?.filters?.owner;
+    if (!ownerId) return -1;
+    return filteredGroups.findIndex((group) => group.id === ownerId);
+  }
+
+  function rowOffset(index, selectedPosition) {
+    return index * ROW_STEP + (selectedPosition >= 0 && index > selectedPosition ? PROFILE_ACTION_HEIGHT : 0);
+  }
+
+  function totalVirtualHeight(selectedPosition) {
+    return filteredGroups.length * ROW_STEP + (selectedPosition >= 0 ? PROFILE_ACTION_HEIGHT : 0);
+  }
+
+  function firstVisibleIndex(scrollTop, selectedPosition) {
+    if (!filteredGroups.length) return 0;
+    if (selectedPosition < 0) return Math.min(filteredGroups.length - 1, Math.floor(scrollTop / ROW_STEP));
+    const selectedStart = selectedPosition * ROW_STEP;
+    const selectedEnd = selectedStart + ROW_STEP + PROFILE_ACTION_HEIGHT;
+    if (scrollTop < selectedStart) return Math.floor(scrollTop / ROW_STEP);
+    if (scrollTop < selectedEnd) return selectedPosition;
+    return Math.min(
+      filteredGroups.length - 1,
+      selectedPosition + 1 + Math.floor((scrollTop - selectedEnd) / ROW_STEP),
+    );
+  }
+
   function companyRow(group, position, total, snapshot) {
     const state = snapshot.state;
     const selectedIds = new Set(snapshot.selectedIds ?? []);
@@ -119,17 +147,27 @@
     return button;
   }
 
+  function profileAction(ownerId) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'company-profile-open';
+    button.dataset.companyProfileOwner = ownerId;
+    button.textContent = 'Open company profile →';
+    return button;
+  }
+
   function renderVirtualRail(force = false) {
     renderQueued = 0;
     if (!review?.snapshot || !container) return;
     const snapshot = review.snapshot();
     rebuildLogicalGroups(snapshot);
 
+    const selectedPosition = selectedIndex(snapshot);
     const viewportHeight = container.clientHeight || ROW_STEP * FALLBACK_VISIBLE_ROWS;
-    const maxScroll = Math.max(0, filteredGroups.length * ROW_STEP - viewportHeight);
+    const maxScroll = Math.max(0, totalVirtualHeight(selectedPosition) - viewportHeight);
     lastScrollTop = Math.max(0, Math.min(lastScrollTop, maxScroll));
 
-    const firstVisible = Math.floor(lastScrollTop / ROW_STEP);
+    const firstVisible = firstVisibleIndex(lastScrollTop, selectedPosition);
     const start = Math.max(0, firstVisible - BUFFER_ROWS);
     const visibleRows = Math.max(FALLBACK_VISIBLE_ROWS, Math.ceil(viewportHeight / ROW_STEP));
     const end = Math.min(filteredGroups.length, start + visibleRows + BUFFER_ROWS * 2);
@@ -147,11 +185,13 @@
     if (!force && owned && signature === renderSignature) return;
 
     const fragment = document.createDocumentFragment();
-    fragment.append(spacer('top', start * ROW_STEP));
+    fragment.append(spacer('top', rowOffset(start, selectedPosition)));
     for (let index = start; index < end; index += 1) {
-      fragment.append(companyRow(filteredGroups[index], index, filteredGroups.length, snapshot));
+      const group = filteredGroups[index];
+      fragment.append(companyRow(group, index, filteredGroups.length, snapshot));
+      if (index === selectedPosition) fragment.append(profileAction(group.id));
     }
-    fragment.append(spacer('bottom', (filteredGroups.length - end) * ROW_STEP));
+    fragment.append(spacer('bottom', totalVirtualHeight(selectedPosition) - rowOffset(end, selectedPosition)));
 
     suppressScroll = true;
     container.replaceChildren(fragment);
@@ -176,6 +216,14 @@
     }, {passive: true});
 
     container.addEventListener('click', (event) => {
+      const profileButton = event.target.closest?.('.company-profile-open[data-company-profile-owner]');
+      if (profileButton && container.contains(profileButton)) {
+        window.dispatchEvent(new CustomEvent('atlas-open-company-profile', {
+          detail: {ownerId: profileButton.dataset.companyProfileOwner},
+        }));
+        return;
+      }
+
       const button = event.target.closest?.('.company-node[data-virtual-owner]');
       if (!button || !container.contains(button)) return;
       const pageX = window.scrollX;
@@ -240,9 +288,6 @@
       return;
     }
 
-    // Procurement UI previously owned this field and attached anonymous handlers
-    // that open a dialog. Clone once so the virtual rail can restore true inline
-    // search without retaining those old listeners.
     const replacement = current.cloneNode(true);
     replacement.removeAttribute('readonly');
     current.replaceWith(replacement);
@@ -262,10 +307,6 @@
     }
     if (container.dataset.virtualRailInstalled === 'true') return;
     container.dataset.virtualRailInstalled = 'true';
-
-    // connections-rail-polish.js historically installed a click-time DOM reorder.
-    // The virtual rail owns scroll stability itself, so prevent that legacy guard
-    // from being attached when rail-polish initializes later in the same frame.
     container.dataset.viewportGuard = 'true';
 
     bindContainer();
