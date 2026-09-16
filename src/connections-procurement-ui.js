@@ -47,6 +47,10 @@
     return visible;
   }
 
+  function ownerDisplayName(review, ownerId) {
+    return review?.all?.find?.((plant) => plant.ownerId === ownerId)?.owner ?? ownerId;
+  }
+
   function syncReadingCopy() {
     const review = currentReview();
     const description = document.querySelector('#reading-description');
@@ -62,25 +66,28 @@
     const focused = Boolean(state.site || filters.owner || filters.route || filters.country || products.length);
 
     if (state.site) {
-      description.textContent = 'This plant connects to its company, listed products and production methods. Follow those links to compare it with other sites in the same geographic scope.';
+      const plant = review.all?.find?.((item) => item.id === state.site);
+      const owner = plant?.owner ? `GEM names ${plant.owner} as its immediate owner or operator. ` : '';
+      description.textContent = `${owner}The plant record also carries its listed products and production-method data for comparison with other sites in the same geographic scope.`;
     } else if (filters.owner) {
-      description.textContent = 'These sites are linked to the same company. Use this view to compare where it operates, what its sites produce, how they make steel, and which procurement follow-ups are supported by the available public evidence.';
+      const owner = ownerDisplayName(review, filters.owner);
+      description.textContent = `GEM names ${owner} as the immediate owner or operator of the sites in this view. The atlas compares their geography, listed products, production methods and reviewed regulatory context.`;
     } else if (products.length) {
       const productPhrase = products.length > 1
         ? (filters.productMode === 'all' ? 'all selected products' : 'at least one selected product')
         : 'the selected product';
-      description.textContent = `These sites list ${productPhrase}. Compare where those sites are, which companies they connect to and which production methods they use. Product labels do not indicate available supply or product-specific capacity.`;
+      description.textContent = `These site records list ${productPhrase}. Compare their locations, the companies GEM names as owner or operator, and their recorded production methods. Product labels do not indicate available supply or product-specific capacity.`;
     } else if (filters.route) {
-      description.textContent = 'These sites use the selected production method in the June 2026 operating-capacity snapshot. A site can use more than one production method, so other methods may coexist at the same location.';
+      description.textContent = 'These sites record the selected production method in the June 2026 operating-capacity snapshot. A site can use more than one production method.';
     } else if (filters.country) {
-      description.textContent = 'See which companies operate sites here, which products those sites list and which production methods are present.';
+      description.textContent = 'These are the site records in this place. Compare the companies GEM names as owner or operator, their listed products and recorded production methods.';
     } else {
-      description.textContent = 'Companies, products and production methods are linked to the same sites. Select any dimension to see how the industrial footprint changes.';
+      description.textContent = 'The same site records are compared across geography, company attribution, listed products and production methods.';
     }
 
     caption.textContent = focused
-      ? `${selectedCount} connected sites in ${state.region}. Product and production-method links describe the same sites, not material flows.`
-      : 'The same sites connect geography, companies, products and production methods.';
+      ? `${selectedCount} sites in the current selection within ${state.region}. Product and production-method lines refer to those same site records, not material flows.`
+      : 'The same site records are viewed through geography, company attribution, listed products and production methods.';
   }
 
   function install() {
