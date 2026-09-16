@@ -1,8 +1,7 @@
 (() => {
   const userStateLabels = {
     direct_list_match: 'Listed',
-    review_required: 'Needs review',
-    no_direct_list_match_in_snapshot: 'No direct listing found',
+    review_required: 'Unresolved match',
   };
 
   function currentReview() {
@@ -62,7 +61,7 @@
     const top = document.createElement('div');
     top.className = 'sanctions-context-top';
     addText(top, 'span', 'sanctions-eyebrow', eyebrow);
-    addText(top, 'span', 'sanctions-state', userStateLabels[status.state]);
+    addText(top, 'span', 'sanctions-state', userStateLabels[status.state] ?? status.state);
     section.append(top);
     return section;
   }
@@ -81,39 +80,24 @@
     if (list.children.length) section.append(list);
   }
 
-  function addProcurementImplication(section, text) {
-    const box = document.createElement('div');
-    box.className = 'sanctions-impact';
-    addText(box, 'strong', '', 'Procurement implication');
-    addText(box, 'p', '', text);
-    section.append(box);
-  }
-
   function renderEuContext(payload, status) {
     const section = baseSection(status, 'EU SANCTIONS', 'EU sanctions context', 'sanctions-source-eu');
 
     if (status.state === 'direct_list_match') {
-      addText(section, 'h3', 'sanctions-title', 'Listed by the EU');
+      addText(section, 'h3', 'sanctions-title', 'Company identity listed by the EU');
       addText(section, 'p', 'sanctions-list-name', 'EU financial sanctions list');
       const matches = Array.isArray(status.reviewed_matches) ? status.reviewed_matches : [];
       const references = [...new Set(matches.map((item) => item.eu_reference).filter(Boolean))];
-      addFacts(section, [
-        ['EU reference', references.join(', ')],
-      ]);
-      addProcurementImplication(
-        section,
-        'Route this company for sanctions/compliance review before contracting, ordering or payment.'
-      );
+      addFacts(section, [['EU reference', references.join(', ')]]);
       addText(
         section,
         'p',
         'sanctions-note',
-        'The company identity was reviewed across sources and linked to an entity in the pinned EU sanctions-list snapshot. Applicable restrictions depend on the relevant EU measures and transaction.'
+        'The reviewed GIST company identity is linked to an entity in the pinned European Commission sanctions-list snapshot.'
       );
     } else if (status.state === 'review_required') {
-      addText(section, 'h3', 'sanctions-title', 'Possible EU sanctions-list identity');
-      addProcurementImplication(section, 'Resolve the company identity before proceeding with sourcing or payment decisions.');
-      addText(section, 'p', 'sanctions-note', 'The deterministic screen found relevant identity evidence, but the match is not confirmed.');
+      addText(section, 'h3', 'sanctions-title', 'Candidate EU sanctions-list identity');
+      addText(section, 'p', 'sanctions-note', 'The deterministic identity screen found relevant evidence, but the reviewed identity link remains unresolved.');
     }
 
     const generationDates = payload.meta?.source_file_generation_dates;
@@ -146,7 +130,7 @@
       const actions = [...new Set(matches.map((item) => item.designation_action).filter(Boolean))];
       const actionUrls = [...new Set(matches.map((item) => item.designation_source_url).filter(Boolean))];
 
-      addText(section, 'h3', 'sanctions-title', 'Listed by OFAC');
+      addText(section, 'h3', 'sanctions-title', 'Company identity listed by OFAC');
       addText(section, 'p', 'sanctions-list-name', sourceListName(sourceLists));
       addFacts(section, [
         ['Listed since', listedDates.map(formatDate).join(', ')],
@@ -157,25 +141,17 @@
       if (actions.length) addText(section, 'p', 'sanctions-action', actions.join(' · '));
       if (actionUrls.length === 1) addLink(section, 'sanctions-action-link', 'OFAC designation action ↗', actionUrls[0]);
 
-      const isSdn = sourceLists.includes('SDN');
-      addProcurementImplication(
-        section,
-        isSdn
-          ? 'Route this company for sanctions/compliance review before contracting, ordering or payment.'
-          : 'Review the applicable OFAC restrictions before contracting, ordering or payment.'
-      );
       addText(
         section,
         'p',
         'sanctions-note',
-        isSdn
-          ? 'The reviewed company identity is listed on OFAC’s SDN List. Restrictions can affect transactions involving U.S. persons or U.S. jurisdiction; the exact effect depends on the applicable sanctions authority and transaction.'
-          : 'The reviewed company identity is listed by OFAC. Non-SDN programs can impose restrictions that differ from SDN blocking, so the source list and program remain visible.'
+        sourceLists.includes('SDN')
+          ? 'The reviewed GIST company identity is listed on OFAC’s SDN List. The source list, program and designation context are preserved here as evidence.'
+          : 'The reviewed GIST company identity is listed by OFAC. The source list and program remain visible because Non-SDN and SDN list types are distinct.'
       );
     } else if (status.state === 'review_required') {
-      addText(section, 'h3', 'sanctions-title', 'Possible U.S. sanctions-list identity');
-      addProcurementImplication(section, 'Resolve the company identity before proceeding with sourcing or payment decisions.');
-      addText(section, 'p', 'sanctions-note', 'The deterministic OFAC screen found relevant identity evidence, but the match is not confirmed.');
+      addText(section, 'h3', 'sanctions-title', 'Candidate U.S. sanctions-list identity');
+      addText(section, 'p', 'sanctions-note', 'The deterministic OFAC identity screen found relevant evidence, but the reviewed identity link remains unresolved.');
     }
 
     const dates = payload.meta?.source_publish_dates;
@@ -189,28 +165,6 @@
     return section;
   }
 
-  function appendCompactNegative(readingDetail, negatives, hasFinding) {
-    if (!negatives.length) return;
-    if (hasFinding) {
-      const line = document.createElement('p');
-      line.className = 'sanctions-secondary-result';
-      line.textContent = `${negatives.join(' and ')} screen${negatives.length > 1 ? 's' : ''}: no direct listing found in the pinned snapshot${negatives.length > 1 ? 's' : ''}.`;
-      readingDetail.append(line);
-      return;
-    }
-
-    const section = document.createElement('section');
-    section.className = 'sanctions-context sanctions-negative-summary';
-    const top = document.createElement('div');
-    top.className = 'sanctions-context-top';
-    addText(top, 'span', 'sanctions-eyebrow', 'SANCTIONS SCREENING');
-    addText(top, 'span', 'sanctions-state', 'No direct listings found');
-    section.append(top);
-    addText(section, 'h3', 'sanctions-title', 'No direct EU or U.S. listing found');
-    addText(section, 'p', 'sanctions-note', 'No direct listing was found for this company identity in the pinned sanctions snapshots. This does not mean sanctions-cleared; ownership, control and other restrictions may still apply.');
-    readingDetail.append(section);
-  }
-
   function renderCompanyIndicators(payloads) {
     const rows = document.querySelectorAll('#company-nodes .company-node[data-owner]');
     for (const row of rows) {
@@ -221,15 +175,15 @@
       const euStatus = statusFor(payloads.eu, ownerId);
       const ofacStatus = statusFor(payloads.ofac, ownerId);
       if (euStatus?.state === 'direct_list_match') flags.push('EU sanctions list');
-      else if (euStatus?.state === 'review_required') flags.push('EU sanctions review');
+      else if (euStatus?.state === 'review_required') flags.push('EU sanctions identity match');
       if (ofacStatus?.state === 'direct_list_match') flags.push('U.S. sanctions list');
-      else if (ofacStatus?.state === 'review_required') flags.push('U.S. sanctions review');
+      else if (ofacStatus?.state === 'review_required') flags.push('U.S. sanctions identity match');
       if (!flags.length) continue;
 
       row.classList.add('has-sanctions-listing');
       const wrap = document.createElement('span');
       wrap.className = 'company-sanctions-flags';
-      for (const text of flags) addText(wrap, 'span', 'company-sanctions-flag', text);
+      for (const value of flags) addText(wrap, 'span', 'company-sanctions-flag', value);
       row.append(wrap);
     }
   }
@@ -246,24 +200,13 @@
 
     const euStatus = statusFor(payloads.eu, ownerId);
     const ofacStatus = statusFor(payloads.ofac, ownerId);
-    let hasFinding = false;
-    const negatives = [];
 
     if (euStatus?.state === 'direct_list_match' || euStatus?.state === 'review_required') {
       readingDetail.append(renderEuContext(payloads.eu, euStatus));
-      hasFinding = true;
-    } else if (euStatus?.state === 'no_direct_list_match_in_snapshot') {
-      negatives.push('EU');
     }
-
     if (ofacStatus?.state === 'direct_list_match' || ofacStatus?.state === 'review_required') {
       readingDetail.append(renderOfacContext(payloads.ofac, ofacStatus));
-      hasFinding = true;
-    } else if (ofacStatus?.state === 'no_direct_list_match_in_snapshot') {
-      negatives.push('U.S. / OFAC');
     }
-
-    appendCompactNegative(readingDetail, negatives, hasFinding);
   }
 
   function sourceSection(title, paragraphs, className) {
@@ -294,7 +237,7 @@
       sourceContent.append(sourceSection(
         'EU sanctions screening',
         [
-          'Usable GIST company identities are screened against the pinned European Commission financial-sanctions snapshot. Confirmed identity matches are shown as listed; unresolved candidates remain review items. A negative screen is not sanctions clearance.',
+          'Usable GIST company identities are screened against the pinned European Commission financial-sanctions snapshot. Confirmed identity matches are shown as listed; unresolved candidates retain their unresolved state. A negative screen is not sanctions clearance.',
           `European Commission source snapshot SHA-256: ${payloads.eu.meta?.source_snapshot_sha256 ?? 'not available'}.${suffix}`,
         ],
         'sanctions-source-section-eu'
@@ -307,7 +250,7 @@
       sourceContent.append(sourceSection(
         'U.S. / OFAC sanctions screening',
         [
-          'Usable GIST company identities are screened against pinned OFAC Entity records. The full source-list name, program and designation date remain visible for confirmed matches; SDN and Non-SDN restrictions are not treated as equivalent.',
+          'Usable GIST company identities are screened against pinned OFAC Entity records. The full source-list name, program and designation date remain visible for confirmed matches; SDN and Non-SDN list types remain distinct.',
           'A negative direct-list result is not sanctions clearance and does not evaluate OFAC ownership/control rules for unnamed entities.',
           `OFAC snapshots · SDN ${dates.SDN ?? 'date unavailable'} · SHA-256 ${hashes.SDN ?? 'not available'} · Consolidated Non-SDN ${dates['Consolidated Non-SDN'] ?? 'date unavailable'} · SHA-256 ${hashes['Consolidated Non-SDN'] ?? 'not available'}`,
         ],
@@ -317,11 +260,13 @@
 
     if (tradePayload && !sourceContent.querySelector('.trade-source-section-eu-steel')) {
       const meta = tradePayload.meta ?? {};
+      const measureSha = meta.sources?.commission_implementing_regulation_2026_1457?.sha256 ?? 'not available';
+      const bilateralSha = meta.sources?.commission_implementing_regulation_2026_1930?.sha256 ?? 'not available';
       sourceContent.append(sourceSection(
         'EU steel import scenario',
         [
-          'Plant origin and GIST product-family evidence are connected to the current EU steel import measure to create a procurement follow-up for a hypothetical import into the EU. The scenario does not assert that a plant exports to the EU.',
-          `Pinned EUR-Lex source hashes · Regulation 2026/1457: ${meta.measure_snapshot_sha256 ?? 'not available'} · Regulation 2026/1930: ${meta.bilateral_snapshot_sha256 ?? 'not available'}`,
+          'Plant origin and GIST product-family evidence are mapped to the current EU steel import measure for a hypothetical import into the EU. The scenario does not assert that a plant exports to the EU.',
+          `Pinned EUR-Lex source hashes · Regulation 2026/1457: ${measureSha} · Regulation 2026/1930: ${bilateralSha}`,
         ],
         'trade-source-section-eu-steel'
       ));
