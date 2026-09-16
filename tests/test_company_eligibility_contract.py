@@ -7,13 +7,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class CompanyEligibilityContractTests(unittest.TestCase):
-    def test_primary_company_browse_uses_production_evidence_with_direct_listing_override(self) -> None:
+    def test_primary_company_browse_uses_region_scoped_production_evidence_with_direct_listing_override(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
         script = (ROOT / "src" / "connections-company-eligibility.js").read_text(
             encoding="utf-8"
         )
 
-        self.assertIn('./src/connections-company-eligibility.js?v=20260916-1', index)
+        self.assertIn('./src/connections-company-eligibility.js?v=20260916-2', index)
         self.assertLess(
             index.index('./src/connections-sanctions-loader.js'),
             index.index('./src/connections-company-eligibility.js'),
@@ -21,7 +21,10 @@ class CompanyEligibilityContractTests(unittest.TestCase):
         self.assertIn("review.model?.hasRoute?.(plant, route)", script)
         self.assertIn("review.model?.total?.([plant])", script)
         self.assertIn("status?.state !== 'direct_list_match'", script)
-        self.assertIn("productionEligibleOwners.has(id)", script)
+        self.assertIn("productionEligibleRegionsByOwner", script)
+        self.assertIn("currentRegion(review = reviewApi())", script)
+        self.assertIn("if (region === 'World') return productionEligibleOwners.has(id)", script)
+        self.assertIn("productionEligibleRegionsByOwner.get(id)?.has(region)", script)
         self.assertIn("directListedOwners.has(id)", script)
         self.assertIn("selectedOwnerId() === id", script)
         self.assertIn("data-browse-kind=\"owner\"", script)
