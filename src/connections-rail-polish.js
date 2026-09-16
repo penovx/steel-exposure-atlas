@@ -94,14 +94,16 @@
   }
 
   function restoreStableOwnerOrder(container) {
+    if (!container) return;
     const nodes = new Map(
       [...container.querySelectorAll('.company-node[data-owner]')]
         .map((node) => [node.dataset.owner, node]),
     );
-    for (const group of ownerGroups()) {
-      const node = nodes.get(group.id);
-      if (node) container.append(node);
-    }
+    const desired = ownerGroups().map((group) => nodes.get(group.id)).filter(Boolean);
+    const current = [...container.querySelectorAll('.company-node[data-owner]')];
+    const alreadyStable = desired.length === current.length
+      && desired.every((node, index) => node === current[index]);
+    if (!alreadyStable) container.append(...desired);
   }
 
   function installOwnerSelectionBridge(companyNodes, api) {
@@ -264,7 +266,7 @@
       } else {
         d = `M${from.x},${from.y} C${from.x + (to.x - from.x) * .45},${from.y} ${to.x - (to.x - from.x) * .2},${to.y} ${to.x},${to.y}`;
       }
-      edge.setAttribute('d', d);
+      if (edge.getAttribute('d') !== d) edge.setAttribute('d', d);
     }
   }
 
