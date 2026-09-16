@@ -51,9 +51,12 @@ class SelectionProfileContractTests(unittest.TestCase):
         loader = (ROOT / "src" / "connections-trade-loader.js").read_text(encoding="utf-8")
         profile = (ROOT / "src" / "connections-selection-profile.js").read_text(encoding="utf-8")
 
-        self.assertIn('./src/connections-trade-loader.js?v=20260916-2', index)
+        self.assertIn('./src/connections-trade-loader.js?v=20260916-3', index)
         self.assertIn('eu-steel-trade-context.v1.json', loader)
         self.assertIn('eu-steel-trade-context-v1.1', loader)
+        self.assertIn("async function safeLoad()", loader)
+        self.assertIn("__ATLAS_TRADE_ERROR__", loader)
+        self.assertIn("__ATLAS_TRADE_PROMISE__ = safeLoad()", loader)
         self.assertIn("EU tariff-quota framework in force", profile)
         self.assertIn("Regulation (EU) 2026/1384", profile)
         self.assertIn("Implementing Regulation (EU) 2026/1457", profile)
