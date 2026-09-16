@@ -1,16 +1,35 @@
-/* Company context is a second-click inspector, not a modal. It uses the atlas visual system. */
+/* Selected company reveals the second interaction explicitly. */
+.company-node.has-company-brief-offer{padding-bottom:8px}
+.company-brief-offer{
+  grid-column:1/-1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:5px;
+  padding-top:6px;
+  border-top:1px solid #36515f;
+  color:var(--accent);
+  font-size:9px;
+  line-height:1.25;
+  letter-spacing:.35px;
+  font-weight:580;
+}
+.company-node.is-selected .company-brief-offer{color:#bfe7ff}
+.company-node.has-company-brief-offer:hover .company-brief-offer{color:#fff}
+
+/* Company brief is a second-click inspector, not a modal. It uses the atlas visual system. */
 .company-context-card{
   grid-column:2;
   grid-row:1;
   justify-self:start;
   align-self:start;
   z-index:14;
-  width:min(430px,calc(100% - 44px));
-  max-height:calc(100% - 58px);
+  width:min(535px,calc(100% - 38px));
+  max-height:calc(100% - 34px);
   overflow:auto;
-  margin:28px 0 0 22px;
+  margin:18px 0 0 18px;
   padding:0;
-  background:#10212af5;
+  background:#0f2029f7;
   color:#d7e3e9;
   border:1px solid #496675;
   box-shadow:0 18px 55px #0009;
@@ -28,7 +47,7 @@
   align-items:flex-start;
   justify-content:space-between;
   gap:18px;
-  padding:16px 17px 15px;
+  padding:15px 17px 14px;
   border-bottom:1px solid #334b59;
 }
 .company-context-eyebrow{
@@ -48,7 +67,7 @@
 }
 .company-context-role{
   margin-top:5px;
-  font-size:10px;
+  font-size:9px;
   line-height:1.45;
   color:#8fa8b7;
 }
@@ -67,12 +86,13 @@
 
 .company-context-metrics{
   display:grid;
-  grid-template-columns:.8fr .8fr 1.4fr;
+  grid-template-columns:.8fr .8fr 1.55fr;
   border-bottom:1px solid #334b59;
+  background:#10242e;
 }
 .company-context-metric{
   min-width:0;
-  padding:12px 14px 11px;
+  padding:11px 13px 10px;
   border-right:1px solid #334b59;
 }
 .company-context-metric:last-child{border-right:0}
@@ -89,17 +109,109 @@
   margin-top:4px;
   font-size:8px;
   line-height:1.35;
-  letter-spacing:.35px;
+  letter-spacing:.3px;
   text-transform:uppercase;
   color:#7894a4;
 }
 
-.company-context-body{margin:0;padding:0 17px 14px}
-.company-context-signal{
-  padding:13px 0 12px;
+.company-brief-overview{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border-bottom:1px solid #334b59;
+}
+.company-brief-section{
+  min-width:0;
+  padding:13px 16px 14px;
+  border-right:1px solid #334b59;
   border-top:1px solid #334b59;
 }
-.company-context-body>.company-context-signal:first-child{border-top:0}
+.company-brief-section:first-child{
+  grid-column:1/-1;
+  border-top:0;
+  border-right:0;
+}
+.company-brief-section:nth-child(3){border-right:0}
+.company-brief-section-label{
+  display:block;
+  font-size:8px;
+  line-height:1;
+  letter-spacing:1.05px;
+  font-weight:650;
+  color:#7298aa;
+}
+.company-brief-section-title{
+  margin-top:5px;
+  font-size:11px;
+  line-height:1.35;
+  font-weight:520;
+  color:#dbe7ec;
+}
+.company-brief-footprint-line{
+  margin-top:7px;
+  font-size:10px;
+  line-height:1.45;
+  color:#b5c8d1;
+}
+.company-brief-site-list{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0 18px;
+  margin-top:8px;
+  border-top:1px solid #2b4552;
+}
+.company-brief-site-list>div{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:6px 0;
+  border-bottom:1px solid #243d49;
+  min-width:0;
+}
+.company-brief-site-name{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:10px;
+  color:#d7e3e9;
+}
+.company-brief-site-country{
+  flex:0 0 auto;
+  font-size:9px;
+  color:#7894a4;
+}
+.company-brief-ranked-list{margin-top:8px;border-top:1px solid #2b4552}
+.company-brief-ranked-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:10px;
+  padding:6px 0;
+  border-bottom:1px solid #243d49;
+}
+.company-brief-ranked-name{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:10px;
+  color:#d7e3e9;
+}
+.company-brief-ranked-value{
+  font-size:9px;
+  color:#89a6b5;
+  white-space:nowrap;
+}
+.company-brief-more{
+  margin-top:6px;
+  font-size:9px;
+  color:#6f8f9f;
+}
+
+.company-context-body{margin:0;padding:13px 17px 14px}
+.company-brief-decision-label{margin-bottom:3px}
+.company-context-signal{
+  padding:11px 0 10px;
+  border-top:1px solid #334b59;
+}
+.company-context-body>.company-brief-decision-label+.company-context-signal{border-top:0}
 .company-context-signal-top{
   display:flex;
   align-items:center;
@@ -159,8 +271,8 @@
   font-weight:560;
 }
 .company-context-action{
-  margin-top:1px;
-  padding:11px 12px;
+  margin-top:4px;
+  padding:10px 11px;
   background:#142833;
   border-left:2px solid #6b9ab1;
 }
@@ -182,18 +294,39 @@
   padding-top:8px;
   border-top:1px solid #2c4552;
 }
+
+.company-brief-footer{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:16px;
+  padding:0 17px 13px;
+  border-top:1px solid #334b59;
+}
 .company-context-evidence{
-  margin:0 17px 14px;
-  padding:7px 0 6px;
+  margin:10px 0 0;
+  padding:6px 0 5px;
   background:transparent;
   color:var(--accent);
   border-bottom:1px solid #55788a;
   font-size:10px;
 }
 .company-context-evidence:hover{color:#c9eaff;border-color:#7caac1}
+.company-brief-footer-note{
+  padding-top:12px;
+  font-size:8px;
+  line-height:1.35;
+  color:#607d8b;
+  text-align:right;
+}
 
+@media(max-width:1050px){
+  .company-context-card{width:min(480px,calc(100% - 28px));margin-left:12px}
+}
 @media(max-width:900px){
-  .company-context-card{width:min(395px,calc(100% - 30px));margin-left:14px}
+  .company-context-card{width:min(430px,calc(100% - 24px));margin-left:8px}
+  .company-brief-overview{grid-template-columns:1fr}
+  .company-brief-section,.company-brief-section:first-child,.company-brief-section:nth-child(3){grid-column:auto;border-right:0}
 }
 @media(max-width:760px){
   .company-context-card{
@@ -204,11 +337,12 @@
     right:12px;
     top:58px;
     width:auto;
-    max-height:min(62vh,500px);
+    max-height:min(68vh,560px);
     margin:0;
     z-index:20;
   }
   .company-context-title{font-size:18px}
   .company-context-metrics{grid-template-columns:1fr 1fr}
   .company-context-metric:nth-child(3){grid-column:1/-1;border-top:1px solid #334b59;border-right:0}
+  .company-brief-site-list{grid-template-columns:1fr}
 }
