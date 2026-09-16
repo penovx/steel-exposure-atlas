@@ -18,6 +18,7 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn('./src/connections-sanctions.css', index)
         self.assertIn('./src/connections-runtime-bridge.js', index)
         self.assertIn('./src/connections-sanctions-loader.js', index)
+        self.assertIn('./src/connections-company-eligibility.js', index)
         self.assertIn('./src/connections-trade-loader.js', index)
         self.assertIn('./src/connections-company-context.js', index)
         self.assertIn('./src/connections-sanctions-bridge.js', index)
