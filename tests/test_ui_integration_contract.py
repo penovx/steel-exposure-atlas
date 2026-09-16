@@ -14,15 +14,18 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn('id="method-nodes"', index)
         self.assertIn('id="product-nodes"', index)
         self.assertIn('class="product-divider"', index)
+        self.assertIn('id="selection-profile"', index)
         self.assertIn('./src/connections.css', index)
         self.assertIn('./src/connections-sanctions.css', index)
         self.assertIn('./src/connections-runtime-bridge.js', index)
         self.assertIn('./src/connections-sanctions-loader.js', index)
         self.assertIn('./src/connections-company-eligibility.js', index)
         self.assertIn('./src/connections-trade-loader.js', index)
-        self.assertIn('./src/connections-company-context.js', index)
+        self.assertIn('./src/connections-selection-profile.js', index)
         self.assertIn('./src/connections-sanctions-bridge.js', index)
         self.assertIn('./src/connections-bootstrap.js', index)
+        self.assertNotIn('./src/connections-company-context.js', index)
+        self.assertNotIn('./src/connections-company-brief-sites.js', index)
         self.assertNotIn('type="application/json"', index)
 
     def test_explorer_remains_available_as_internal_secondary_route(self) -> None:
@@ -95,6 +98,7 @@ class UiIntegrationContractTests(unittest.TestCase):
     def test_eu_and_ofac_sanctions_contexts_are_separate_factual_and_pinned(self) -> None:
         loader = (ROOT / "src" / "connections-sanctions-loader.js").read_text(encoding="utf-8")
         bridge = (ROOT / "src" / "connections-sanctions-bridge.js").read_text(encoding="utf-8")
+        profile = (ROOT / "src" / "connections-selection-profile.js").read_text(encoding="utf-8")
 
         self.assertIn("eu-sanctions-owner-status.v1.json", loader)
         self.assertIn("ofac-sanctions-owner-status.v1.json", loader)
@@ -103,9 +107,7 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn("C59772F3EDD625812AC43C4AEC57513D08CDD180135A3B6368DBC086AB81DF7D", loader)
         self.assertIn("Company identity listed by OFAC", bridge)
         self.assertIn("Specially Designated Nationals and Blocked Persons (SDN) List", bridge)
-        self.assertIn("Listed since", bridge)
-        self.assertIn("Designation context", bridge)
-        self.assertIn("reviewed GIST company identity", bridge)
+        self.assertIn("Listed since", profile)
         self.assertNotIn("Procurement implication", bridge)
         self.assertNotIn("No direct EU or U.S. listing found", bridge)
         self.assertNotIn("before contracting", bridge)
@@ -116,12 +118,14 @@ class UiIntegrationContractTests(unittest.TestCase):
     def test_trade_context_is_pinned_and_documented_in_sources(self) -> None:
         loader = (ROOT / "src" / "connections-trade-loader.js").read_text(encoding="utf-8")
         bridge = (ROOT / "src" / "connections-sanctions-bridge.js").read_text(encoding="utf-8")
+        profile = (ROOT / "src" / "connections-selection-profile.js").read_text(encoding="utf-8")
         self.assertIn("eu-steel-trade-context.v1.json", loader)
         self.assertIn("eu-steel-trade-context-v1.1", loader)
         self.assertIn("B869A4BB8C4E4F7AE320B4CE4A117A33B05CADEEDF1C9DF106845EBCA9D9B21B", loader)
         self.assertIn("5F0214CD0FC9FC85A114B9EC485E2D6887F3F2137BD177EE357CC00FE2BB32BE", loader)
         self.assertIn("EU steel import scenario", bridge)
         self.assertIn("hypothetical import into the EU", bridge)
+        self.assertIn("EU tariff-quota framework in force", profile)
         self.assertNotIn("procurement follow-up", bridge.lower())
         self.assertNotIn("No water-stress, trade, emissions or buyer-supplier layer is present", bridge)
 
