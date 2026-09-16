@@ -35,11 +35,12 @@ class ConnectionVisualContractTests(unittest.TestCase):
         self.assertIn("left:calc(100%+4px)", css)
         self.assertIn(".method-node::before{width:9px;height:9px;left:-5px;top:13px", css)
 
-        self.assertIn("function syncProductAxis()", bridge)
+        self.assertIn("function syncProductPorts()", bridge)
         self.assertIn("const axisY = areaRect.top - stageRect.top", bridge)
+        self.assertIn("port.setAttribute('cy', axisY.toFixed(2))", bridge)
+        self.assertIn("const to = {x: target.x, y: axisY}", bridge)
         self.assertIn("edge.dataset.productTarget = target.id", bridge)
-        self.assertIn(".product-axis-port{position:absolute;top:0;width:9px;height:9px", css)
-        self.assertIn("transform:translate(-50%,-50%)", css)
+        self.assertIn(".product-axis-port{fill:var(--night);stroke:#9fb7c4", css)
 
     def test_disconnected_product_keeps_scope_description_not_zero(self) -> None:
         css = (ROOT / "src" / "connections-visual-polish.css").read_text(
