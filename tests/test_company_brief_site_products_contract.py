@@ -11,16 +11,19 @@ class CompanyBriefSiteProductsContractTests(unittest.TestCase):
         index = (ROOT / "index.html").read_text(encoding="utf-8")
 
         self.assertIn(
-            './src/connections-company-brief-sites.css?v=20260916-1',
+            './src/connections-company-brief-sites.css?v=20260916-2',
             index,
         )
         self.assertIn(
-            './src/connections-company-brief-sites.js?v=20260916-5',
+            './src/connections-company-brief-sites.js?v=20260916-6',
             index,
         )
 
-    def test_brief_groups_country_and_products_by_site(self) -> None:
+    def test_brief_groups_country_products_and_source_status_by_site(self) -> None:
         script = (ROOT / "src" / "connections-company-brief-sites.js").read_text(
+            encoding="utf-8"
+        )
+        css = (ROOT / "src" / "connections-company-brief-sites.css").read_text(
             encoding="utf-8"
         )
 
@@ -28,6 +31,10 @@ class CompanyBriefSiteProductsContractTests(unittest.TestCase):
         self.assertIn("GIST-listed products", script)
         self.assertIn("plant.country", script)
         self.assertIn("plant.products?.values", script)
+        self.assertIn("function siteStatuses(plant)", script)
+        self.assertIn("plant.tranches ?? []", script)
+        self.assertIn("company-brief-site-status", script)
+        self.assertIn("company-brief-site-status", css)
         self.assertIn("productSection?.remove()", script)
         self.assertIn("company-context-metrics-capacity-only", script)
         self.assertNotIn("Countries represented", script)
