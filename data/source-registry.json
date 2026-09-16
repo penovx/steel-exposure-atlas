@@ -139,6 +139,42 @@
       "access_conditions": "free direct download; no account or paid service identified",
       "attribution": "Not required by Natural Earth. Courtesy credit 'Made with Natural Earth' may be shown.",
       "review_notes": "Approved for the specified Natural Earth 1:110m Admin 0 Countries v5.1.1 file only. Natural Earth uses de facto boundaries; disputed-boundary presentation remains a product/design issue and must not imply a political position by the project."
+    },
+    {
+      "id": "ofac-sanctions-lists",
+      "publisher": "U.S. Department of the Treasury, Office of Foreign Assets Control",
+      "dataset": "Specially Designated Nationals and Blocked Persons List plus Consolidated Non-SDN Sanctions List",
+      "status": "approved_for_publication",
+      "publication_status": "approved_for_publication",
+      "cost_status": "free",
+      "source_url": "https://ofac.treasury.gov/sanctions-list-service",
+      "terms_url": "https://catalog.data.gov/dataset/specially-designated-nationals-sdn-and-blocked-persons-list",
+      "dataset_version": "SDN basic XML published 2026-09-16; Consolidated Non-SDN basic XML published 2026-09-14",
+      "reviewed_at": "2026-09-16",
+      "retrieved_at": "2026-09-16T15:47:54+00:00",
+      "intended_use": "company-level direct-list identity screening for usable GIST owner identities using a minimal reviewed derived evidence layer",
+      "licence": "CC0 1.0 Universal according to the official Data.gov catalogue records for the OFAC list datasets",
+      "commercial_reuse": "permitted",
+      "redistribution": "approved for a minimal reviewed derived subset/status layer; complete OFAC source files remain local by project policy and are not published in public/data",
+      "access_conditions": "free official Sanctions List Service download; no account, API key, paid subscription or runtime request required",
+      "attribution": "CC0 does not require attribution, but the atlas identifies the U.S. Department of the Treasury / OFAC, source list, snapshot date and source hash for provenance.",
+      "source_artifacts": [
+        {
+          "file": "SDN.XML",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN.XML",
+          "publish_date": "09/16/2026",
+          "sha256": "3D594ED7CDB5E0FD13F126A3815255146D730F791DCF672665C67416D03A7C1F",
+          "repository_policy": "do_not_commit"
+        },
+        {
+          "file": "CONSOLIDATED.XML",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/CONSOLIDATED.XML",
+          "publish_date": "09/14/2026",
+          "sha256": "C59772F3EDD625812AC43C4AEC57513D08CDD180135A3B6368DBC086AB81DF7D",
+          "repository_policy": "do_not_commit"
+        }
+      ],
+      "review_notes": "Approval covers company-level direct-list identity evidence and categorical screening states only. SDN and Consolidated Non-SDN records retain their source-list and program context. A no-match is not sanctions clearance, and ownership/control effects such as OFAC's 50 Percent Rule are not inferred by the direct-list screen. Individual, Vessel and Aircraft records are excluded from automatic GIST-company candidate generation."
     }
   ]
 }
