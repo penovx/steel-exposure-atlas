@@ -15,7 +15,7 @@ class CompanyBriefSiteProductsContractTests(unittest.TestCase):
             index,
         )
         self.assertIn(
-            './src/connections-company-brief-sites.js?v=20260916-4',
+            './src/connections-company-brief-sites.js?v=20260916-5',
             index,
         )
 
@@ -65,15 +65,18 @@ class CompanyBriefSiteProductsContractTests(unittest.TestCase):
         self.assertIn("aria-expanded", script)
         self.assertIn("site.hidden = expanded", script)
 
-    def test_trade_signal_shows_decision_relevant_consequence_only(self) -> None:
+    def test_trade_signal_explains_quota_before_duty_effect(self) -> None:
         script = (ROOT / "src" / "connections-company-brief-sites.js").read_text(
             encoding="utf-8"
         )
 
         self.assertIn("function patchTradeSignal(card)", script)
-        self.assertIn("50% additional duty after quota exhaustion", script)
-        self.assertIn("an additional duty of 50% applies once the applicable quota is exhausted", script)
-        self.assertIn("consequence?.remove()", script)
+        self.assertIn("EU tariff-quota framework in force", script)
+        self.assertIn("Regulation (EU) 2026/1384", script)
+        self.assertIn("annual quota period 1 Jul–30 Jun", script)
+        self.assertIn("Implementing Regulation (EU) 2026/1457 applies 1 Jul–31 Dec 2026", script)
+        self.assertIn("global steel overcapacity", script)
+        self.assertIn("50% out-of-quota duty after quota exhaustion", script)
         self.assertNotIn("Origin used for the measure:", script)
         self.assertNotIn("GIST product labels map to:", script)
         self.assertNotIn("Sites: ${trade.sites}", script)
