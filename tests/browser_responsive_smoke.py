@@ -84,7 +84,8 @@ def assert_state_matrix(page):
 
 def assert_sources_dialog(page):
     page.wait_for_function("document.documentElement.dataset.sourcesDialogInstalled === 'true'", timeout=5000)
-    page.locator('#open-sources').click()
+    trigger=page.locator('#footer-sources')
+    trigger.scroll_into_view_if_needed(); trigger.click()
     page.wait_for_selector('#sources-dialog[open]', timeout=5000)
     text=page.locator('#source-content').inner_text()
     assert 'The Company rail exposes the eligible company population' in text
