@@ -12,7 +12,7 @@ class CompanyProfileCardContractTests(unittest.TestCase):
         css = (ROOT / "src" / "connections-company-profile-card.css").read_text(encoding="utf-8")
 
         self.assertIn('id="company-profile-card"', index)
-        self.assertIn('./src/connections-company-profile-card.css?v=20260917-1', index)
+        self.assertIn('./src/connections-company-profile-card.css?v=20260917-2', index)
         self.assertIn('grid-column:2', css.replace(" ", ""))
         self.assertIn('grid-row:1', css.replace(" ", ""))
         self.assertIn('z-index:18', css.replace(" ", ""))
