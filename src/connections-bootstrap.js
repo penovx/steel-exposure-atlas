@@ -2,7 +2,7 @@ const GIST_URL = new URL('../public/data/gist-plants.v1.json', import.meta.url);
 const BASEMAP_URL = new URL('../public/data/ne_110m_admin_0_countries.v5.1.1.geojson', import.meta.url);
 const EXPECTED_SCHEMA = 'steel-exposure-atlas/gist-plant-v1.0';
 const EXPECTED_PLANTS = 1293;
-const EXPECTED_GIST_SHA256 = 'C2AA81AF6D7FD7447C15C5EEB73B65DF18879F16DBF50ABB7F2B161EA5CA30CA';
+const EXPECTED_GIST_SHA256 = '6D9C2CBAC1DBC25068AF5DD69736FF7E44D6074E220BDB5880054487F28A3EC3';
 const REGIONS = ['World','Europe','North America','Central & South America','Asia Pacific','Africa','Middle East','Eurasia'];
 const REGION_BOUNDS = {
   World: [-180,-60,180,85],
@@ -100,11 +100,13 @@ async function fetchJson(url,label){
 async function fetchPinnedGist(){
   const response=await fetch(GIST_URL,{credentials:'same-origin',cache:'no-store'});
   if(!response.ok)throw new Error(`Reviewed GIST extract is unavailable (${response.status}).`);
-  const bytes=await response.arrayBuffer();
-  const digest=await crypto.subtle.digest('SHA-256',bytes);
+  const sourceText=new TextDecoder().decode(await response.arrayBuffer());
+  const normalizedText=sourceText.replace(/\r\n/g,'\n');
+  const canonicalBytes=new TextEncoder().encode(normalizedText);
+  const digest=await crypto.subtle.digest('SHA-256',canonicalBytes);
   const hash=[...new Uint8Array(digest)].map(v=>v.toString(16).padStart(2,'0')).join('').toUpperCase();
   if(hash!==EXPECTED_GIST_SHA256)throw new Error('Reviewed GIST extract failed the pinned SHA-256 check.');
-  return {raw:JSON.parse(new TextDecoder().decode(bytes)),hash};
+  return {raw:JSON.parse(normalizedText),hash};
 }
 
 async function boot(){
