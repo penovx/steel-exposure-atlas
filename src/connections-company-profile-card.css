@@ -74,9 +74,55 @@
   background:#152c37;
   border-color:#496574;
 }
+.company-profile-card .selection-profile-regulatory-list{
+  gap:0;
+  margin-top:10px;
+  border-top:1px solid #36505e;
+}
+.company-profile-card .selection-profile-regulatory-item--flow{
+  padding:14px 0 16px;
+  background:transparent;
+  border:0;
+  border-bottom:1px solid #36505e;
+}
+.company-profile-card .selection-profile-regulatory-item--flow:last-child{border-bottom:0}
+.company-profile-card .selection-profile-regulatory-top{margin-bottom:6px}
 .company-profile-card .selection-profile-regulatory-label,
 .company-profile-card .selection-profile-regulatory-state{color:#9db3bd}
+.company-profile-card .selection-profile-regulatory-flow{
+  margin-top:10px;
+  border-top:1px solid #2d4654;
+}
+.company-profile-card .selection-profile-regulatory-step{
+  display:grid;
+  grid-template-columns:78px minmax(0,1fr);
+  gap:12px;
+  padding:8px 0;
+  border-bottom:1px solid #263f4c;
+}
+.company-profile-card .selection-profile-regulatory-step:last-child{border-bottom:0}
+.company-profile-card .selection-profile-regulatory-step-label{
+  padding-top:1px;
+  font-size:8px;
+  line-height:1.35;
+  letter-spacing:.55px;
+  text-transform:uppercase;
+  color:#7894a2;
+}
+.company-profile-card .selection-profile-regulatory-step-value{
+  margin:0;
+  font-size:10.5px;
+  line-height:1.5;
+  color:#a9bdc7;
+}
+.company-profile-card .selection-profile-regulatory-step.is-meaning .selection-profile-regulatory-step-value{
+  font-size:12px;
+  line-height:1.45;
+  font-weight:620;
+  color:#dce9ee;
+}
 .company-profile-card .selection-profile-regulatory-item .selection-profile-impact{color:#dce9ee}
+.company-profile-card .selection-profile-regulatory-item--flow .selection-profile-links{margin-top:8px}
 .company-profile-card .selection-profile-link,
 .company-profile-card .selection-profile-source-button,
 .company-profile-card .selection-profile-more{color:#9ed7fb;border-color:#5f8ca5}
@@ -102,4 +148,5 @@
   .company-profile-card .selection-profile-metric:not(:first-child){padding:10px 0;border-right:0;border-bottom:1px solid #36505e}
   .company-profile-card .selection-profile-metric:last-child{border-bottom:0}
   .company-profile-card .selection-profile-products{grid-template-columns:1fr;gap:4px}
+  .company-profile-card .selection-profile-regulatory-step{grid-template-columns:1fr;gap:3px;padding:8px 0}
 }
