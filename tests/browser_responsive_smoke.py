@@ -92,7 +92,7 @@ def assert_sources_dialog(page):
     assert 'Sanctions and EU steel trade context' in text
     assert 'five company groups with the most sites' not in text.lower()
     assert 'No water-stress, trade, emissions or buyer-supplier layer is present' not in text
-    page.locator('#sources-dialog [data-close-dialog]').click()
+    page.locator('#sources-dialog button[aria-label="Close"]').click()
 
 def main():
     with preview_server() as url,sync_playwright() as p:
