@@ -101,10 +101,15 @@ async function fetchPinnedGist(){
   const response=await fetch(GIST_URL,{credentials:'same-origin',cache:'no-store'});
   if(!response.ok)throw new Error(`Reviewed GIST extract is unavailable (${response.status}).`);
   const bytes=await response.arrayBuffer();
-  const digest=await crypto.subtle.digest('SHA-256',bytes);
+  // Git may check text files out as CRLF on Windows while CI serves the same
+  // committed content with LF. Pin the repository content, not the platform's
+  // line-ending representation.
+  const text=new TextDecoder().decode(bytes).replace(/\r\n/g,'\n');
+  const canonicalBytes=new TextEncoder().encode(text);
+  const digest=await crypto.subtle.digest('SHA-256',canonicalBytes);
   const hash=[...new Uint8Array(digest)].map(v=>v.toString(16).padStart(2,'0')).join('').toUpperCase();
   if(hash!==EXPECTED_GIST_SHA256)throw new Error('Reviewed GIST extract failed the pinned SHA-256 check.');
-  return {raw:JSON.parse(new TextDecoder().decode(bytes)),hash};
+  return {raw:JSON.parse(text),hash};
 }
 
 async function boot(){
@@ -125,8 +130,6 @@ async function boot(){
       return mapCache[region];
     };
 
-    // Build only the two maps needed during first paint. Other regions are
-    // generated lazily on first access and warmed in the background afterwards.
     ensureMap('Europe');
     ensureMap('World');
     const maps=new Proxy(mapCache,{
