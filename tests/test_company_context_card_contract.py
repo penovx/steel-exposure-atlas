@@ -12,7 +12,7 @@ class SelectionProfileContractTests(unittest.TestCase):
         script = (ROOT / "src" / "connections-selection-profile.js").read_text(encoding="utf-8")
         css = (ROOT / "src" / "connections-selection-profile.css").read_text(encoding="utf-8")
 
-        self.assertIn('./src/connections-selection-profile.js?v=20260916-1', index)
+        self.assertIn('./src/connections-selection-profile.js?v=20260917-2', index)
         self.assertIn('./src/connections-selection-profile.css?v=20260916-3', index)
         self.assertNotIn('./src/connections-company-context.js', index)
         self.assertNotIn('./src/connections-company-brief-sites.js', index)
@@ -33,8 +33,27 @@ class SelectionProfileContractTests(unittest.TestCase):
         self.assertIn("SANCTIONS & TRADE", script)
         self.assertIn("EVIDENCE & SOURCES", script)
         self.assertIn("Company identity listed", (ROOT / "src" / "connections-sanctions-bridge.js").read_text(encoding="utf-8"))
-        self.assertIn("50% out-of-quota duty after applicable quota exhaustion", script)
+        self.assertIn("50% out-of-quota duty", script)
         self.assertIn("Sources & interpretation ↗", script)
+
+    def test_company_regulatory_context_follows_evidence_relationship_meaning(self) -> None:
+        script = (ROOT / "src" / "connections-selection-profile.js").read_text(encoding="utf-8")
+        css = (ROOT / "src" / "connections-company-profile-card.css").read_text(encoding="utf-8")
+
+        self.assertIn("selection-profile-regulatory-flow", script)
+        self.assertIn("regulatoryStep(flow, 'Evidence'", script)
+        self.assertIn("regulatoryStep(flow, 'Relationship'", script)
+        self.assertIn("regulatoryStep(flow, 'Meaning'", script)
+        self.assertIn("Direct company identity match.", script)
+        self.assertIn("derived from plant origin and GIST product labels", script)
+        self.assertIn("if (model.kind === 'company')", script)
+        company_block = script.index("if (model.kind === 'company')")
+        regulatory = script.index("renderRegulatory(body", company_block)
+        sites = script.index("renderSites(body", company_block)
+        self.assertLess(regulatory, sites)
+        self.assertIn(".selection-profile-regulatory-item--flow", css)
+        self.assertIn(".selection-profile-regulatory-step", css)
+        self.assertIn(".selection-profile-regulatory-step.is-meaning", css)
 
     def test_profile_keeps_process_guidance_out_of_visible_facts(self) -> None:
         script = (ROOT / "src" / "connections-selection-profile.js").read_text(encoding="utf-8").lower()
