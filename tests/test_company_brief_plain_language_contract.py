@@ -11,7 +11,7 @@ class SelectionProfilePlainLanguageContractTests(unittest.TestCase):
         index = (ROOT / "index.html").read_text(encoding="utf-8")
         script = (ROOT / "src" / "connections-selection-profile.js").read_text(encoding="utf-8")
 
-        self.assertIn('./src/connections-selection-profile.js?v=20260916-1', index)
+        self.assertIn('./src/connections-selection-profile.js?v=20260917-2', index)
         self.assertIn("new MutationObserver(reconcile).observe(path", script)
         self.assertIn("renderProfile(review", script)
         self.assertNotIn("View company brief", script)
