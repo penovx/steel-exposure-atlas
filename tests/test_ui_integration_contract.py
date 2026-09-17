@@ -43,7 +43,8 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn("gist-plants.v1.json", bootstrap)
         self.assertIn("ne_110m_admin_0_countries.v5.1.1.geojson", bootstrap)
         self.assertIn("EXPECTED_PLANTS = 1293", bootstrap)
-        self.assertIn("C2AA81AF6D7FD7447C15C5EEB73B65DF18879F16DBF50ABB7F2B161EA5CA30CA", bootstrap)
+        self.assertIn("6D9C2CBAC1DBC25068AF5DD69736FF7E44D6074E220BDB5880054487F28A3EC3", bootstrap)
+        self.assertIn("sourceText.replace(/\\r\\n/g,'\\n')", bootstrap)
         self.assertIn("crypto.subtle.digest('SHA-256'", bootstrap)
 
     def test_products_are_directly_scrollable_and_multi_selectable(self) -> None:
