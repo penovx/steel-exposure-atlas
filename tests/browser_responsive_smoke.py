@@ -82,6 +82,17 @@ def assert_state_matrix(page):
     page.evaluate("() => window.__atlasReview.choose('route','EAF')"); page.evaluate("() => window.__atlasReview.setRegion('World')"); page.wait_for_timeout(80); s=state(page); assert s['region']=='World' and not s['site'] and not s['filters']['owner'] and not s['filters']['route'] and not s['filters']['products'] and not s['filters']['country']
     page.evaluate("() => {const r=window.__atlasReview;r.choose('route','EAF');r.choose('product',r.model.products(r.all)[0].id)}"); page.locator('#clear-all').click(); page.wait_for_timeout(80); s=state(page); assert not s['site'] and not s['filters']['country'] and not s['filters']['owner'] and not s['filters']['route'] and not s['filters']['products']
 
+def assert_sources_dialog(page):
+    page.wait_for_function("document.documentElement.dataset.sourcesDialogInstalled === 'true'", timeout=5000)
+    page.locator('#open-sources').click()
+    page.wait_for_selector('#sources-dialog[open]', timeout=5000)
+    text=page.locator('#source-content').inner_text()
+    assert 'The Company rail exposes the eligible company population' in text
+    assert 'Sanctions and EU steel trade context' in text
+    assert 'five company groups with the most sites' not in text.lower()
+    assert 'No water-stress, trade, emissions or buyer-supplier layer is present' not in text
+    page.locator('#sources-dialog [data-close-dialog]').click()
+
 def main():
     with preview_server() as url,sync_playwright() as p:
         browser=p.chromium.launch()
@@ -89,7 +100,9 @@ def main():
             for w,h in VIEWPORTS:
                 page=browser.new_page(viewport={'width':w,'height':h}); page.goto(url,wait_until='domcontentloaded'); assert_layout(page,w,h); page.close()
             for w,h in [(1440,900),(375,812)]:
-                page=browser.new_page(viewport={'width':w,'height':h}); page.goto(url,wait_until='domcontentloaded'); wait_for_atlas(page); assert_company_interaction(page); assert_state_matrix(page); page.close()
+                page=browser.new_page(viewport={'width':w,'height':h}); page.goto(url,wait_until='domcontentloaded'); wait_for_atlas(page); assert_company_interaction(page); assert_state_matrix(page)
+                if w==1440: assert_sources_dialog(page)
+                page.close()
         finally: browser.close()
 
 if __name__=='__main__': main()
