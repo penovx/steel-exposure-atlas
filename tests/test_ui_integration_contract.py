@@ -43,7 +43,7 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertIn("gist-plants.v1.json", bootstrap)
         self.assertIn("ne_110m_admin_0_countries.v5.1.1.geojson", bootstrap)
         self.assertIn("EXPECTED_PLANTS = 1293", bootstrap)
-        self.assertIn("6D9C2CBAC1DBC25068AF5DD69736FF7E44D6074E220BDB5880054487F28A3EC3", bootstrap)
+        self.assertIn("C2AA81AF6D7FD7447C15C5EEB73B65DF18879F16DBF50ABB7F2B161EA5CA30CA", bootstrap)
         self.assertIn("crypto.subtle.digest('SHA-256'", bootstrap)
 
     def test_products_are_directly_scrollable_and_multi_selectable(self) -> None:
@@ -74,15 +74,11 @@ class UiIntegrationContractTests(unittest.TestCase):
     def test_product_counts_and_picker_descriptions_are_explicit(self) -> None:
         bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(encoding="utf-8")
         rail = (ROOT / "src" / "connections-rail-polish.js").read_text(encoding="utf-8")
-        polish = (ROOT / "src" / "connections-visual-polish.css").read_text(
-            encoding="utf-8"
-        ).replace(" ", "")
-
+        polish = (ROOT / "src" / "connections-visual-polish.css").read_text(encoding="utf-8").replace(" ", "")
         self.assertIn("decorateProductLabels", bridge)
         self.assertIn("${value} listed sites", bridge)
         self.assertIn("${value} connected sites", bridge)
         self.assertIn(".product-node>span,.product-count{display:block", polish)
-
         self.assertIn("decorateProductPickerDescriptions", rail)
         self.assertIn("PRODUCT_DESCRIPTIONS", rail)
         self.assertIn("Semi-finished long steel", rail)
@@ -101,7 +97,6 @@ class UiIntegrationContractTests(unittest.TestCase):
         loader = (ROOT / "src" / "connections-sanctions-loader.js").read_text(encoding="utf-8")
         bridge = (ROOT / "src" / "connections-sanctions-bridge.js").read_text(encoding="utf-8")
         profile = (ROOT / "src" / "connections-selection-profile.js").read_text(encoding="utf-8")
-
         self.assertIn("eu-sanctions-owner-status.v1.json", loader)
         self.assertIn("ofac-sanctions-owner-status.v1.json", loader)
         self.assertIn("049CB95CF55CD9A77DFB8D3FED21EB61A541E4C46F80D1F1B581F2E537E0F015", loader)
