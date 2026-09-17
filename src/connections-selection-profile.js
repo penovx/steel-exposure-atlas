@@ -281,9 +281,18 @@
     return text;
   }
 
-  function renderSanctionFinding(parent, ownerNameValue, label, status, kind) {
+  function regulatoryStep(parent, label, value, className = '') {
+    if (!value) return;
+    const row = document.createElement('div');
+    row.className = ['selection-profile-regulatory-step', className].filter(Boolean).join(' ');
+    addText(row, 'span', 'selection-profile-regulatory-step-label', label);
+    addText(row, 'p', 'selection-profile-regulatory-step-value', value);
+    parent.append(row);
+  }
+
+  function renderSanctionFinding(parent, ownerNameValue, label, status, kind, evidenceFlow = false) {
     const card = document.createElement('div');
-    card.className = 'selection-profile-regulatory-item';
+    card.className = `selection-profile-regulatory-item${evidenceFlow ? ' selection-profile-regulatory-item--flow' : ''}`;
     const top = document.createElement('div');
     top.className = 'selection-profile-regulatory-top';
     addText(top, 'span', 'selection-profile-regulatory-label', label);
@@ -292,22 +301,38 @@
     addText(card, 'strong', '', ownerNameValue);
 
     const matches = Array.isArray(status.reviewed_matches) ? status.reviewed_matches : [];
+    const links = document.createElement('div');
+    links.className = 'selection-profile-links';
+    let evidence = '';
+
     if (kind === 'ofac' && status.state === 'direct_list_match') {
       const listed = unique(matches.map((item) => item.listed_since).filter(Boolean)).map(formatDate);
       const context = unique(matches.map((item) => item.designation_summary).filter(Boolean));
       const programs = unique(matches.flatMap((item) => Array.isArray(item.programmes) ? item.programmes : []));
-      const parts = [
+      evidence = [
         listed.length ? `Listed since ${listed.join(', ')}` : '',
         context.join(' · '),
         programs.length ? `Program: ${programs.join(', ')}` : '',
-      ].filter(Boolean);
-      if (parts.length) addText(card, 'p', '', parts.join(' · '));
+      ].filter(Boolean).join(' · ');
       const urls = unique(matches.map((item) => item.designation_source_url).filter(Boolean));
-      if (urls.length === 1) addLink(card, 'OFAC designation ↗', urls[0]);
+      if (urls.length === 1) addLink(links, 'OFAC designation ↗', urls[0]);
     } else if (kind === 'eu' && status.state === 'direct_list_match') {
       const refs = unique(matches.map((item) => item.eu_reference).filter(Boolean));
-      if (refs.length) addText(card, 'p', '', `EU reference: ${refs.join(', ')}`);
+      evidence = refs.length ? `EU reference: ${refs.join(', ')}` : '';
     }
+
+    if (evidenceFlow) {
+      const flow = document.createElement('div');
+      flow.className = 'selection-profile-regulatory-flow';
+      regulatoryStep(flow, 'Evidence', evidence || (status.state === 'review_required' ? 'Possible source match requiring review.' : label));
+      regulatoryStep(flow, 'Relationship', status.state === 'direct_list_match' ? 'Direct company identity match.' : 'Company identity match requires review.');
+      regulatoryStep(flow, 'Meaning', status.state === 'direct_list_match' ? 'The company identity is listed in the referenced sanctions source.' : 'Not presented as a confirmed listing.', 'is-meaning');
+      card.append(flow);
+    } else if (evidence) {
+      addText(card, 'p', '', evidence);
+    }
+
+    if (links.childNodes.length) card.append(links);
     parent.append(card);
   }
 
@@ -331,19 +356,34 @@
     const regulatory = section(root, 'SANCTIONS & TRADE');
     const list = document.createElement('div');
     list.className = 'selection-profile-regulatory-list';
-    for (const finding of findings) renderSanctionFinding(list, finding.name, finding.label, finding.status, finding.kind);
+    const evidenceFlow = model.kind === 'company';
+    for (const finding of findings) renderSanctionFinding(list, finding.name, finding.label, finding.status, finding.kind, evidenceFlow);
 
     if (tradeRows.length) {
       const card = document.createElement('div');
-      card.className = 'selection-profile-regulatory-item selection-profile-trade';
+      card.className = `selection-profile-regulatory-item selection-profile-trade${evidenceFlow ? ' selection-profile-regulatory-item--flow' : ''}`;
       const top = document.createElement('div');
       top.className = 'selection-profile-regulatory-top';
       addText(top, 'span', 'selection-profile-regulatory-label', 'EU steel import measure');
       addText(top, 'span', 'selection-profile-regulatory-state', `${tradeRows.length} ${tradeRows.length === 1 ? 'site' : 'sites'}`);
       card.append(top);
       addText(card, 'strong', '', 'EU tariff-quota framework in force');
-      addText(card, 'p', '', 'Regulation (EU) 2026/1384 · annual quota period 1 Jul–30 Jun. Current Commission allocation under Implementing Regulation (EU) 2026/1457 applies 1 Jul–31 Dec 2026.');
-      addText(card, 'p', 'selection-profile-impact', '50% out-of-quota duty after applicable quota exhaustion.');
+
+      if (evidenceFlow) {
+        const quotaRoutes = unique(tradeRows.map((row) => row.quota_route)).map((route) =>
+          route === 'origin_specific' ? 'origin-specific quota' : route === 'pooled_or_residual' ? 'pooled / residual quota' : sentenceCase(route)
+        );
+        const flow = document.createElement('div');
+        flow.className = 'selection-profile-regulatory-flow';
+        regulatoryStep(flow, 'Evidence', 'Regulation (EU) 2026/1384 · annual quota period 1 Jul–30 Jun. Current Commission allocation under Implementing Regulation (EU) 2026/1457 applies 1 Jul–31 Dec 2026.');
+        regulatoryStep(flow, 'Relationship', `${tradeRows.length} ${tradeRows.length === 1 ? 'site' : 'sites'} · derived from plant origin and GIST product labels${quotaRoutes.length ? ` · ${quotaRoutes.join(' · ')}` : ''}.`);
+        regulatoryStep(flow, 'Meaning', 'If covered steel from these sites is imported into the EU, a 50% out-of-quota duty applies after the applicable quota is exhausted.', 'is-meaning');
+        card.append(flow);
+      } else {
+        addText(card, 'p', '', 'Regulation (EU) 2026/1384 · annual quota period 1 Jul–30 Jun. Current Commission allocation under Implementing Regulation (EU) 2026/1457 applies 1 Jul–31 Dec 2026.');
+        addText(card, 'p', 'selection-profile-impact', '50% out-of-quota duty after applicable quota exhaustion.');
+      }
+
       const links = document.createElement('div');
       links.className = 'selection-profile-links';
       addLink(links, 'Regulation 2026/1384 ↗', 'https://eur-lex.europa.eu/eli/reg/2026/1384/oj/eng');
@@ -401,9 +441,15 @@
     renderMetrics(root, model, review);
     const body = document.createElement('div');
     body.className = 'selection-profile-body';
-    renderSites(body, model);
-    renderProduction(body, model, review);
-    renderRegulatory(body, model, review, payloads, tradePayload);
+    if (model.kind === 'company') {
+      renderRegulatory(body, model, review, payloads, tradePayload);
+      renderSites(body, model);
+      renderProduction(body, model, review);
+    } else {
+      renderSites(body, model);
+      renderProduction(body, model, review);
+      renderRegulatory(body, model, review, payloads, tradePayload);
+    }
     renderEvidence(body, model);
     root.append(body);
   }
