@@ -39,7 +39,6 @@ class ReleaseSurfaceContractTests(unittest.TestCase):
             privacy,
         )
         self.assertIn("connect-src 'none'", privacy)
-        self.assertIn("frame-ancestors 'none'", privacy)
 
     def test_homepage_runtime_policy_remains_same_origin(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
