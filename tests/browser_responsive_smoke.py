@@ -94,6 +94,61 @@ def assert_sources_dialog(page):
     assert 'No water-stress, trade, emissions or buyer-supplier layer is present' not in text
     page.locator('#sources-dialog button[aria-label="Close"]').click()
 
+
+def assert_keyboard_access(page):
+    wait_for_atlas(page)
+
+    help_button=page.locator('.info-hint-button[aria-label="Help: Companies"]')
+    help_button.focus(); page.keyboard.press('Enter')
+    assert help_button.get_attribute('aria-expanded')=='true'
+    page.keyboard.press('Escape')
+    assert help_button.get_attribute('aria-expanded')=='false'
+
+    sources=page.locator('#open-sources')
+    sources.focus(); page.keyboard.press('Enter')
+    page.wait_for_selector('#sources-dialog[open]',timeout=5000)
+    assert page.evaluate("() => document.querySelector('#sources-dialog').contains(document.activeElement)")
+    page.keyboard.press('Escape'); page.wait_for_timeout(80)
+    assert not page.locator('#sources-dialog').get_attribute('open')
+
+    map_svg=page.locator('#geo-map')
+    before=state(page)['camera']['zoom']
+    map_svg.focus(); page.keyboard.press('=')
+    page.wait_for_timeout(80)
+    after=state(page)['camera']['zoom']
+    assert after>before,(before,after,'keyboard zoom')
+
+    clear(page)
+    country=page.locator('.country-label.has-sites').first
+    expected=(country.get_attribute('aria-label') or '').removeprefix('Explore ')
+    country.focus(); page.keyboard.press('Enter'); page.wait_for_timeout(80)
+    assert state(page)['filters']['country']==expected,(expected,state(page)['filters']['country'])
+
+    clear(page)
+    single_id=page.evaluate("""() => {
+      const node=[...document.querySelectorAll('.plant-node[data-members]')]
+        .find(item => item.dataset.members.trim().split(/\s+/).length===1);
+      return node?.dataset.members ?? null;
+    }""")
+    assert single_id,'no single-site map node found for keyboard test'
+    plant=page.locator(f'.plant-node[data-members="{single_id}"]')
+    plant.focus(); page.keyboard.press('Enter'); page.wait_for_timeout(80)
+    assert state(page)['site']==single_id,(single_id,state(page)['site'])
+    clear(page)
+
+
+def assert_same_origin_runtime(browser,url):
+    page=browser.new_page(viewport={'width':1440,'height':900})
+    requests=[]
+    page.on('request',lambda request: requests.append(request.url))
+    page.goto(url,wait_until='domcontentloaded')
+    wait_for_atlas(page)
+    page.wait_for_timeout(200)
+    external=[request for request in requests if not request.startswith(url)]
+    assert not external,('unexpected third-party runtime requests',external)
+    assert_keyboard_access(page)
+    page.close()
+
 def main():
     with preview_server() as url,sync_playwright() as p:
         browser=p.chromium.launch()
@@ -104,6 +159,7 @@ def main():
                 page=browser.new_page(viewport={'width':w,'height':h}); page.goto(url,wait_until='domcontentloaded'); wait_for_atlas(page); assert_company_interaction(page); assert_state_matrix(page)
                 if w==1440: assert_sources_dialog(page)
                 page.close()
+            assert_same_origin_runtime(browser,url)
         finally: browser.close()
 
 if __name__=='__main__': main()
