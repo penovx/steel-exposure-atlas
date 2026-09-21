@@ -16,12 +16,18 @@ The interaction should allow the reader to begin with a place, company, plant, p
 
 ## Interaction model
 
-The current homepage is one connected field rather than a sequence of separate dashboards:
+The product supports two complementary modes rather than treating every relationship as one visual chain:
 
-1. **Geography** — where tracked steel plants are located.
-2. **Companies** — which immediate company identity is associated with each plant where the source provides one usable identity.
-3. **Products** — which steel products the plant source description lists.
-4. **Production methods** — which production methods have positive operating capacity and how much known operating capacity is reported.
+1. **Overview** — understand the geographic distribution of the currently relevant steel-plant population and enter through company, plant, product or production method.
+2. **Investigation** — inspect one named object, follow typed relationships to adjacent objects and see which external evidence applies and why.
+
+The site is the primary bridge in the industrial model:
+
+- **Company → Site** — which immediate company identity GEM records as owner/operator of the plant.
+- **Site → Product** — which steel products the plant source description lists.
+- **Site → Production method** — which methods have positive operating capacity at the plant and how much known operating capacity is reported.
+
+The map provides geographic context and spatial distribution. It is not the relationship graph.
 
 The procurement-facing layers are intentionally separate from these base relationships:
 
@@ -38,6 +44,7 @@ The visual model must not turn associations into stronger claims:
 - plant ↔ company means the source provides one usable immediate owner/operator identity;
 - plant ↔ product means the plant source description lists that product, not product-specific capacity, qualification or available supply;
 - plant ↔ production method requires positive operating route capacity;
+- production method ↔ product is **not** inferred from their coexistence at one plant; no method-to-product production relationship is shown unless a source explicitly establishes it;
 - a sanctions connection means a reviewed company-identity match to a listed entity in a pinned sanctions-list snapshot;
 - absence of a direct sanctions-list match does not mean the entity is compliant or unaffected by sanctions;
 - EU steel trade-measure context is a scenario about possible import into the EU, not evidence that a plant exports to the EU;
@@ -67,17 +74,28 @@ The procurement value is the follow-up it creates: verify CN/TARIC classificatio
 ## Visual direction
 
 - premium editorial/intelligence presentation, not a generic dashboard;
-- map as the geographic anchor inside one relational field;
-- companies, products and production methods remain directly interactive;
-- procurement signals should appear close to the company/plant they affect, with evidence detail after interaction;
+- geography remains visually important, but the map serves distribution and location rather than carrying the full relationship model;
+- companies, named sites, products and production methods remain directly interactive;
+- selecting an object exposes one stable investigation surface without rearranging the surrounding composition;
+- named sites are directly traversable from company views and act as the bridge to methods and products;
+- visible relationships use explicit semantic types; line position alone must not define their meaning;
+- procurement evidence appears adjacent to the actual company, site or derived relation it describes;
 - dense relationships are reduced deterministically for legibility, never through hand-picked featured cases;
-- progressive disclosure: global pattern first, evidence detail after interaction;
+- progressive disclosure: global pattern first, named object and evidence detail after interaction;
 - restrained controls and labels;
 - country labels where useful;
 - smooth motion only where it explains continuity;
 - ordinary page scrolling must not be hijacked;
 - reduced-motion preferences respected;
 - no external fonts, runtime analytics or unnecessary third-party requests.
+
+## Primary design acceptance task
+
+Before public release, the interface must support this task without requiring the user to reconstruct relationships from the map:
+
+> Start with a company, open a named site, understand its operating methods and listed products, and identify exactly which external evidence applies and why.
+
+The same investigation must remain usable at a 390 px viewport. Compound filters must make their selected population and measure denominator explicit.
 
 ## Evidence model
 
