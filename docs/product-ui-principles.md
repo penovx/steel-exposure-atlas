@@ -45,14 +45,70 @@ A limitation may appear in the main interaction only when omitting it would crea
 
 For example, a broad product-family mapping should be labelled as a broad mapping rather than converted into a process instruction.
 
-## One-click selection profile
+## Typed relationships
 
-The public interaction uses one standardized profile below the atlas:
+The interface must not present the exploration narrative as one uniformly evidenced chain.
 
-- one click on a company, site, product, production method or area updates the profile immediately;
-- the profile combines identity, sites and products, operating production evidence, sanctions/trade findings and source access in one composition;
-- the profile does not require a second click or a separate company brief;
-- facts and relationships stay in the profile; navigation instructions, methodology and broad limitations belong in `Sources & interpretation`;
+The supported base relationships are:
+
+- company identity → site: the immediate owner or operator recorded by GEM;
+- site → production method: positive operating capacity for that method at the site;
+- site → product: the plant source description lists that product expression.
+
+Do not imply production method → product merely because both occur at the same site.
+
+External evidence attaches at its actual subject:
+
+- sanctions evidence attaches to a reviewed company identity;
+- EU steel trade context attaches to a site-origin + product-evidence mapping;
+- future facility evidence attaches only through a reviewed site-to-facility relationship.
+
+Every visual connection that matters to interpretation should make its relationship type understandable without relying on line position alone.
+
+## Site as the investigation bridge
+
+The named site is the primary bridge between company attribution and production facts.
+
+A site record must support direct traversal to:
+
+- its recorded company owner/operator;
+- operating production methods;
+- listed source product expressions or reviewed product concepts;
+- origin/geography;
+- relevant external evidence;
+- source and provenance.
+
+Company views must expose named sites as navigable records rather than static reading content.
+
+## Stable investigation surface
+
+The public interaction uses one consistent inspection model, but it is not required to live below the full atlas.
+
+- one selection on a company, site, product, production method or area exposes its inspectable record;
+- the inspection surface preserves the surrounding exploration context instead of rearranging it;
+- related named objects are directly traversable;
+- facts and typed relationships stay in the inspection surface;
+- navigation instructions, methodology and broad limitations belong in `Sources & interpretation`;
 - detailed source identifiers or official source pages may remain one click away because they are evidence, not a second interpretation layer.
 
-The profile must not replace the atlas or block continued exploration.
+The inspection surface must not replace geographic context or force the user to hunt for the selected object again.
+
+## Scope and denominator
+
+The interface must visibly distinguish:
+
+- geographic base scope;
+- active relational filters;
+- list/search state;
+- selected object;
+- map camera.
+
+Every aggregate measure must state the population it summarizes.
+
+For compound selections such as product + production method, distinguish method capacity at matching sites from total operating crude-steel capacity across the same sites. Never imply product-specific capacity unless the source establishes it.
+
+## Product semantics
+
+Source product expressions and reviewed product concepts are different objects.
+
+Do not visually collapse distinct source tokens into one apparent option while the matching logic still treats them as separate populations. If several source expressions are grouped into one concept, the mapping and provenance must remain inspectable.
