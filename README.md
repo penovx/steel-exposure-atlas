@@ -4,11 +4,11 @@ Public-data atlas for exploring steel companies, plants, production methods, pro
 
 ## Status
 
-Pre-publication demonstrator. The current build combines a reviewed steel-plant dataset with cartography, company-level sanctions evidence and EU steel import-measure context. It is not a supplier ranking, due-diligence service, disruption forecast or operational decision system.
+Public v0.1 demonstrator. The release combines a reviewed steel-plant dataset with cartography, company-level sanctions evidence and EU steel import-measure context. It is not a supplier ranking, due-diligence service, disruption forecast or operational decision system.
 
 The core interaction is relational: company → sites → production methods → products, with external evidence linked through explicit company, plant, origin and product relationships. Evidence states and source provenance remain visible; no composite supplier-risk or ESG score is calculated.
 
-GitHub Pages should remain disabled until `docs/release-checklist.md` is complete.
+Public site: https://penovx.github.io/steel-exposure-atlas/
 
 ## Current public-data sources
 
