@@ -114,7 +114,7 @@ def assert_keyboard_access(page):
 
     map_svg=page.locator('#geo-map')
     before=state(page)['camera']['zoom']
-    map_svg.focus(); page.keyboard.press('=')
+    map_svg.press('=')
     page.wait_for_timeout(80)
     after=state(page)['camera']['zoom']
     assert after>before,(before,after,'keyboard zoom')
@@ -122,7 +122,7 @@ def assert_keyboard_access(page):
     clear(page)
     country=page.locator('.country-label.has-sites').first
     expected=(country.get_attribute('aria-label') or '').removeprefix('Explore ')
-    country.focus(); page.keyboard.press('Enter'); page.wait_for_timeout(80)
+    country.press('Enter'); page.wait_for_timeout(80)
     assert state(page)['filters']['country']==expected,(expected,state(page)['filters']['country'])
 
     clear(page)
@@ -133,7 +133,7 @@ def assert_keyboard_access(page):
     }""")
     assert single_id,'no single-site map node found for keyboard test'
     plant=page.locator(f'.plant-node[data-members="{single_id}"]')
-    plant.focus(); page.keyboard.press('Enter'); page.wait_for_timeout(80)
+    plant.press('Enter'); page.wait_for_timeout(80)
     assert state(page)['site']==single_id,(single_id,state(page)['site'])
     clear(page)
 
