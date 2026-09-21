@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ReleaseSurfaceContractTests(unittest.TestCase):
-    def test_homepage_has_pre_release_share_metadata(self) -> None:
+    def test_homepage_has_public_share_metadata(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
 
         self.assertIn('<meta name="robots" content="noindex,nofollow">', index)
