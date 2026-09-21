@@ -105,8 +105,9 @@ def assert_keyboard_access(page):
     assert help_button.get_attribute('aria-expanded')=='false'
 
     page.wait_for_function("document.documentElement.dataset.sourcesDialogInstalled === 'true'", timeout=5000)
-    sources=page.locator('#open-sources')
-    sources.click()
+    sources=page.locator('#footer-sources')
+    sources.scroll_into_view_if_needed()
+    sources.press('Enter')
     page.wait_for_selector('#sources-dialog[open]',timeout=5000)
     assert page.evaluate("() => document.querySelector('#sources-dialog').contains(document.activeElement)")
     page.keyboard.press('Escape'); page.wait_for_timeout(80)
