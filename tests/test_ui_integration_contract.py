@@ -30,11 +30,12 @@ class UiIntegrationContractTests(unittest.TestCase):
         self.assertNotIn('./src/connections-company-brief-sites.js', index)
         self.assertNotIn('type="application/json"', index)
 
-    def test_explorer_remains_available_as_internal_secondary_route(self) -> None:
+    def test_explorer_remains_internal_and_out_of_public_navigation(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
         bridge = (ROOT / "src" / "connections-runtime-bridge.js").read_text(encoding="utf-8")
-        self.assertIn('./prototype/evidence.html', index)
+        self.assertNotIn('./prototype/evidence.html', index)
         self.assertTrue((ROOT / "prototype" / "evidence.html").exists())
+        # Keep the defensive removal in case an older cached page still contains the link.
         self.assertIn('a[href="./prototype/evidence.html"]', bridge)
         self.assertIn('?.remove()', bridge)
 
