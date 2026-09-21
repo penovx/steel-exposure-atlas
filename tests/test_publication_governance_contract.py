@@ -37,7 +37,7 @@ class PublicationGovernanceContractTests(unittest.TestCase):
         registry = json.loads(
             (ROOT / "data" / "source-registry.json").read_text(encoding="utf-8")
         )
-        self.assertGreaterEqual(registry["schema_version"], 5)
+        self.assertGreaterEqual(registry["schema_version"], 6)
 
         source = next(
             item for item in registry["sources"] if item["id"] == "eu-financial-sanctions"
@@ -72,6 +72,14 @@ class PublicationGovernanceContractTests(unittest.TestCase):
             "exact retrieval timestamp was not separately recorded",
             source["review_notes"],
         )
+        provenance = source["retrieval_provenance"]
+        self.assertEqual(provenance["status"], "not_recorded")
+        self.assertEqual(provenance["release_decision"], "accepted_exception_v0.1")
+        self.assertEqual(
+            provenance["decision_record"],
+            "docs/source-reviews/2026-09-21-natural-earth-retrieval-provenance.md",
+        )
+        self.assertTrue((ROOT / provenance["decision_record"]).exists())
 
 
 if __name__ == "__main__":
