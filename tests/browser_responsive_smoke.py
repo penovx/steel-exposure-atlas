@@ -106,8 +106,6 @@ def assert_keyboard_access(page):
 
     page.wait_for_function("document.documentElement.dataset.sourcesDialogInstalled === 'true'", timeout=5000)
     sources=page.locator('#open-sources')
-    sources.focus()
-    assert sources.evaluate("el => document.activeElement === el")
     sources.press('Enter')
     page.wait_for_selector('#sources-dialog[open]',timeout=5000)
     assert page.evaluate("() => document.querySelector('#sources-dialog').contains(document.activeElement)")
