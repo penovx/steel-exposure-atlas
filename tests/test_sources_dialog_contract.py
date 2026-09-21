@@ -33,6 +33,19 @@ class SourcesDialogContractTests(unittest.TestCase):
         self.assertNotIn("no water-stress, trade, emissions or buyer-supplier layer is present", script)
         self.assertNotIn("explicit selections are shown below the graphic", script)
 
+    def test_procurement_sources_expose_official_links_and_reuse_context(self) -> None:
+        bridge = (ROOT / "src" / "connections-sanctions-bridge.js").read_text(encoding="utf-8")
+
+        self.assertIn("https://webgate.ec.europa.eu/fsd/fsf#!/files", bridge)
+        self.assertIn("https://commission.europa.eu/legal-notice_en", bridge)
+        self.assertIn("https://creativecommons.org/licenses/by/4.0/", bridge)
+        self.assertIn("https://ofac.treasury.gov/sanctions-list-service", bridge)
+        self.assertIn("https://eur-lex.europa.eu/eli/reg_impl/2026/1457/oj/eng", bridge)
+        self.assertIn("https://eur-lex.europa.eu/eli/reg_impl/2026/1930/oj/eng", bridge)
+        self.assertIn("transformed enterprise-only evidence layer", bridge)
+        self.assertIn("candidate product-family evidence rather than customs classification", bridge)
+        self.assertIn("Cartography and provenance", bridge)
+
 
 if __name__ == "__main__":
     unittest.main()

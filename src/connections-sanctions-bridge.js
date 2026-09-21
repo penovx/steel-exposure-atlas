@@ -222,7 +222,7 @@
     if (!sourceContent || !sourceContent.children.length) return;
 
     const cartographySection = [...sourceContent.querySelectorAll('.source-section')].find(
-      (section) => section.querySelector('h3')?.textContent === 'Cartography and local review'
+      (section) => section.querySelector('h3')?.textContent === 'Cartography and provenance'
     );
     const scopeParagraph = cartographySection?.querySelector('p:last-child');
     if (scopeParagraph) {
@@ -234,20 +234,29 @@
       const suffix = Array.isArray(generationDates) && generationDates.length
         ? ` Source file date: ${generationDates.join(', ')}.`
         : '';
-      sourceContent.append(sourceSection(
+      const euSection = sourceSection(
         'EU sanctions screening',
         [
           'Usable GIST company identities are screened against the pinned European Commission financial-sanctions snapshot. Confirmed identity matches are shown as listed; unresolved candidates retain their unresolved state. A negative screen is not sanctions clearance.',
           `European Commission source snapshot SHA-256: ${payloads.eu.meta?.source_snapshot_sha256 ?? 'not available'}.${suffix}`,
+          'Source: European Commission, Consolidated Financial Sanctions File 1.1. Steel Exposure Atlas publishes a transformed enterprise-only evidence layer under the reviewed Commission reuse basis / CC BY 4.0.',
         ],
         'sanctions-source-section-eu'
-      ));
+      );
+      const euLinks = document.createElement('p');
+      addLink(euLinks, '', 'European Commission sanctions files ↗', 'https://webgate.ec.europa.eu/fsd/fsf#!/files');
+      euLinks.append(document.createTextNode(' · '));
+      addLink(euLinks, '', 'Commission reuse notice ↗', 'https://commission.europa.eu/legal-notice_en');
+      euLinks.append(document.createTextNode(' · '));
+      addLink(euLinks, '', 'CC BY 4.0 ↗', 'https://creativecommons.org/licenses/by/4.0/');
+      euSection.append(euLinks);
+      sourceContent.append(euSection);
     }
 
     if (payloads.ofac && !sourceContent.querySelector('.sanctions-source-section-ofac')) {
       const hashes = payloads.ofac.meta?.source_snapshot_sha256 ?? {};
       const dates = payloads.ofac.meta?.source_publish_dates ?? {};
-      sourceContent.append(sourceSection(
+      const ofacSection = sourceSection(
         'U.S. / OFAC sanctions screening',
         [
           'Usable GIST company identities are screened against pinned OFAC Entity records. The full source-list name, program and designation date remain visible for confirmed matches; SDN and Non-SDN list types remain distinct.',
@@ -255,21 +264,34 @@
           `OFAC snapshots · SDN ${dates.SDN ?? 'date unavailable'} · SHA-256 ${hashes.SDN ?? 'not available'} · Consolidated Non-SDN ${dates['Consolidated Non-SDN'] ?? 'date unavailable'} · SHA-256 ${hashes['Consolidated Non-SDN'] ?? 'not available'}`,
         ],
         'sanctions-source-section-ofac'
-      ));
+      );
+      const ofacLinks = document.createElement('p');
+      addLink(ofacLinks, '', 'OFAC Sanctions List Service ↗', 'https://ofac.treasury.gov/sanctions-list-service');
+      ofacSection.append(ofacLinks);
+      sourceContent.append(ofacSection);
     }
 
     if (tradePayload && !sourceContent.querySelector('.trade-source-section-eu-steel')) {
       const meta = tradePayload.meta ?? {};
       const measureSha = meta.sources?.commission_implementing_regulation_2026_1457?.sha256 ?? 'not available';
       const bilateralSha = meta.sources?.commission_implementing_regulation_2026_1930?.sha256 ?? 'not available';
-      sourceContent.append(sourceSection(
+      const tradeSection = sourceSection(
         'EU steel import scenario',
         [
           'Plant origin and GIST product-family evidence are mapped to the current EU steel import measure for a hypothetical import into the EU. The scenario does not assert that a plant exports to the EU.',
           `Pinned EUR-Lex source hashes · Regulation 2026/1457: ${measureSha} · Regulation 2026/1930: ${bilateralSha}`,
+          'Source: European Union / European Commission. Steel Exposure Atlas derives plant-origin and product-family context from the reviewed legal snapshots; GIST product labels remain candidate product-family evidence rather than customs classification.',
         ],
         'trade-source-section-eu-steel'
-      ));
+      );
+      const tradeLinks = document.createElement('p');
+      addLink(tradeLinks, '', 'Regulation (EU) 2026/1457 ↗', 'https://eur-lex.europa.eu/eli/reg_impl/2026/1457/oj/eng');
+      tradeLinks.append(document.createTextNode(' · '));
+      addLink(tradeLinks, '', 'Regulation (EU) 2026/1930 ↗', 'https://eur-lex.europa.eu/eli/reg_impl/2026/1930/oj/eng');
+      tradeLinks.append(document.createTextNode(' · '));
+      addLink(tradeLinks, '', 'Commission reuse notice ↗', 'https://commission.europa.eu/legal-notice_en');
+      tradeSection.append(tradeLinks);
+      sourceContent.append(tradeSection);
     }
   }
 
