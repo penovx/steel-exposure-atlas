@@ -1,0 +1,9 @@
+.company-nodes.is-virtualized{gap:0;position:relative;overflow-y:scroll;overscroll-behavior-y:contain}
+.company-nodes.is-virtualized>.company-node{min-height:68px;margin:0 0 4px;width:100%;box-sizing:border-box}
+.company-nodes.is-virtualized>.company-node.is-selected{margin-bottom:0}
+.company-profile-open{flex:0 0 28px;height:28px;width:100%;margin:0 0 4px;padding:0 12px;background:#152b38;color:#b8d7e8;border-top:1px solid #36515f;text-align:left;font-size:10px;line-height:28px;letter-spacing:.1px}
+.company-profile-open:hover,.company-profile-open:focus-visible{color:#8ccfff;background:#193442}
+.company-virtual-spacer{display:block;flex:0 0 auto;width:1px;min-height:0;pointer-events:none}
+.company-nodes.is-virtualized .company-sanctions-flags{position:absolute;right:10px;bottom:4px;margin:0;gap:3px;justify-content:flex-end;max-width:calc(100% - 20px);pointer-events:none}
+.company-nodes.is-virtualized .company-sanctions-flag{padding:1px 4px;font-size:7px;line-height:1.1}
+.company-nodes.is-virtualized .company-sanctions-flag::before{width:9px;height:9px;font-size:6px}

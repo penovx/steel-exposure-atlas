@@ -1,0 +1,53 @@
+/* Compact atlas opening: fixed product header, then the functional scope row. */
+.masthead{
+  position:fixed!important;
+  top:0;
+  left:0;
+  right:0;
+  z-index:60;
+  height:72px;
+  margin:0!important;
+  padding:0 var(--margin)!important;
+  background:var(--night)!important;
+  color:var(--white);
+  border-bottom:1px solid #304856!important;
+}
+.masthead .brand{color:var(--white);align-items:center}
+.masthead .brand svg path{fill:none;stroke:var(--white)}
+.masthead .brand svg circle{fill:var(--night);stroke:var(--white)}
+.masthead .edition{color:#8fa8b7;border-left-color:#304856}
+.brand-copy{display:flex;align-items:center;min-width:0}
+.brand-name{font-size:18px;line-height:1.08;letter-spacing:-.5px;white-space:nowrap}
+
+.atlas{
+  min-height:100svh;
+  padding-top:72px;
+}
+.atlas-top{
+  min-height:50px;
+  padding-top:10px;
+}
+.scope-heading{gap:0}
+.scope-heading button{gap:7px}
+.scope-action{font-size:11px!important;letter-spacing:.1px;color:#8fa8b7!important;font-weight:450}
+#scope-meta{display:none!important}
+.connections-stage{
+  height:calc(100svh - 122px)!important;
+  min-height:620px!important;
+  max-height:none!important;
+}
+
+@media(max-width:900px){
+  .connections-stage{height:calc(100svh - 122px)!important}
+}
+
+@media(max-width:760px){
+  .masthead{height:64px;padding:0 18px!important}
+  .masthead .edition{font-size:8px;letter-spacing:1.1px;padding-left:14px}
+  .brand{font-size:16px}.brand svg{width:26px;height:26px}
+  .brand-name{font-size:16px}
+  .atlas{padding-top:64px}
+  .atlas-top{min-height:48px;padding-top:8px}
+  .scope-action{font-size:10.5px!important}
+  .connections-stage{height:auto!important;min-height:579px!important}
+}

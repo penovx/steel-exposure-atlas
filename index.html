@@ -1,89 +1,40 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Interactive exploration of public data on steel production, trade and water stress." />
-    <meta name="theme-color" content="#0b1018" />
-    <title>Steel Exposure Atlas</title>
-    <link rel="stylesheet" href="./src/styles.css" />
-  </head>
-  <body>
-    <div class="app-shell">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">OPEN-DATA DEMONSTRATOR</p>
-          <h1>Steel Exposure Atlas</h1>
-        </div>
-        <button class="ghost-button" id="about-button" type="button" aria-controls="about-panel" aria-expanded="false">About this study</button>
-      </header>
-
-      <main class="atlas-layout">
-        <section class="map-stage" aria-label="Interactive world map">
-          <div class="map-copy">
-            <p class="kicker">PUBLIC DATA, CONNECTED</p>
-            <h2>See the structure before judging the risk.</h2>
-            <p>The atlas will connect production sites, trade patterns, water-stress indicators and legal-entity relationships without turning them into a single black-box score.</p>
-          </div>
-
-          <svg id="world-map" class="world-map" viewBox="0 0 1200 650" role="img" aria-label="World basemap">
-            <defs>
-              <radialGradient id="ocean-glow" cx="52%" cy="42%" r="70%">
-                <stop offset="0%" stop-color="#17263b" />
-                <stop offset="100%" stop-color="#09111d" />
-              </radialGradient>
-            </defs>
-            <rect width="1200" height="650" fill="url(#ocean-glow)" />
-            <g id="graticule-layer" aria-hidden="true"></g>
-            <g id="country-layer"></g>
-          </svg>
-
-          <div class="map-status" id="map-status" role="status">Loading approved basemap…</div>
-          <div class="map-credit">Natural Earth 1:110m · v5.1.1</div>
-        </section>
-
-        <aside class="control-panel" aria-label="Atlas controls">
-          <section>
-            <p class="panel-label">EXPLORE</p>
-            <div class="mode-list" id="mode-list">
-              <button class="mode-button is-active" type="button" data-mode="context"><span>World context</span><small>available</small></button>
-              <button class="mode-button" type="button" disabled><span>Production</span><small>data package review</small></button>
-              <button class="mode-button" type="button" disabled><span>Trade</span><small>extract review</small></button>
-              <button class="mode-button" type="button" disabled><span>Water</span><small>registration step</small></button>
-              <button class="mode-button" type="button" disabled><span>Ownership</span><small>source cleared</small></button>
-            </div>
-          </section>
-
-          <section class="readiness-section">
-            <div class="section-heading">
-              <p class="panel-label">SOURCE READINESS</p>
-              <span class="scope-badge">v0 foundation</span>
-            </div>
-            <div class="readiness-list">
-              <div class="readiness-row"><span class="status-dot ready"></span><span>Basemap</span><strong>Ready</strong></div>
-              <div class="readiness-row"><span class="status-dot review"></span><span>Steel plants</span><strong>Review</strong></div>
-              <div class="readiness-row"><span class="status-dot review"></span><span>EU trade</span><strong>Review</strong></div>
-              <div class="readiness-row"><span class="status-dot review"></span><span>Water stress</span><strong>Review</strong></div>
-              <div class="readiness-row"><span class="status-dot ready"></span><span>Entity relations</span><strong>Ready</strong></div>
-            </div>
-          </section>
-
-          <section class="interpretation-note">
-            <p class="panel-label">READING RULE</p>
-            <p>Exposure is not a disruption probability. Country trade is not a buyer-supplier relationship. Missing ownership data is not proof that no parent exists.</p>
-          </section>
-        </aside>
-      </main>
-    </div>
-
-    <dialog id="about-panel" class="about-panel">
-      <button class="dialog-close" id="about-close" type="button" aria-label="Close">×</button>
-      <p class="eyebrow">ABOUT</p>
-      <h2>A small study in public-data combination.</h2>
-      <p>This project explores what can be made visible by connecting openly available industrial, trade, environmental and legal-entity data. It is a demonstrator, not a supplier-risk product, due-diligence service or operational decision system.</p>
-      <p>Every published layer is reviewed for reuse rights, cost, provenance and interpretation before it is shipped with the site.</p>
-    </dialog>
-
-    <script type="module" src="./src/app.js"></script>
-  </body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; style-src-elem 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Steel Exposure Atlas</title><meta name="description" content="Trace steel companies across their plants, products and production methods, with sanctions and trade measures brought into the same view through public evidence."><meta property="og:title" content="Steel Exposure Atlas"><meta property="og:description" content="Explore steel companies, plants, production methods, products and selected public evidence in one connected view."><meta property="og:type" content="website"><meta property="og:site_name" content="Steel Exposure Atlas"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Steel Exposure Atlas"><meta name="twitter:description" content="Explore steel companies, plants, production methods, products and selected public evidence in one connected view."><link rel="stylesheet" href="./src/connections.css?v=20260916-2"><link rel="stylesheet" href="./src/connections-visual-polish.css?v=20260916-4"><link rel="stylesheet" href="./src/connections-sanctions.css?v=20260916-2"><link rel="stylesheet" href="./src/connections-procurement-ui.css?v=20260916-4"><link rel="stylesheet" href="./src/connections-company-virtual-rail.css?v=20260917-2"><link rel="stylesheet" href="./src/connections-selection-profile.css?v=20260916-3"><link rel="stylesheet" href="./src/connections-company-profile-card.css?v=20260917-2"><link rel="stylesheet" href="./src/connections-hero.css?v=20260917-1"><link rel="stylesheet" href="./src/connections-info-hints.css?v=20260917-5"></head>
+<body>
+<a class="skip" href="#atlas">Skip to the interactive atlas</a>
+<header class="masthead"><a class="brand" href="#" id="brand-home"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 7 25 15 9 26 7 7"/><circle cx="7" cy="7" r="3"/><circle cx="25" cy="15" r="3"/><circle cx="9" cy="26" r="3"/></svg><span class="brand-copy"><span class="brand-name">Steel Exposure <b>Atlas</b></span></span></a><nav aria-label="Page navigation"><a href="#atlas">Connections</a><button id="open-all-sites" type="button">Find a plant <span aria-hidden="true">↗</span></button><button id="open-sources" type="button">Sources</button><a href="./prototype/evidence.html">Explorer ↗</a></nav><span class="edition">GEM · JUNE 2026</span></header>
+<main><p id="startup-status" class="startup-status" role="status">Loading reviewed local steel-plant data…</p>
+<section id="atlas" class="atlas" aria-label="Linked geography, companies, production methods and products">
+<div class="atlas-top"><div class="scope-heading"><button id="open-regions" type="button" aria-haspopup="dialog"><strong id="region-title">World</strong><span class="scope-action">· Select area</span></button><span id="scope-meta"></span></div><button id="clear-all" class="clear-all" type="button" hidden>Clear selection <span aria-hidden="true">×</span></button></div>
+<div class="connections-stage" id="connections-stage">
+<svg id="connection-lines" aria-hidden="true"><g id="edge-layer"></g></svg>
+<section class="company-rail" aria-labelledby="company-title"><div class="rail-heading"><div class="facet-title-actions"><h2 id="company-title">Companies</h2><span class="info-hint" data-info-for="company"><button type="button" class="info-hint-button" aria-label="Help: Companies" aria-controls="company-help" aria-expanded="false">?</button><span id="company-help" class="info-hint-popover" hidden>Immediate owner or operator recorded by GEM; not necessarily the ultimate parent.</span></span><button type="button" data-open-facet="owner" aria-label="Browse all companies">↗</button></div></div><p class="rail-subtitle">Immediate owner or operator named by GEM</p><label class="company-search" for="company-search-input"><span class="sr-only">Search companies</span><input id="company-search-input" type="search" autocomplete="off" placeholder="Search companies"></label><p id="company-search-empty" class="company-search-empty" hidden>No matching companies.</p><div id="company-nodes" class="company-nodes"></div><button class="more-link" data-open-facet="owner" type="button">All companies <span id="company-total"></span> <span aria-hidden="true">↗</span></button></section>
+<div class="geography" id="geography"><svg id="geo-map" role="group" tabindex="0" aria-label="Steel plant map. Select a country or site. Plus and minus zoom, arrows pan, Home fits the region."><defs><clipPath id="map-clip"><rect id="map-clip-rect"/></clipPath></defs><g clip-path="url(#map-clip)"><g id="land-layer"></g><g id="country-labels"></g><g id="plant-layer"></g></g></svg><div class="map-toolset" aria-label="Map navigation"><button id="map-out" type="button" aria-label="Zoom out">−</button><button id="map-in" type="button" aria-label="Zoom in">+</button><button id="map-fit" type="button">Fit region</button><span id="zoom-level">1.0×</span></div><div class="map-key"><span><i class="key-dot"></i> Operating steel capacity <span class="info-hint" data-info-for="capacity"><button type="button" class="info-hint-button" aria-label="Help: Operating steel capacity" aria-controls="capacity-help" aria-expanded="false">?</button><span id="capacity-help" class="info-hint-popover" hidden>Marker size reflects quantified operating crude-steel capacity. Unquantified sites remain separate.</span></span></span><span><i class="key-hollow"></i> Other / unquantified</span></div><div class="map-tip" id="map-tip" role="status" hidden></div></div>
+<aside id="company-profile-card" class="company-profile-card selection-profile" aria-live="polite" hidden></aside>
+<section class="method-rail" aria-labelledby="method-title"><div class="rail-heading"><div class="facet-title-actions"><h2 id="method-title">Production methods</h2><span class="info-hint" data-info-for="method"><button type="button" class="info-hint-button" aria-label="Help: Production methods" aria-controls="method-help" aria-expanded="false">?</button><span id="method-help" class="info-hint-popover" hidden>Steelmaking method at the listed sites. Capacity is operating crude-steel capacity, not available supply.</span></span><button type="button" data-open-facet="route" aria-label="Browse production methods">↗</button></div></div><p class="rail-subtitle">How steel is made at these sites</p><div id="method-nodes" class="method-nodes"></div><p class="method-note">* Mtpa = million tonnes per year.<br>Known operating capacity; not available supply.</p></section>
+<div class="product-divider" aria-hidden="true"></div>
+<div class="products-area"><div class="product-heading"><div class="product-heading-title"><h2 id="products-title">Products</h2><span class="info-hint" data-info-for="product"><button type="button" class="info-hint-button" aria-label="Help: Products" aria-controls="product-help" aria-expanded="false">?</button><span id="product-help" class="info-hint-popover" hidden>Plant-level product labels; no product-specific capacity, grade availability or available supply is implied.</span></span></div><span class="product-heading-subtitle">Listed by the plants</span><button type="button" data-open-facet="product" aria-label="Add or remove products">+ Products</button></div><div id="product-nodes" class="product-nodes"></div></div>
+</div>
+<div class="atlas-bottom" hidden aria-hidden="true"><p id="connection-caption">Each connection is grounded in the same public-data snapshot.</p><button id="map-basis" type="button" tabindex="-1">How to read this <span aria-hidden="true">↗</span></button></div>
+</section>
+<section class="reading-area" aria-live="polite" hidden><div class="selection-path" id="selection-path"></div><div id="selection-profile" class="selection-profile"></div><div class="reading-grid legacy-reading-grid" hidden aria-hidden="true"><div class="reading-copy"><p class="eyebrow" id="reading-kicker">CURRENT SCOPE</p><h2 id="reading-title">The industrial footprint in one connected view.</h2><p id="reading-description">Sites, companies, products and production methods are read from the same public-data snapshot. Narrowing one dimension updates the others without changing the geographic scope.</p><button id="inspect-selection" class="text-action" type="button">Browse this region <span aria-hidden="true">↗</span></button></div><div class="reading-detail" id="reading-detail"><div id="summary-data"></div><div id="site-detail" hidden></div></div></div></section>
+<footer class="footer"><div><strong>Steel Exposure Atlas</strong><p>Independent public-data exploration. No supplier ranking.</p></div><p>Global Energy Monitor · Global Iron and Steel Tracker, June 2026 (V1).<br>Derived analysis and presentation. Natural Earth cartography.</p><div class="footer-actions"><button type="button" id="footer-sources">Sources & interpretation ↗</button><a href="./privacy.html">Privacy ↗</a></div></footer>
+</main>
+<dialog id="browse-dialog" aria-labelledby="browse-title"><div class="dialog-top"><span class="eyebrow" id="browse-eyebrow">EXPLORE</span><button type="button" data-close-dialog aria-label="Close">×</button></div><h2 id="browse-title">Find a plant</h2><p id="browse-note"></p><label class="browse-search">Search<input type="search" id="browse-query" autocomplete="off" placeholder="Name or country"></label><div id="browse-result" class="browse-result"></div><div class="dialog-foot"><span id="browse-count"></span><button type="button" data-close-dialog>Close</button></div></dialog>
+<dialog id="regions-dialog" aria-labelledby="regions-title"><div class="dialog-top"><span class="eyebrow">GEOGRAPHY</span><button type="button" data-close-dialog aria-label="Close">×</button></div><h2 id="regions-title">Choose a region.</h2><p>Geographies follow the region labels supplied by GEM.</p><div id="region-choices"></div><div class="dialog-foot"><span>All sites use the same relationship rules.</span><button type="button" data-close-dialog>Close</button></div></dialog>
+<dialog id="sources-dialog" aria-labelledby="sources-title"><div class="dialog-top"><span class="eyebrow">SOURCES & INTERPRETATION</span><button type="button" data-close-dialog aria-label="Close">×</button></div><h2 id="sources-title">What the connections mean.</h2><div id="source-content"></div><div class="dialog-foot"><span>Local design review · not a live supplier assessment</span><button type="button" data-close-dialog>Close</button></div></dialog>
+<div id="announcement" class="sr-only" role="status" aria-live="polite"></div><noscript><p class="noscript">JavaScript is needed for the interactive relationships. Source: Global Energy Monitor · Global Iron and Steel Tracker, June 2026 (V1), CC BY 4.0. No supplier qualification or current availability is implied.</p></noscript>
+<script src="./src/connections-runtime-bridge.js?v=20260916-2"></script>
+<script src="./src/connections-company-virtual-rail.js?v=20260917-2"></script>
+<script src="./src/connections-rail-polish.js?v=20260916-6"></script>
+<script src="./src/connections-procurement-ui.js?v=20260916-7"></script>
+<script src="./src/connections-sanctions-loader.js?v=20260916-1"></script>
+<script src="./src/connections-company-eligibility.js?v=20260916-2"></script>
+<script src="./src/connections-trade-loader.js?v=20260916-3"></script>
+<script src="./src/connections-selection-profile.js?v=20260917-2"></script>
+<script src="./src/connections-company-profile-card.js?v=20260917-2"></script>
+<script src="./src/connections-sanctions-bridge.js?v=20260916-4"></script>
+<script src="./src/connections-info-hints.js?v=20260917-5"></script>
+<script src="./src/connections-sources-dialog.js?v=20260917-1"></script>
+<script type="module" src="./src/connections-bootstrap.js?v=20260917-1"></script>
+</body></html>

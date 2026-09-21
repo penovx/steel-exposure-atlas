@@ -1,0 +1,41 @@
+.brand svg path{fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round}.brand svg circle{fill:var(--paper);stroke:var(--ink)}
+.company-node::after{width:7px;height:7px;left:calc(100% + 4px);right:auto;top:50%;transform:translate(-50%,-50%)}
+.connections-stage{grid-template-rows:minmax(415px,1fr) 132px;min-height:579px}.more-link{border-top:0}
+.method-rail,.method-nodes,.method-node{overflow:visible}.method-node::before{display:none}.method-port{position:absolute;left:-5px;top:13px;width:9px;height:9px;border:1px solid var(--method-color);border-radius:50%;background:var(--night);transform:translate(-50%,-50%);z-index:7;pointer-events:none;box-shadow:0 0 0 2px var(--night)}.method-node.is-selected .method-port{background:var(--method-color);border-color:var(--method-color);box-shadow:0 0 0 3px #d6e8f022}
+.product-divider{grid-column:1/-1;grid-row:2;align-self:start;position:relative;height:1px;background:#2d4553;z-index:6;pointer-events:none}.products-area{grid-row:2;z-index:auto!important;border-top:0;position:relative;align-items:start;padding:18px 0 12px}.products-area::before{display:none}.product-heading{position:relative;z-index:4;background:var(--night);padding-top:0}.product-nodes{padding-top:0;padding-bottom:10px;position:static;top:auto;margin-bottom:0;align-items:flex-start}.product-node{z-index:4;background:var(--night);overflow:visible;min-width:132px;padding-top:0}.product-port{display:none}.product-node::after{display:none}.product-description{display:none!important}.product-node>span,.product-count{display:block;margin-left:0;margin-top:4px;font-size:9px;line-height:1.25;color:#88a5b6;white-space:nowrap}.product-node.dim>span{visibility:visible;opacity:.8}
+#product-port-layer{pointer-events:none}.product-axis-port{fill:var(--night);stroke:#9fb7c4;stroke-width:1.2;vector-effect:non-scaling-stroke}.product-axis-port.is-selected{fill:var(--accent);stroke:#d7efff;stroke-width:1.5}.product-axis-port.dim{opacity:.35}
+.connection-edge.strong{opacity:.48}.connection-edge.product.strong{opacity:.3}
+
+/* Rail cleanup and structural separation. */
+.connections-stage{grid-template-rows:minmax(415px,1fr) 132px;min-height:579px}
+.company-rail{align-self:stretch;height:100%;min-height:0;display:flex;flex-direction:column}
+.company-nodes{flex:1;min-height:0;max-height:100%;overflow-y:scroll;overflow-x:visible;padding-right:10px;padding-bottom:8px;scrollbar-width:thin;scrollbar-color:#496675 #142833;scrollbar-gutter:stable;overscroll-behavior-y:contain}
+.company-nodes::-webkit-scrollbar{width:6px}.company-nodes::-webkit-scrollbar-track{background:#142833}.company-nodes::-webkit-scrollbar-thumb{background:#496675;border-radius:6px}.company-nodes::-webkit-scrollbar-thumb:hover{background:#66889a}
+.company-node{padding:10px 12px 10px 0;grid-template-columns:1fr auto;gap:4px 12px}.company-sub{display:none!important}.more-link{display:none!important}
+.product-divider{background:#496675;height:1px;z-index:7}
+.method-track{display:none!important}.method-node[data-route="Other"] .method-sub{display:none!important}.method-port{opacity:0}
+#method-endpoint-layer{pointer-events:none}.method-endpoint-port{vector-effect:non-scaling-stroke}
+.products-area{padding:18px 0 14px}.product-nodes{padding-bottom:16px}.product-node{min-width:148px}.product-count{display:block!important;margin-top:4px;color:#88a5b6}
+
+/* Long plant result sets stay inside the dialog and scroll vertically. */
+.browse-result{max-height:min(52vh,520px);overflow-y:auto;overscroll-behavior-y:contain;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#8aa0aa #e5e3dc}
+.browse-result::-webkit-scrollbar{width:7px}.browse-result::-webkit-scrollbar-track{background:#e5e3dc}.browse-result::-webkit-scrollbar-thumb{background:#8aa0aa;border-radius:7px}
+
+/* Product rows use one fixed checkbox/text/count grid; labels no longer drift horizontally. */
+.browse-item[data-browse-kind="product"]{display:grid;grid-template-columns:18px minmax(0,1fr) auto;column-gap:18px;justify-content:normal;align-items:center}
+.browse-item[data-browse-kind="product"]>span:nth-child(2){min-width:0;text-align:left}
+@media(max-width:760px){.browse-item[data-browse-kind="product"]{grid-template-columns:16px minmax(0,1fr) auto;column-gap:14px}}
+
+/* The branded masthead is the single persistent navigation frame. The intro stays in normal document flow. */
+.masthead{position:sticky;top:0;left:0;right:0;z-index:50;width:100%!important;max-width:none!important;margin:0!important;padding:0 var(--margin)!important;box-sizing:border-box;background:var(--paper)}
+.masthead nav{display:none!important}
+.masthead .edition{margin-left:auto}
+.intro{position:static}
+
+/* Selected facets share one visual grammar. Method capacity keeps its route colour. */
+.method-node.is-selected,.product-node.is-selected{background:#152b38!important;color:var(--accent)!important}
+.method-node.is-selected{box-shadow:9px 0 0 #152b38}
+.method-node.is-selected .method-name{color:var(--accent)!important}
+.method-node.is-selected .method-value{color:var(--method-color)!important}
+.product-node.is-selected{border-color:#152b38!important;box-shadow:0 0 0 1px #152b38}
+.product-node.is-selected .product-count,.product-node.is-selected .product-remove{color:var(--accent)!important}

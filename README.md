@@ -1,41 +1,67 @@
 # Steel Exposure Atlas
 
-Interactive exploration of public data on steel production, trade and water stress.
+Public-data atlas for exploring steel companies, plants, production methods, products and selected external evidence in one connected view.
 
 ## Status
 
-Early-stage public-data demonstrator. It is intended to show what can be explored by combining public datasets with modern data tooling and AI-assisted development. It is not a supplier-risk product, due-diligence service, or operational decision system.
+Pre-publication demonstrator. The current build combines a reviewed steel-plant dataset with cartography, company-level sanctions evidence and EU steel import-measure context. It is not a supplier ranking, due-diligence service, disruption forecast or operational decision system.
 
-The current foundation renders a reviewed Natural Earth basemap with browser-native HTML, CSS, JavaScript and SVG. Production, trade, water and ownership layers are introduced only after their exact source packages pass the repository's publication gates.
+The core interaction is relational: company → sites → production methods → products, with external evidence linked through explicit company, plant, origin and product relationships. Evidence states and source provenance remain visible; no composite supplier-risk or ESG score is calculated.
+
+GitHub Pages should remain disabled until `docs/release-checklist.md` is complete.
+
+## Current public-data sources
+
+- Global Energy Monitor · Global Iron and Steel Tracker · June 2026 (V1)
+- Natural Earth · Admin 0 Countries · v5.1.1
+- Pinned OFAC and EU sanctions source artifacts used for deterministic company-level screening
+- Pinned EU steel trade-measure artifacts used for the atlas import-context layer
+
+Source versions, hashes, transformations and publication boundaries are documented in the repository. No proprietary or employer data is used.
 
 ## Run locally
 
-No application dependency install is required for the current foundation.
+The current atlas is static and requires no application dependency install.
 
 ```bash
-python pipeline/fetch_public_data.py natural-earth
 python -m http.server 8000
 ```
 
 Then open `http://localhost:8000`.
 
-The fetch step downloads the exact approved Natural Earth v5.1.1 GeoJSON and verifies its pinned Git blob identity before writing it to `public/data/`.
+The reviewed runtime artifacts used by the atlas are already stored under `public/data/`. Runtime reads are same-origin; the interactive atlas does not require live map tiles, external fonts, user accounts or runtime AI calls.
 
-Validation without network access:
+## Validate
+
+Run the repository contracts:
 
 ```bash
-python -m unittest discover -s tests -p 'test_*.py'
-node --check src/app.js
-node --check src/map/render-world.js
+python -m unittest discover -s tests -p "test_*.py"
 ```
+
+The CI workflow also runs the responsive and interaction audit across the supported viewport matrix. To run that browser audit locally, install the pinned Playwright version used by CI and Chromium, then run:
+
+```bash
+python tests/browser_responsive_smoke.py
+```
+
+## Product boundaries
+
+- Company means the immediate owner or operator recorded by GEM; it does not establish ultimate parentage or independent control.
+- Product labels are plant-level source descriptions; they do not establish product-specific capacity, grade availability or available supply.
+- Operating capacity is not available supply.
+- Sanctions findings are categorical evidence states, not probabilities or risk scores.
+- EU steel trade context is modeled as a hypothetical import-into-the-EU relationship; plant product labels do not determine customs classification.
+- Lines in the atlas represent modeled relationships, not shipments, buyer-supplier relationships or contractual supply.
 
 ## Principles
 
-- Review the intended use and redistribution terms of every dataset before publishing it.
-- Add no paid datasets, metered APIs, trials, or billable services without explicit approval.
+- Review intended use and redistribution terms before publishing a dataset.
+- Add no paid datasets, metered APIs, trials or billable services without explicit approval.
 - Keep source, version, retrieval date, terms, transformations and attribution traceable.
-- Distinguish source data from derived calculations.
-- Keep claims proportional to the evidence; exposure indicators are not disruption probabilities.
+- Distinguish source data from derived calculations and interpretations.
+- Keep uncertainty explicit rather than forcing unresolved matches into facts.
+- Keep claims proportional to the evidence.
 - Use no proprietary or employer data.
 
 ## Repository layout
@@ -43,15 +69,15 @@ node --check src/map/render-world.js
 ```text
 src/                 web application
 pipeline/            ingestion, transformation and validation
-public/data/         approved publication-ready data only
+public/data/         reviewed runtime/publication artifacts
 data/                source registry and local data conventions
-tests/               automated checks
+tests/               automated contracts and browser audit
 docs/                product scope, methodology, architecture and release controls
-.github/             repository configuration
+.github/             repository configuration and CI
 ```
 
-See `docs/product-brief.md`, `docs/architecture.md` and `docs/source-governance.md` for the current boundaries and design decisions.
+See `docs/product-brief.md`, `docs/product-ui-principles.md`, `docs/architecture.md`, `docs/source-governance.md` and `docs/release-checklist.md` for the current boundaries and controls.
 
 ## Licensing
 
-No project-wide licence has been granted yet. Third-party datasets and assets remain subject to their own terms. See `DATA_LICENSES.md` and `THIRD_PARTY_NOTICES.md` as the project develops.
+No project-wide licence has been granted yet. Third-party datasets and assets remain subject to their own terms. See `DATA_LICENSES.md` and `THIRD_PARTY_NOTICES.md`.
