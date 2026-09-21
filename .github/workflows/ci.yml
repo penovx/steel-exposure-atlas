@@ -50,3 +50,25 @@ jobs:
 
       - name: Run responsive and interaction audit
         run: python tests/browser_responsive_smoke.py
+
+  public-site:
+    name: Public site artifact
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Assemble public site
+        run: |
+          mkdir _site
+          cp index.html privacy.html _site/
+          cp -R src public _site/
+          touch _site/.nojekyll
+          test -f _site/index.html
+          test -f _site/privacy.html
+          test -f _site/public/data/gist-plants.v1.json
+          test ! -e _site/prototype
+          test ! -e _site/tests
+          test ! -e _site/pipeline
