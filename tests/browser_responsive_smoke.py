@@ -104,6 +104,7 @@ def assert_keyboard_access(page):
     page.keyboard.press('Escape')
     assert help_button.get_attribute('aria-expanded')=='false'
 
+    page.wait_for_function("document.documentElement.dataset.sourcesDialogInstalled === 'true'", timeout=5000)
     sources=page.locator('#open-sources')
     sources.focus(); page.keyboard.press('Enter')
     page.wait_for_selector('#sources-dialog[open]',timeout=5000)
@@ -125,7 +126,7 @@ def assert_keyboard_access(page):
     assert state(page)['filters']['country']==expected,(expected,state(page)['filters']['country'])
 
     clear(page)
-    single_id=page.evaluate("""() => {
+    single_id=page.evaluate(r"""() => {
       const node=[...document.querySelectorAll('.plant-node[data-members]')]
         .find(item => item.dataset.members.trim().split(/\s+/).length===1);
       return node?.dataset.members ?? null;
