@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "policy": {
     "paid_sources_require_explicit_approval": true,
     "publication_requires_dataset_specific_review": true,
@@ -138,7 +138,45 @@
       "redistribution": "permitted",
       "access_conditions": "free direct download; no account or paid service identified",
       "attribution": "Not required by Natural Earth. Courtesy credit 'Made with Natural Earth' may be shown.",
-      "review_notes": "Approved for the specified Natural Earth 1:110m Admin 0 Countries v5.1.1 file only. Natural Earth uses de facto boundaries; disputed-boundary presentation remains a product/design issue and must not imply a political position by the project."
+      "review_notes": "Approved for the specified Natural Earth 1:110m Admin 0 Countries v5.1.1 file only. Natural Earth uses de facto boundaries; disputed-boundary presentation remains a product/design issue and must not imply a political position by the project. The published runtime file is pinned to upstream Git blob SHA-1 1e6ab74c7042f97013be69ceec798be8e1aff27d. The exact retrieval timestamp was not separately recorded and remains unresolved; the repository publication commit date must not be substituted for retrieval provenance.",
+      "source_artifacts": [
+        {
+          "file": "ne_110m_admin_0_countries.geojson",
+          "source_url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.1/geojson/ne_110m_admin_0_countries.geojson",
+          "git_blob_sha1": "1e6ab74c7042f97013be69ceec798be8e1aff27d",
+          "repository_output": "public/data/ne_110m_admin_0_countries.v5.1.1.geojson"
+        }
+      ]
+    },
+    {
+      "id": "eu-financial-sanctions",
+      "publisher": "European Commission",
+      "dataset": "Consolidated Financial Sanctions File 1.1",
+      "status": "approved_for_publication",
+      "publication_status": "approved_for_publication",
+      "cost_status": "free",
+      "source_url": "https://webgate.ec.europa.eu/fsd/fsf/public/files/csvFullSanctionsList_1_1/content?token=dG9rZW4tMjAxNw",
+      "terms_url": "https://commission.europa.eu/legal-notice_en",
+      "dataset_version": "Consolidated Financial Sanctions File 1.1; snapshot retrieved 2026-09-15T21:53:03+00:00; source file generation date 05/08/2026",
+      "reviewed_at": "2026-09-15",
+      "retrieved_at": "2026-09-15T21:53:03+00:00",
+      "intended_use": "company-level direct-list identity screening for usable GIST owner identities using a minimal reviewed enterprise-only derived evidence layer",
+      "licence": "European Commission reuse basis / CC BY 4.0 unless otherwise indicated, as documented in the source reviews",
+      "commercial_reuse": "permitted under the reviewed Commission reuse basis with attribution and indication of transformation",
+      "redistribution": "approved for a minimal reviewed derived enterprise-only subset/status layer; the raw sanctions CSV remains local and is not published in public/data",
+      "access_conditions": "free official European Commission download; no paid service or runtime request required",
+      "attribution": "Source: European Commission, Consolidated Financial Sanctions File 1.1. Licensed under the documented Commission reuse basis / CC BY 4.0. Derived, transformed and entity-matched by Steel Exposure Atlas.",
+      "source_artifacts": [
+        {
+          "file": "eu-financial-sanctions-1.1.csv",
+          "source_url": "https://webgate.ec.europa.eu/fsd/fsf/public/files/csvFullSanctionsList_1_1/content?token=dG9rZW4tMjAxNw",
+          "retrieved_at": "2026-09-15T21:53:03+00:00",
+          "source_file_generation_date": "05/08/2026",
+          "sha256": "049CB95CF55CD9A77DFB8D3FED21EB61A541E4C46F80D1F1B581F2E537E0F015",
+          "repository_policy": "do_not_commit"
+        }
+      ],
+      "review_notes": "Approval covers enterprise records and categorical company-level direct-list evidence only. Person rows and personal identifiers are excluded from the public layer. A no-match is not sanctions clearance. The source review identified the difference between retrieval time and the source file generation date as material provenance; both are retained rather than treating retrieval date as proof of source freshness."
     },
     {
       "id": "ofac-sanctions-lists",
