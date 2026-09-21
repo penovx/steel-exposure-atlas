@@ -23,6 +23,6 @@ section{padding:24px 0;border-top:1px solid var(--line)}
 h2{font-size:19px;font-weight:620;margin:0 0 12px}
 p,li{font-size:14px;line-height:1.75;color:#486573}
 ul{padding-left:20px;margin:10px 0 0}
-.note{font-size:12px;color:#667d89}
+.note{font-size:12px;color:var(--muted)}
 footer{border-top:1px solid var(--line);margin-top:18px;padding-top:20px;font-size:12px;color:var(--muted)}
 @media(max-width:560px){.wrap{width:min(100% - 28px,760px);padding-top:24px}.top{align-items:flex-start;flex-direction:column;gap:8px}.eyebrow{margin-top:30px}}
