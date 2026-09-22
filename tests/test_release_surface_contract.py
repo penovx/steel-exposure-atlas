@@ -7,18 +7,18 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ReleaseSurfaceContractTests(unittest.TestCase):
-    def test_homepage_has_pre_release_share_metadata(self) -> None:
+    def test_homepage_has_public_share_metadata(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
 
-        self.assertIn('<meta name="robots" content="noindex,nofollow">', index)
+        self.assertNotIn('<meta name="robots" content="noindex,nofollow">', index)
         self.assertIn('<meta property="og:title" content="Steel Exposure Atlas">', index)
         self.assertIn('<meta property="og:type" content="website">', index)
         self.assertIn('<meta property="og:site_name" content="Steel Exposure Atlas">', index)
         self.assertIn('<meta name="twitter:card" content="summary">', index)
         self.assertIn('<meta name="twitter:title" content="Steel Exposure Atlas">', index)
-        self.assertNotIn('property="og:url"', index)
+        self.assertIn('<meta property="og:url" content="https://penovx.github.io/steel-exposure-atlas/">', index)
         self.assertNotIn('property="og:image"', index)
-        self.assertNotIn('rel="canonical"', index)
+        self.assertIn('<link rel="canonical" href="https://penovx.github.io/steel-exposure-atlas/">', index)
 
     def test_public_privacy_notice_is_linked_and_minimal(self) -> None:
         index = (ROOT / "index.html").read_text(encoding="utf-8")
