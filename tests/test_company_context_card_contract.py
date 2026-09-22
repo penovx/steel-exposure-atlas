@@ -81,12 +81,13 @@ class SelectionProfileContractTests(unittest.TestCase):
         self.assertIn("Implementing Regulation (EU) 2026/1457", profile)
         self.assertIn("50% out-of-quota duty", profile)
 
-    def test_product_ui_principle_documents_one_click_profile(self) -> None:
+    def test_product_ui_principle_documents_stable_investigation_surface(self) -> None:
         principles = (ROOT / "docs" / "product-ui-principles.md").read_text(encoding="utf-8")
         self.assertIn("Evidence -> relationship -> meaning", principles)
-        self.assertIn("One-click selection profile", principles)
-        self.assertIn("does not require a second click", principles)
-        self.assertIn("facts and relationships stay in the profile", principles)
+        self.assertIn("Stable investigation surface", principles)
+        self.assertIn("Site as the investigation bridge", principles)
+        self.assertIn("preserves the surrounding exploration context", principles)
+        self.assertIn("facts and typed relationships stay in the inspection surface", principles)
         self.assertIn("Sources & interpretation", principles)
 
 
